@@ -8,9 +8,9 @@
 OptiScaler Universal is an intelligent, automated solution that configures [OptiScaler](https://github.com/optiscaler/OptiScaler) optimally for your specific GPU and games, bringing FSR4, XeSS, and enhanced DLSS quality to Linux gaming.
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Status](https://img.shields.io/badge/status-WIP-red.svg)
+![Status](https://img.shields.io/badge/status-alpha-orange.svg)
 ![Platform](https://img.shields.io/badge/platform-Linux-lightgrey.svg)
-![Progress](https://img.shields.io/badge/progress-30%25-yellow.svg)
+![Progress](https://img.shields.io/badge/progress-70%25-green.svg)
 
 ---
 

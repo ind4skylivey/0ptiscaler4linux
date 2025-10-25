@@ -1,1 +1,21 @@
 0.1.0-alpha
+
+# Changelog
+
+## [0.1.0-alpha] - 2025-10-25
+
+### Added
+- Complete GPU detection system (AMD, Intel, NVIDIA)
+- Professional logging system
+- 6 GPU profiles (RDNA1/2/3/4, Intel Arc, NVIDIA RTX)
+- 4 Game profiles (Cyberpunk 2077, New World, Starfield, RDR2)
+- Utilities library
+- Main installer script
+- Project architecture and documentation
+
+### Status
+- Core functionality: Complete
+- GPU profiles: 6/6 Complete
+- Game profiles: 4/10 Target
+- Installation: Manual (automated coming soon)
+- Documentation: In progress
