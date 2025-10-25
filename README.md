@@ -10,7 +10,7 @@ OptiScaler Universal is an intelligent, automated solution that configures [Opti
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Status](https://img.shields.io/badge/status-alpha-orange.svg)
 ![Platform](https://img.shields.io/badge/platform-Linux-lightgrey.svg)
-![Progress](https://img.shields.io/badge/progress-70%25-green.svg)
+![Progress](https://img.shields.io/badge/progress-85%25-brightgreen.svg)
 
 ---
 

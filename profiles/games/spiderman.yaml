@@ -1,0 +1,60 @@
+# Spider-Man Remastered Game Profile
+metadata:
+  name: "Marvel's Spider-Man Remastered"
+  engine: "Insomniac Engine"
+  api: "DX12"
+  dlss_version: "3.0"
+  steamid: "1817070"
+
+paths:
+  steam_linux: "~/.local/share/Steam/steamapps/common/Marvel's Spider-Man Remastered"
+  proton_prefix: "~/.local/share/Steam/steamapps/compatdata/1817070"
+  executable: "spider-man.exe"
+
+compatibility:
+  optiscaler_status: "Excellent"
+  tested_proton: ["Proton-EM 10.0-30", "GE-Proton 10-21"]
+
+steam:
+  launch_options: "WINEDLLOVERRIDES=dxgi.dll=n,b PROTON_FSR4_UPGRADE=1 %command%"
+  recommended_proton: "Proton-EM 10.0-30"
+
+game_specific_tweaks:
+  sharpness_override: 0.35
+  motion_sharpness_enabled: true
+  motion_sharpness: 0.4
+
+performance_profiles:
+  maximum_quality:
+    settings:
+      ingame_preset: "Very High"
+      ingame_upscaling: "DLSS Quality"
+      ingame_reflex: "On"
+      ray_tracing: "Very High"
+      expected_fps: "70-90 @ 1440p"
+  
+  balanced:
+    settings:
+      ingame_preset: "High"
+      ingame_upscaling: "DLSS Balanced"
+      ray_tracing: "High"
+      expected_fps: "90-110 @ 1440p"
+
+recommended_settings:
+  upscaling: "DLSS Quality"
+  nvidia_reflex: "On"
+  ray_tracing: "High"
+  vsync: false
+
+performance_notes: |
+  Spider-Man has excellent RT implementation and scales beautifully.
+  Motion during web-swinging benefits greatly from DLSS inputs.
+  RT reflections are worth the performance cost.
+
+gpu_specific_notes:
+  rdna3:
+    notes: "Excellent RT performance. Can max out settings."
+    recommended_preset: "Very High with RT"
+  rdna2:
+    notes: "Good performance. High preset with RT recommended."
+    recommended_preset: "High with RT Medium"

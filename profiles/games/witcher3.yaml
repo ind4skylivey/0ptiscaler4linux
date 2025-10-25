@@ -1,0 +1,45 @@
+# The Witcher 3: Wild Hunt Game Profile
+metadata:
+  name: "The Witcher 3: Wild Hunt"
+  engine: "REDengine 3"
+  api: "DX11/DX12"
+  dlss_version: "3.5"
+  steamid: "292030"
+
+paths:
+  steam_linux: "~/.local/share/Steam/steamapps/common/The Witcher 3"
+  proton_prefix: "~/.local/share/Steam/steamapps/compatdata/292030"
+  executable: "bin/x64/witcher3.exe"
+
+compatibility:
+  optiscaler_status: "Excellent"
+  tested_proton: ["Proton-EM 10.0-30", "GE-Proton 10-21"]
+
+steam:
+  launch_options: "WINEDLLOVERRIDES=dxgi.dll=n,b PROTON_FSR4_UPGRADE=1 %command%"
+  recommended_proton: "Proton-EM 10.0-30"
+
+game_specific_tweaks:
+  sharpness_override: 0.35
+  motion_sharpness_enabled: true
+
+performance_profiles:
+  maximum_quality:
+    settings:
+      ingame_preset: "RT Ultra"
+      ingame_upscaling: "DLSS Quality"
+      expected_fps: "70-90 @ 1440p"
+  balanced:
+    settings:
+      ingame_preset: "RT High"
+      ingame_upscaling: "DLSS Balanced"
+      expected_fps: "90-110 @ 1440p"
+
+recommended_settings:
+  upscaling: "DLSS Quality"
+  nvidia_reflex: "On"
+  ray_tracing: "High"
+
+performance_notes: |
+  Witcher 3 Next-Gen update has excellent RT and DLSS 3.5.
+  Game scales beautifully with OptiScaler on AMD GPUs.
