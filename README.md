@@ -1,7 +1,7 @@
 # OptiScaler Universal
 
-> ⚠️ **WORK IN PROGRESS** - This project is in early development. Not ready for use yet.  
-> Star and watch the repo to get notified when MVP is ready!
+> 🎉 **ALPHA RELEASE** - Core functionality complete! Ready for testing.  
+> Report bugs and share feedback to help improve the project!
 
 **Unlock your GPU's full potential on Linux - automatically.**
 
@@ -10,7 +10,7 @@ OptiScaler Universal is an intelligent, automated solution that configures [Opti
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Status](https://img.shields.io/badge/status-alpha-orange.svg)
 ![Platform](https://img.shields.io/badge/platform-Linux-lightgrey.svg)
-![Progress](https://img.shields.io/badge/progress-85%25-brightgreen.svg)
+![Progress](https://img.shields.io/badge/progress-100%25-brightgreen.svg)
 
 ---
 
@@ -68,7 +68,7 @@ That's it! The installer will:
 
 ## 🎮 Supported Games
 
-Currently supporting **100+ games**, including:
+Currently supporting **10 popular games** with profiles, works with many more:
 
 - Cyberpunk 2077
 - Starfield
@@ -192,14 +192,15 @@ Please see [CONTRIBUTING.md](docs/CONTRIBUTING.md) for guidelines.
 
 ### Current Version: 0.1.0-alpha
 
-**Phase 1: MVP** (In Progress)
+**Phase 1: Alpha Release** ✅ Complete!
 - [x] Project structure
-- [x] Design documentation
-- [ ] GPU detection implementation
-- [ ] Basic game discovery (Steam)
-- [ ] 5 game profiles
-- [ ] Manual installation
-- [ ] Core documentation
+- [x] Design documentation  
+- [x] GPU detection (AMD/Intel/NVIDIA)
+- [x] Steam game scanner
+- [x] 10 game profiles
+- [x] Configuration generator
+- [x] Automated installer
+- [x] Core documentation
 
 [View full roadmap →](PROJECT_DESIGN.md#-future-roadmap)
 
@@ -245,7 +246,7 @@ This is an unofficial tool not affiliated with or endorsed by AMD, Intel, NVIDIA
 ## 🚀 Get Started Now
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/optiscaler-universal.git
+git clone https://github.com/ind4skylivey/0ptiscaler4linux.git
 cd optiscaler-universal
 bash scripts/install.sh
 ```

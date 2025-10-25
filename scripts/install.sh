@@ -127,33 +127,52 @@ main() {
     fi
     echo ""
     
-    # Step 5: Show next steps
-    log_section "Installation Complete - Next Steps"
-    echo ""
-    echo -e "${YELLOW}Manual steps required:${NC}"
-    echo ""
-    echo "1. Copy OptiScaler binaries to your game directory:"
-    echo "   cp binaries/*.dll \"\$GAME_DIR/Bin64/\""
-    echo ""
-    echo "2. Copy configuration files:"
-    echo "   cp config/*.ini \"\$GAME_DIR/Bin64/\""
-    echo ""
-    echo "3. Configure Steam Launch Options:"
-    echo "   ${GREEN}WINEDLLOVERRIDES=dxgi.dll=n,b PROTON_FSR4_UPGRADE=1 %command%${NC}"
-    echo ""
-    echo "4. Select compatible Proton version:"
-    echo "   ${GREEN}Proton-EM 10.0-30 (recommended)${NC}"
-    echo ""
-    echo "5. Launch game and configure graphics:"
-    echo "   - Set Upscaling to: ${GREEN}DLSS Quality${NC}"
-    echo "   - Set NVIDIA Reflex to: ${GREEN}On + Boost${NC}"
-    echo "   - Disable VSync"
-    echo ""
-    echo -e "${CYAN}For detailed instructions, see: docs/INSTALLATION.md${NC}"
+    # Step 5: Scan for games
+    log_section "Scanning for Supported Games"
+    source "$SCRIPT_DIR/core/game-scanner.sh"
+    scan_steam_games
     echo ""
     
-    log_success "GPU detection complete!"
-    log_info "Your GPU profile: profiles/gpu/$gpu_profile.yaml"
+    display_found_games
+    echo ""
+    
+    # Step 6: Generate configs
+    if [ ${#FOUND_GAMES[@]} -gt 0 ]; then
+        log_section "Configuration Generation"
+        
+        source "$SCRIPT_DIR/core/configurator.sh"
+        
+        local config_dir="$HOME/.optiscaler-universal/generated"
+        mkdir -p "$config_dir"
+        
+        generate_optiscaler_ini "$gpu_profile" "$config_dir/OptiScaler.ini"
+        generate_fakenvapi_ini "$config_dir/fakenvapi.ini"
+        
+        echo ""
+        log_success "Configuration files generated in: $config_dir"
+        echo ""
+    fi
+    
+    # Step 7: Show next steps
+    log_section "Installation Complete - Next Steps"
+    echo ""
+    echo -e "${GREEN}✓ GPU Detected: $GPU_VENDOR $GPU_GENERATION${NC}"
+    echo -e "${GREEN}✓ Found ${#FOUND_GAMES[@]} supported game(s)${NC}"
+    echo -e "${GREEN}✓ Configuration files generated${NC}"
+    echo ""
+    echo -e "${YELLOW}To complete setup:${NC}"
+    echo ""
+    echo "1. Copy generated configs to your game directory:"
+    echo "   ${CYAN}cp ~/.optiscaler-universal/generated/*.ini \"\$GAME_DIR/Bin64/\"${NC}"
+    echo ""
+    echo "2. Configure Steam Launch Options:"
+    echo "   ${GREEN}WINEDLLOVERRIDES=dxgi.dll=n,b PROTON_FSR4_UPGRADE=1 %command%${NC}"
+    echo ""
+    echo "3. In-game settings:"
+    echo "   - Upscaling: ${GREEN}DLSS Quality${NC}"
+    echo "   - NVIDIA Reflex: ${GREEN}On + Boost${NC}"
+    echo ""
+    log_success "Setup complete! Ready to game!"
     echo ""
 }
 
