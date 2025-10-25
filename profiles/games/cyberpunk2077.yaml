@@ -1,0 +1,194 @@
+# Cyberpunk 2077 Game Profile
+metadata:
+  name: "Cyberpunk 2077"
+  engine: "RED Engine 4"
+  api: "DX12"
+  dlss_version: "3.5"
+  fsr_version: "3.0"
+  steamid: "1091500"
+  gog_id: "1423049311"
+  epic_id: "5beededaad9743df90e8f07d92df153f"
+  
+paths:
+  steam_linux: "~/.local/share/Steam/steamapps/common/Cyberpunk 2077"
+  proton_prefix: "~/.local/share/Steam/steamapps/compatdata/1091500"
+  gog_linux: "~/Games/Cyberpunk-2077"
+  heroic_linux: "~/Games/Heroic/Cyberpunk2077"
+  executable: "bin/x64/Cyberpunk2077.exe"
+  config_dir: "bin/x64"
+  save_dir: "~/.local/share/Steam/steamapps/compatdata/1091500/pfx/drive_c/users/steamuser/Saved Games/CD Projekt Red/Cyberpunk 2077"
+
+compatibility:
+  optiscaler_status: "Excellent"
+  optiscaler_version_min: "0.7.0"
+  known_issues: []
+  tested_proton: 
+    - "Proton-EM 10.0-30"
+    - "GE-Proton 9-11"
+    - "GE-Proton 10-21"
+  tested_mesa: "25.2.0+"
+  
+steam:
+  launch_options: "WINEDLLOVERRIDES=dxgi.dll=n,b PROTON_FSR4_UPGRADE=1 %command%"
+  recommended_proton: "Proton-EM 10.0-30"
+  
+game_specific_tweaks:
+  # Cyberpunk is already quite sharp, reduce sharpening
+  sharpness_override: 0.3
+  
+  # Motion sharpness can cause artifacts in fast camera movement
+  motion_sharpness_enabled: false
+  
+  # DLSS preset override (default works best)
+  render_preset_quality: 0
+  
+  # HDR support
+  force_hdr: false
+  
+  # Ray Tracing specific
+  enable_depth_scale: false
+  depth_scale_max: 10000.0
+
+performance_profiles:
+  maximum_quality:
+    description: "Best visual quality, ~50-60% FPS boost"
+    settings:
+      ingame_preset: "Ray Tracing: Ultra"
+      ingame_upscaling: "DLSS Quality"
+      ingame_reflex: "On + Boost"
+      ray_tracing: "Ultra"
+      path_tracing: false
+      expected_fps: "60-75 @ 1440p"
+  
+  balanced:
+    description: "Great balance, ~60-70% FPS boost"
+    settings:
+      ingame_preset: "Ray Tracing: Medium"
+      ingame_upscaling: "DLSS Balanced"
+      ingame_reflex: "On + Boost"
+      ray_tracing: "Medium"
+      path_tracing: false
+      expected_fps: "75-90 @ 1440p"
+  
+  maximum_performance:
+    description: "Maximum FPS, ~70-80% FPS boost"
+    settings:
+      ingame_preset: "Ultra (no RT)"
+      ingame_upscaling: "DLSS Performance"
+      ingame_reflex: "On + Boost"
+      ray_tracing: false
+      path_tracing: false
+      expected_fps: "100-120 @ 1440p"
+  
+  path_tracing:
+    description: "Path Tracing mode (requires high-end GPU)"
+    settings:
+      ingame_preset: "Ray Tracing: Overdrive"
+      ingame_upscaling: "DLSS Performance or Ultra Performance"
+      ingame_reflex: "On + Boost"
+      ray_tracing: "Overdrive"
+      path_tracing: true
+      expected_fps: "40-55 @ 1440p (with RDNA3+)"
+
+recommended_settings:
+  graphics:
+    preset: "Ray Tracing: Ultra"
+    upscaling: "DLSS Quality"
+    nvidia_reflex: "On + Boost"
+    vsync: false
+    frame_limit: "Unlimited"
+    hdr: "Auto"
+  
+  ray_tracing:
+    mode: "Ultra"
+    lighting: "Ultra"
+    reflections: "Ultra"
+    shadows: "On"
+    path_tracing: false  # Only on high-end GPUs
+  
+  advanced:
+    motion_blur: "Off"  # Conflicts with motion sharpness
+    chromatic_aberration: "Off"  # Personal preference
+    film_grain: "Off"
+    depth_of_field: "On"
+    lens_flare: "On"
+
+performance_notes: |
+  Cyberpunk 2077 is one of the most demanding games but scales excellently
+  with OptiScaler + FSR4. The game has native DLSS 3.5 with Ray Reconstruction.
+  
+  Key recommendations:
+  - Use DLSS Quality for best balance (OptiScaler intercepts this)
+  - Enable Ray Tracing for the intended experience
+  - Path Tracing requires high-end GPU (RDNA3+ or RTX 40 series)
+  - Motion blur should be off to avoid conflicts
+  - Anti-Lag 2 significantly improves responsiveness in combat
+
+gpu_specific_notes:
+  rdna4:
+    notes: "Excellent performance with FSR4. Path tracing playable at 1440p with DLSS Performance."
+    recommended_preset: "Ray Tracing: Ultra with Path Tracing"
+  
+  rdna3:
+    notes: "Great RT performance. FSR3.1 with DLSS inputs provides excellent quality."
+    recommended_preset: "Ray Tracing: Ultra"
+  
+  rdna2:
+    notes: "Good performance. RT Medium recommended for 60+ FPS."
+    recommended_preset: "Ray Tracing: Medium"
+  
+  arc:
+    notes: "XeSS native works well. RT performance moderate."
+    recommended_preset: "Ray Tracing: Medium or High (no RT)"
+  
+  nvidia_rtx40:
+    notes: "Use native DLSS 3.5 with Frame Generation for best results."
+    recommended_preset: "Native DLSS (OptiScaler optional)"
+
+troubleshooting:
+  common_issues:
+    - issue: "DLSS not appearing in menu"
+      solution: "Verify WINEDLLOVERRIDES in Steam launch options"
+      
+    - issue: "Game crashes on startup"
+      solution: "Try Proton GE-Proton 9-11 or newer, ensure dxgi.dll has correct permissions"
+      
+    - issue: "Flickering or ghosting"
+      solution: "Disable motion sharpness in OptiScaler.ini"
+      
+    - issue: "Low FPS with RT"
+      solution: "Reduce RT preset to Medium or disable. Try DLSS Balanced/Performance"
+      
+    - issue: "Input lag feels high"
+      solution: "Ensure Reflex is On + Boost, check fakenvapi is working"
+      
+    - issue: "Over-sharpened image"
+      solution: "Reduce sharpness to 0.2 or 0.3 in OptiScaler.ini"
+
+links:
+  pcgamingwiki: "https://www.pcgamingwiki.com/wiki/Cyberpunk_2077"
+  protondb: "https://www.protondb.com/app/1091500"
+  reddit: "https://www.reddit.com/r/cyberpunkgame"
+  official: "https://www.cyberpunk.net"
+
+user_guide: |
+  INSTALLATION:
+  1. Install OptiScaler using the universal installer
+  2. Configure Steam launch options (critical!)
+  3. Launch game and go to Graphics settings
+  4. Set DLSS to Quality or Balanced
+  5. Enable NVIDIA Reflex: On + Boost
+  6. Set Ray Tracing to your preferred level
+  7. Disable Motion Blur for best results
+  
+  VERIFICATION:
+  - Press HOME in-game to see OptiScaler menu
+  - Check that FSR3.1/FSR4 is active
+  - Press ALT+SHIFT+L to verify Anti-Lag 2
+  - Monitor FPS - should see 50-80% improvement
+  
+  OPTIMIZATION:
+  - If FPS < 60: Reduce RT preset or use DLSS Balanced
+  - If image too sharp: Reduce sharpness in OptiScaler.ini
+  - If stuttering: Close background apps, check VRAM usage
+  - For max quality: Use DLSS Quality with RT Ultra

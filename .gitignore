@@ -1,0 +1,55 @@
+# OptiScaler Universal - Git Ignore
+
+# Logs
+*.log
+*.log.*
+logs/
+
+# Backups
+backups/
+*.backup
+*.bak
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# User-specific
+config.local
+user_preferences.yaml
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+venv/
+env/
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# Large binaries (should use Git LFS)
+# Already tracked, just documenting
+# *.dll
+# *.so

@@ -1,0 +1,113 @@
+# AMD RDNA2 GPU Profile (RX 6000 series)
+metadata:
+  name: "AMD RDNA2"
+  description: "Optimized for AMD Radeon RX 6000 series GPUs"
+  author: "OptiScaler Universal Team"
+  version: "1.0.0"
+  last_updated: "2025-10-25"
+  supported_gpus:
+    - "Radeon RX 6950 XT"
+    - "Radeon RX 6900 XT"
+    - "Radeon RX 6800 XT"
+    - "Radeon RX 6800"
+    - "Radeon RX 6750 XT"
+    - "Radeon RX 6700 XT"
+    - "Radeon RX 6700"
+    - "Radeon RX 6650 XT"
+    - "Radeon RX 6600 XT"
+    - "Radeon RX 6600"
+    - "Radeon RX 6500 XT"
+    - "Radeon RX 6400"
+
+capabilities:
+  anti_lag_2: true              # RDNA1+ supports Anti-Lag 2
+  fsr4_native: false            # FSR4 optimized for RDNA4 only
+  fsr4_compatible: true         # Can run FSR4 but with overhead
+  fsr3_native: true             # FSR3.1 runs excellently
+  xess_support: true            # Can run XeSS via software
+  dlss_inputs_recommended: true # Better quality with DLSS inputs
+
+driver_requirements:
+  mesa_min_version: "25.2.0"
+  recommended_kernel: "6.8+"
+
+optiscaler:
+  upscalers:
+    dx12: "fsr31"               # FSR 3.1 for best performance
+    dx11: "fsr31_12"            # FSR 3.1 via DX12 wrapper
+    vulkan: "fsr31"
+  
+  fsr:
+    fsr4_update: false          # Disable FSR4 - overhead on RDNA2
+    non_linear_srgb: true       # Better color accuracy
+    non_linear_pq: false
+    velocity_factor: 1.0
+    reactive_scale: 1.0
+    shading_scale: 1.0
+    
+  inputs:
+    enable_dlss_inputs: true    # Use DLSS data for better quality
+    enable_fsr2_inputs: true
+    enable_fsr3_inputs: true
+    enable_xess_inputs: true
+    
+  sharpness:
+    override: true
+    value: 0.4                  # Balanced sharpness
+    cas_enabled: true           # Contrast Adaptive Sharpening
+    motion_sharpness_enabled: true
+    motion_sharpness: 0.5
+    motion_threshold: 0.0
+    motion_scale_limit: 10.0
+    
+  spoofing:
+    streamline_spoofing: true   # Spoof for Streamline/DLSS
+    dxgi_spoofing: true
+    spoofed_vendor_id: "0x10de" # Spoof as NVIDIA
+    spoofed_device_id: "0x2684" # RTX 4090
+    spoofed_gpu_name: "NVIDIA GeForce RTX 4090"
+    
+  nvapi:
+    override_dll: true          # Use fakenvapi
+    
+  menu:
+    shortcut_key: "0x24"        # HOME key
+    overlay_menu: true
+    scale: "auto"
+
+fakenvapi:
+  enabled: true
+  enable_logs: 1
+  enable_trace_logs: 0
+  force_reflex: 2               # Force Reflex always (becomes Anti-Lag 2)
+  latencyflex_mode: 2           # Aggressive mode for best latency
+  force_latencyflex: 0
+
+performance:
+  expected_fps_gain: "55-75%"
+  expected_latency_reduction: "35-45%"
+  quality_rating: "9/10"
+  vram_overhead: "~200MB"
+  notes: |
+    RDNA2 GPUs have excellent FSR3.1 performance with DLSS inputs.
+    FSR4 is disabled due to performance overhead on non-RDNA4 GPUs.
+    Anti-Lag 2 provides significant latency reduction.
+    RT performance is good but not as strong as RDNA3.
+
+recommendations:
+  ingame_upscaling: "DLSS Quality"
+  ingame_reflex: "On + Boost"
+  ingame_vsync: false
+  quality_preset: "High to Ultra"
+  ray_tracing: "Moderate (performance impact)"
+  
+troubleshooting:
+  common_issues:
+    - issue: "Flickering with motion sharpness"
+      solution: "Reduce motion_sharpness to 0.3 or disable"
+    - issue: "Lower FPS than expected"
+      solution: "Ensure Mesa 25.2+ and kernel 6.8+"
+    - issue: "Anti-Lag 2 not working"
+      solution: "Enable Reflex in game, verify fakenvapi.log"
+    - issue: "Stuttering in demanding scenes"
+      solution: "Reduce quality preset or disable RT"
