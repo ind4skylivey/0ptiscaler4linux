@@ -1,0 +1,69 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  shellcheck:
+    name: ShellCheck
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master
+        with:
+          scandir: './core ./lib ./scripts'
+          severity: warning
+          
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pciutils mesa-utils
+      
+      - name: Run test suite
+        run: |
+          chmod +x tests/*.sh
+          bash tests/run-all-tests.sh
+  
+  validate-profiles:
+    name: Validate Profiles
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install YAML validator
+        run: sudo apt-get install -y yamllint
+      
+      - name: Validate GPU profiles
+        run: |
+          yamllint profiles/gpu/*.yaml || true
+      
+      - name: Validate game profiles
+        run: |
+          yamllint profiles/games/*.yaml || true
+      
+      - name: Check profile count
+        run: |
+          GPU_COUNT=$(ls -1 profiles/gpu/*.yaml 2>/dev/null | wc -l)
+          GAME_COUNT=$(ls -1 profiles/games/*.yaml 2>/dev/null | wc -l)
+          echo "GPU Profiles: $GPU_COUNT"
+          echo "Game Profiles: $GAME_COUNT"
+          if [ $GPU_COUNT -lt 5 ]; then
+            echo "Warning: Less than 5 GPU profiles"
+          fi
+          if [ $GAME_COUNT -lt 5 ]; then
+            echo "Warning: Less than 5 game profiles"
+          fi
