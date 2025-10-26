@@ -112,7 +112,22 @@ Linux • Mesa 25.2.0+ or NVIDIA 550+ • Steam/Lutris/Heroic • Proton 10.0+
 
 </div>
 
-### Installation (3 steps)
+### Installation Methods
+
+#### Method 1: AUR (Arch/Manjaro) - Recommended! 🏆
+
+```bash
+# Using yay
+yay -S optiscaler-universal
+
+# Or using paru
+paru -S optiscaler-universal
+
+# Then run
+optiscaler-install
+```
+
+#### Method 2: Git Clone (Other Distros)
 
 <table>
 <tr>
