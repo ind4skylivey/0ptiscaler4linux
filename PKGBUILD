@@ -1,4 +1,4 @@
-# Maintainer: Your Name <your.email@example.com>
+# Maintainer: ind4skylivey <https://github.com/ind4skylivey>
 pkgname=optiscaler-universal
 pkgver=0.1.0
 pkgrel=1
@@ -13,7 +13,7 @@ optdepends=(
     'python: for advanced YAML parsing'
 )
 source=("$pkgname-$pkgver.tar.gz::$url/archive/v$pkgver.tar.gz")
-sha256sums=('SKIP')  # Will be updated when creating actual release
+sha256sums=('fe21d6fef1aeef7f8060e6cd1b8faafa0867d52aad1f5de7e202adf921c388e5')
 
 package() {
     cd "$srcdir/optiscaler-universal-$pkgver"
