@@ -1,30 +1,97 @@
-# OptiScaler Universal
+<div align="center">
 
-> 🎉 **ALPHA RELEASE** - Core functionality complete! Ready for testing.  
-> Report bugs and share feedback to help improve the project!
+# 🎮 OptiScaler Universal
 
-**Unlock your GPU's full potential on Linux - automatically.**
+### *Unlock Your GPU's Full Potential on Linux*
 
-OptiScaler Universal is an intelligent, automated solution that configures [OptiScaler](https://github.com/optiscaler/OptiScaler) optimally for your specific GPU and games, bringing FSR4, XeSS, and enhanced DLSS quality to Linux gaming.
+**Intelligent • Automated • Safe • Open Source**
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Status](https://img.shields.io/badge/status-alpha-orange.svg)
-![Platform](https://img.shields.io/badge/platform-Linux-lightgrey.svg)
-![Progress](https://img.shields.io/badge/progress-100%25-brightgreen.svg)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Status](https://img.shields.io/badge/status-alpha-orange.svg)](https://github.com/ind4skylivey/0ptiscaler4linux/releases)
+[![Platform](https://img.shields.io/badge/platform-Linux-lightgrey.svg)](https://www.linux.org/)
+[![Progress](https://img.shields.io/badge/progress-100%25-brightgreen.svg)](PROJECT_STATUS.md)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](docs/CONTRIBUTING.md)
 
 ---
 
-## 🎯 Why OptiScaler Universal?
+### 🚀 Automatically configure [OptiScaler](https://github.com/optiscaler/OptiScaler) for optimal FSR4, XeSS, and DLSS performance
 
-Game developers often neglect Linux and older GPU architectures, leaving performance on the table. OptiScaler Universal fixes this by:
+</div>
 
-✅ **Automatically detecting** your GPU (AMD, Intel, NVIDIA)  
-✅ **Applying optimal configurations** based on your hardware  
-✅ **Supporting 100+ games** with game-specific tweaks  
-✅ **Providing clean, secure code** - no hacks, no risks  
-✅ **Respecting your system** - no root required, easy rollback  
+---
 
-### Performance Gains
+## 📸 Visual Overview
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                                                                     │
+│   🖥️  GPU Detection    →    ⚙️  Smart Config    →    🎮 Gaming!   │
+│                                                                     │
+│   AMD RDNA3 Detected        FSR3.1 Optimized       +60% FPS        │
+│   Mesa 25.2.0 ✓            Anti-Lag 2 Enabled     -35% Latency     │
+│   6 Games Found            Quality: Ultra          Visual: 9/10     │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+<div align="center">
+
+### ⚡ One Command Setup • 🛡️ Automatic Backups • 🔧 Easy Rollback
+
+</div>
+
+---
+
+## ✨ Key Features
+
+<table>
+<tr>
+<td width="50%">
+
+### 🎯 Intelligent Detection
+- **Automatic GPU identification**
+  - AMD (RDNA1/2/3/4, GCN)
+  - Intel (Arc, Integrated)
+  - NVIDIA (RTX series)
+- **Driver validation**
+- **Capability analysis**
+
+</td>
+<td width="50%">
+
+### ⚙️ Smart Configuration
+- **GPU-optimized profiles**
+- **Game-specific tweaks**
+- **Resolution awareness**
+- **Quality presets**
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### 🛡️ Safety First
+- **SHA256 checksums**
+- **Automatic backups**
+- **Easy rollback**
+- **No root required**
+
+</td>
+<td width="50%">
+
+### 🎮 Gaming Ready
+- **10 game profiles**
+- **Steam integration**
+- **One-command install**
+- **Real-time diagnostics**
+
+</td>
+</tr>
+</table>
+
+---
+
+## 📊 Performance Gains
 
 | GPU Type | FPS Improvement | Latency Reduction | Visual Quality |
 |----------|----------------|-------------------|----------------|
@@ -37,72 +104,215 @@ Game developers often neglect Linux and older GPU architectures, leaving perform
 
 ## 🚀 Quick Start
 
-### Prerequisites
+<div align="center">
 
-- Linux distribution (any)
-- Mesa 25.2.0+ (for AMD/Intel) or NVIDIA drivers 550+
-- Steam, Lutris, or Heroic Games Launcher
-- Proton 10.0+ with FSR4 support
+### 💻 Prerequisites
 
-### Installation
+Linux • Mesa 25.2.0+ or NVIDIA 550+ • Steam/Lutris/Heroic • Proton 10.0+
 
+</div>
+
+### Installation (3 steps)
+
+<table>
+<tr>
+<td>
+
+**1️⃣ Clone**
 ```bash
-# Clone the repository
-git clone https://github.com/YOUR_USERNAME/optiscaler-universal.git
+git clone https://github.com/ind4skylivey/0ptiscaler4linux.git
 cd optiscaler-universal
-
-# Run the installer
-bash scripts/install.sh
-
-# Follow the interactive prompts
 ```
 
-That's it! The installer will:
-1. Detect your GPU automatically
-2. Scan for compatible games
-3. Let you choose which games to optimize
-4. Apply optimal configurations
-5. Provide next steps
+</td>
+<td>
+
+**2️⃣ Install**
+```bash
+bash scripts/install.sh
+```
+
+</td>
+<td>
+
+**3️⃣ Game!**
+```bash
+# Launch your game
+# Enjoy +60% FPS!
+```
+
+</td>
+</tr>
+</table>
+
+<details>
+<summary>🔍 <b>What happens during installation?</b> (Click to expand)</summary>
+
+<br>
+
+```
+┌─ Installation Flow ─────────────────────────────────────────┐
+│                                                              │
+│  1. 🔍 GPU Detection                                         │
+│     ├─ Vendor: AMD/Intel/NVIDIA                             │
+│     ├─ Architecture: RDNA3, Arc, etc.                       │
+│     └─ Capabilities: FSR4, Anti-Lag 2, XeSS                 │
+│                                                              │
+│  2. 🎮 Game Discovery                                        │
+│     ├─ Scan Steam library                                   │
+│     ├─ Find compatible games                                │
+│     └─ Display found games                                  │
+│                                                              │
+│  3. ⚙️  Configuration Generation                             │
+│     ├─ Load GPU profile                                     │
+│     ├─ Apply game tweaks                                    │
+│     └─ Generate configs                                     │
+│                                                              │
+│  4. 💾 Safe Installation                                     │
+│     ├─ Create backup                                        │
+│     ├─ Install files                                        │
+│     └─ Verify installation                                  │
+│                                                              │
+│  5. ✅ Complete!                                             │
+│     └─ Ready to game with optimized settings                │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+</details>
 
 ---
 
 ## 🎮 Supported Games
 
-Currently supporting **10 popular games** with profiles, works with many more:
+<div align="center">
 
-- Cyberpunk 2077
-- Starfield
-- Red Dead Redemption 2
-- New World
-- Alan Wake 2
-- Spider-Man Remastered
-- God of War
-- Hogwarts Legacy
-- The Witcher 3
-- And many more...
+### ✅ 10 AAA Titles with Optimized Profiles
 
-[View full game list →](docs/GAME_SUPPORT.md)
+</div>
+
+<table>
+<tr>
+<td align="center" width="25%">
+<img src="https://img.shields.io/badge/Cyberpunk_2077-FF0000?style=for-the-badge&logo=cdprojektred&logoColor=white" alt="Cyberpunk 2077"/>
+<br><sub><b>Excellent</b></sub>
+</td>
+<td align="center" width="25%">
+<img src="https://img.shields.io/badge/Starfield-1E90FF?style=for-the-badge&logo=bethesda&logoColor=white" alt="Starfield"/>
+<br><sub><b>Good</b></sub>
+</td>
+<td align="center" width="25%">
+<img src="https://img.shields.io/badge/RDR_2-DC143C?style=for-the-badge&logo=rockstargames&logoColor=white" alt="RDR2"/>
+<br><sub><b>Good</b></sub>
+</td>
+<td align="center" width="25%">
+<img src="https://img.shields.io/badge/New_World-FFD700?style=for-the-badge&logo=amazon&logoColor=black" alt="New World"/>
+<br><sub><b>Excellent</b></sub>
+</td>
+</tr>
+<tr>
+<td align="center" width="25%">
+<img src="https://img.shields.io/badge/Alan_Wake_2-000000?style=for-the-badge&logo=epicgames&logoColor=white" alt="Alan Wake 2"/>
+<br><sub><b>Excellent</b></sub>
+</td>
+<td align="center" width="25%">
+<img src="https://img.shields.io/badge/Spider_Man-E23636?style=for-the-badge&logo=marvel&logoColor=white" alt="Spider-Man"/>
+<br><sub><b>Excellent</b></sub>
+</td>
+<td align="center" width="25%">
+<img src="https://img.shields.io/badge/God_of_War-00A8E8?style=for-the-badge&logo=playstation&logoColor=white" alt="God of War"/>
+<br><sub><b>Excellent</b></sub>
+</td>
+<td align="center" width="25%">
+<img src="https://img.shields.io/badge/Hogwarts-740001?style=for-the-badge&logo=wizardingworld&logoColor=white" alt="Hogwarts"/>
+<br><sub><b>Good</b></sub>
+</td>
+</tr>
+<tr>
+<td align="center" width="25%">
+<img src="https://img.shields.io/badge/Witcher_3-CD4545?style=for-the-badge&logo=thewitcher&logoColor=white" alt="Witcher 3"/>
+<br><sub><b>Excellent</b></sub>
+</td>
+<td align="center" width="25%">
+<img src="https://img.shields.io/badge/Elden_Ring-FFB000?style=for-the-badge&logo=bandainamco&logoColor=black" alt="Elden Ring"/>
+<br><sub><b>Good</b></sub>
+</td>
+<td align="center" width="50%" colspan="2">
+<br>
+<b>+ Many More Compatible Games!</b>
+<br><br>
+<a href="docs/GAME_SUPPORT.md">📋 View Full Game List →</a>
+</td>
+</tr>
+</table>
 
 ---
 
 ## 🖥️ Supported GPUs
 
-### AMD
-- ✅ RDNA4 (RX 9000 series) - FSR4 native support
-- ✅ RDNA3 (RX 7000 series) - FSR3.1 optimized
-- ✅ RDNA2 (RX 6000 series) - FSR3.1 + Anti-Lag 2
-- ✅ RDNA1 (RX 5000 series) - FSR3.1 + Anti-Lag 2
-- ⚠️ GCN (RX 400/500) - FSR2.2 fallback
+<div align="center">
 
-### Intel
-- ✅ Arc A-series - XeSS native support
-- ⚠️ Integrated graphics - FSR3.1 fallback
+### 🎯 Comprehensive GPU Support
 
-### NVIDIA
-- ✅ All RTX series - Native DLSS (OptiScaler optional)
-- ⚠️ GTX series - FSR3.1 support
+</div>
 
-[View detailed GPU profiles →](docs/GPU_PROFILES.md)
+<table>
+<tr>
+<td width="33%">
+
+### 🔴 AMD
+
+- ✅ **RDNA4** (RX 9000)
+  - FSR4 native
+  - +60-80% FPS
+- ✅ **RDNA3** (RX 7000)
+  - FSR3.1 optimized
+  - +50-70% FPS
+- ✅ **RDNA2** (RX 6000)
+  - Anti-Lag 2
+  - +55-75% FPS
+- ✅ **RDNA1** (RX 5000)
+  - +40-60% FPS
+
+</td>
+<td width="33%">
+
+### 🔵 Intel
+
+- ✅ **Arc A-series**
+  - XeSS native
+  - +40-60% FPS
+  - DX12/Vulkan
+- ⚠️ **Integrated**
+  - FSR3.1 fallback
+  - +30-50% FPS
+
+<br><br>
+
+</td>
+<td width="33%">
+
+### 🟢 NVIDIA
+
+- ✅ **RTX 40/30/20**
+  - Native DLSS
+  - Native Reflex
+  - OptiScaler optional
+- ⚠️ **GTX 16/10**
+  - FSR3.1 support
+  - +35-55% FPS
+
+<br>
+
+</td>
+</tr>
+</table>
+
+<div align="center">
+
+[![GPU Profiles Guide](https://img.shields.io/badge/📖_Detailed_GPU_Guide-docs/GPU__PROFILES.md-blue?style=for-the-badge)](docs/GPU_PROFILES.md)
+
+</div>
 
 ---
 
@@ -243,16 +453,43 @@ This is an unofficial tool not affiliated with or endorsed by AMD, Intel, NVIDIA
 
 ---
 
-## 🚀 Get Started Now
+---
+
+<div align="center">
+
+## 🚀 Ready to Boost Your FPS?
+
+### Get Started in 30 Seconds
 
 ```bash
-git clone https://github.com/ind4skylivey/0ptiscaler4linux.git
-cd optiscaler-universal
-bash scripts/install.sh
+git clone https://github.com/ind4skylivey/0ptiscaler4linux.git && cd optiscaler-universal && bash scripts/install.sh
 ```
 
-**Let's unlock the full potential of Linux gaming together!** 🎮✨
+<br>
+
+### 🎯 Quick Links
+
+[![Get Started](https://img.shields.io/badge/Get_Started-Installation-blue?style=for-the-badge)](docs/INSTALLATION.md)
+[![Documentation](https://img.shields.io/badge/Read-Documentation-green?style=for-the-badge)](PROJECT_DESIGN.md)
+[![Report Bug](https://img.shields.io/badge/Report-Bug-red?style=for-the-badge)](https://github.com/ind4skylivey/0ptiscaler4linux/issues/new?template=bug_report.md)
+[![Contribute](https://img.shields.io/badge/Contribute-Welcome-yellow?style=for-the-badge)](docs/CONTRIBUTING.md)
+
+<br>
+
+### 💬 Join the Community
+
+[![GitHub Issues](https://img.shields.io/github/issues/ind4skylivey/0ptiscaler4linux?style=social)](https://github.com/ind4skylivey/0ptiscaler4linux/issues)
+[![GitHub Stars](https://img.shields.io/github/stars/ind4skylivey/0ptiscaler4linux?style=social)](https://github.com/ind4skylivey/0ptiscaler4linux/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/ind4skylivey/0ptiscaler4linux?style=social)](https://github.com/ind4skylivey/0ptiscaler4linux/network/members)
+
+**r/linux_gaming** • **ProtonDB** • **Gaming on Linux**
+
+<br>
 
 ---
 
-Made with ❤️ for the Linux gaming community
+### 🎮 Let's Unlock the Full Potential of Linux Gaming Together! ✨
+
+<sub>Made with ❤️ by the Linux gaming community, for the Linux gaming community</sub>
+
+</div>
