@@ -10,6 +10,7 @@
 [![Status](https://img.shields.io/badge/status-alpha-orange.svg)](https://github.com/ind4skylivey/0ptiscaler4linux/releases)
 [![Platform](https://img.shields.io/badge/platform-Linux-lightgrey.svg)](https://www.linux.org/)
 [![Progress](https://img.shields.io/badge/progress-100%25-brightgreen.svg)](PROJECT_STATUS.md)
+[![AUR](https://img.shields.io/badge/AUR-optiscaler--universal-1793d1.svg?logo=arch-linux)](https://aur.archlinux.org/packages/optiscaler-universal)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](docs/CONTRIBUTING.md)
 
 ---
