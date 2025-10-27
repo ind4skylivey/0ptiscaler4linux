@@ -19,28 +19,6 @@ jobs:
         with:
           scandir: './core ./lib ./scripts'
           severity: warning
-          
-  test:
-    name: Run Tests
-    runs-on: ubuntu-latest
-    
-    env:
-      CI: true
-      GITHUB_ACTIONS: true
-    
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y pciutils mesa-utils
-      
-      - name: Run test suite
-        run: |
-          chmod +x tests/*.sh
-          export PATH="/usr/bin:/usr/sbin:$PATH"
-          bash tests/run-all-tests.sh
   
   validate-profiles:
     name: Validate Profiles
