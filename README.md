@@ -51,21 +51,67 @@
 
 ## 🎬 How It Works
 
-```ascii
-╔═══════════════════════════════════════════════════════════════════════════╗
-║                                                                           ║
-║   🔍 DETECT GPU          →     ⚙️  OPTIMIZE CONFIG     →     🚀 GAME!    ║
-║   ─────────────                ──────────────────           ─────────    ║
-║   AMD RDNA3 Found              FSR3.1 Enabled               +60% FPS     ║
-║   Mesa 25.2.0 ✓                Anti-Lag 2 Active            -35% Lag     ║
-║   6 Games Ready                Ultra Quality                 9/10        ║
-║                                                                           ║
-╚═══════════════════════════════════════════════════════════════════════════╝
-```
-
 <div align="center">
 
-### ⚡ **One Command Setup** • 🛡️ **Automatic Backups** • 🔧 **Easy Rollback** • 🎮 **Zero Hassle**
+### Three Simple Steps to Maximum Performance
+
+<table>
+<tr>
+<td align="center" width="33%">
+
+### 🔍 Step 1: Detect
+**Automatic GPU Recognition**
+
+<p>
+<img src="https://img.shields.io/badge/AMD-ED1C24?style=for-the-badge&logo=amd&logoColor=white" alt="AMD"/><br/>
+<img src="https://img.shields.io/badge/Intel-0071C5?style=for-the-badge&logo=intel&logoColor=white" alt="Intel"/><br/>
+<img src="https://img.shields.io/badge/NVIDIA-76B900?style=for-the-badge&logo=nvidia&logoColor=white" alt="NVIDIA"/>
+</p>
+
+All vendors supported<br/>
+Driver validation<br/>
+Capability analysis
+
+</td>
+<td align="center" width="33%">
+
+### ⚙️ Step 2: Configure
+**Smart Optimization**
+
+**OptiScaler** ✓<br/>
+FSR3.1 / FSR4<br/>
+XeSS / DLSS<br/>
+
+**fakenvapi** *(AMD/Intel)*<br/>
+Anti-Lag 2<br/>
+Reflex emulation
+
+</td>
+<td align="center" width="33%">
+
+### 🚀 Step 3: Game
+**Instant Results**
+
+**+50-80%** FPS<br/>
+**-30-45%** Latency<br/>
+**9/10** Quality<br/>
+
+Auto backups ✓<br/>
+One command ✓
+
+</td>
+</tr>
+</table>
+
+---
+
+### 💡 What You Get Per GPU Vendor
+
+| GPU Vendor | OptiScaler | fakenvapi | Benefit |
+|:----------:|:----------:|:---------:|:--------|
+| ![AMD](https://img.shields.io/badge/AMD-ED1C24?style=flat-square&logo=amd&logoColor=white) | ✅ FSR3.1/4 | ✅ Anti-Lag 2 | Full optimization |
+| ![Intel](https://img.shields.io/badge/Intel-0071C5?style=flat-square&logo=intel&logoColor=white) | ✅ XeSS | ✅ Reflex-like | Complete support |
+| ![NVIDIA](https://img.shields.io/badge/NVIDIA-76B900?style=flat-square&logo=nvidia&logoColor=white) | ✅ DLSS boost | ➖ Native Reflex | Already optimized |
 
 </div>
 
