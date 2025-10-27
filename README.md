@@ -509,8 +509,22 @@ bash scripts/install.sh
 
 ---
 
-### 🎮 Let's Unlock the Full Potential of Linux Gaming Together! ✨
+### 🎮 Unlock Your GPU's Full Potential
 
-Made with ❤️ by the Linux gaming community, for the Linux gaming community
+<p align="center">
+<strong>Automated • Intelligent • Safe</strong>
+</p>
+
+<p align="center">
+Built with ❤️ by <a href="https://github.com/ind4skylivey"><strong>S1BGr0up</strong></a> for the Linux gaming community
+</p>
+
+<p align="center">
+<sub>
+Powered by <a href="https://github.com/optiscaler/OptiScaler">OptiScaler</a> • 
+<a href="https://github.com/FakeMichau/fakenvapi">fakenvapi</a> • 
+The Linux Gaming Community
+</sub>
+</p>
 
 </div>
