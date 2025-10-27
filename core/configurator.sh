@@ -97,16 +97,17 @@ EOF
     log_success "OptiScaler.ini generated: $output_file"
 }
 
-# Generate fakenvapi.ini for AMD GPUs
+# Generate fakenvapi.ini for non-NVIDIA GPUs
+# Enables Anti-Lag/Reflex-like features on AMD/Intel GPUs
 generate_fakenvapi_ini() {
     local output_file="$1"
     
-    if [[ "$GPU_VENDOR" != "AMD" ]]; then
-        log_info "Skipping fakenvapi.ini (not AMD GPU)"
+    if [[ "$GPU_VENDOR" == "NVIDIA" ]]; then
+        log_info "Skipping fakenvapi.ini (NVIDIA has native Reflex support)"
         return 0
     fi
     
-    log_info "Generating fakenvapi.ini for AMD GPU"
+    log_info "Generating fakenvapi.ini for $GPU_VENDOR GPU (enables Reflex-like features)"
     
     cat > "$output_file" << EOF
 ; fakenvapi Configuration

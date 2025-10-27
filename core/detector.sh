@@ -26,7 +26,22 @@ detect_gpu() {
     
     # Get GPU info from lspci
     local gpu_info
-    gpu_info=$(lspci 2>/dev/null | grep -i 'vga\|3d\|display' | head -1)
+    local lspci_cmd=""
+    
+    # Find lspci command
+    if command -v lspci &>/dev/null; then
+        lspci_cmd="lspci"
+    elif [ -x /usr/bin/lspci ]; then
+        lspci_cmd="/usr/bin/lspci"
+    elif [ -x /usr/sbin/lspci ]; then
+        lspci_cmd="/usr/sbin/lspci"
+    fi
+    
+    if [ -n "$lspci_cmd" ]; then
+        gpu_info=$($lspci_cmd 2>/dev/null | grep -i 'vga\|3d\|display' | head -1)
+    else
+        gpu_info=""
+    fi
     
     if [ -z "$gpu_info" ]; then
         # Check if we're in CI environment

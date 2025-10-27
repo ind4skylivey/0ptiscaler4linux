@@ -24,6 +24,10 @@ jobs:
     name: Run Tests
     runs-on: ubuntu-latest
     
+    env:
+      CI: true
+      GITHUB_ACTIONS: true
+    
     steps:
       - uses: actions/checkout@v4
       
@@ -35,6 +39,7 @@ jobs:
       - name: Run test suite
         run: |
           chmod +x tests/*.sh
+          export PATH="/usr/bin:/usr/sbin:$PATH"
           bash tests/run-all-tests.sh
   
   validate-profiles:
