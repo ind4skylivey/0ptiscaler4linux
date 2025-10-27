@@ -85,6 +85,9 @@ test_optiscaler_generation() {
 test_fakenvapi_generation() {
     echo -e "${CYAN}TEST:${NC} fakenvapi.ini Generation"
     
+    # Simulate AMD GPU for this test
+    GPU_VENDOR="AMD"
+    
     local output_file="$TEST_OUTPUT_DIR/fakenvapi.ini"
     generate_fakenvapi_ini "$output_file"
     
