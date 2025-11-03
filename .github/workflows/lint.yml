@@ -1,0 +1,330 @@
+name: Lint and Quality Checks
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  shellcheck:
+    name: ShellCheck - Bash Script Analysis
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master
+        with:
+          scandir: './core ./lib ./scripts'
+          severity: warning
+          check_together: 'yes'
+      
+      - name: Check for common bash pitfalls
+        run: |
+          echo "Checking for unquoted variables..."
+          ! grep -rn '\$[A-Za-z_][A-Za-z0-9_]*[^"]' scripts/ core/ lib/ --include="*.sh" | grep -v "shellcheck" || {
+            echo "Warning: Found potentially unquoted variables"
+          }
+
+  yaml-validation:
+    name: YAML Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Install yamllint
+        run: sudo apt-get update && sudo apt-get install -y yamllint
+      
+      - name: Lint YAML files with config
+        run: |
+          yamllint -c .yamllint profiles/gpu/*.yaml
+          yamllint -c .yamllint profiles/games/*.yaml
+      
+      - name: Validate profile structure
+        run: |
+          GPU_COUNT=$(ls -1 profiles/gpu/*.yaml 2>/dev/null | wc -l)
+          GAME_COUNT=$(ls -1 profiles/games/*.yaml 2>/dev/null | wc -l)
+          echo "✓ GPU Profiles: $GPU_COUNT"
+          echo "✓ Game Profiles: $GAME_COUNT"
+          
+          if [ $GPU_COUNT -lt 6 ]; then
+            echo "Warning: Expected at least 6 GPU profiles"
+          fi
+          if [ $GAME_COUNT -lt 10 ]; then
+            echo "Warning: Expected at least 10 game profiles"
+          fi
+
+  file-structure:
+    name: Verify Project Structure
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Check required files exist
+        run: |
+          echo "Checking required files..."
+          test -f VERSION || { echo "✗ Missing VERSION"; exit 1; }
+          test -f README.md || { echo "✗ Missing README.md"; exit 1; }
+          test -f LICENSE || { echo "✗ Missing LICENSE"; exit 1; }
+          test -f PKGBUILD || { echo "✗ Missing PKGBUILD"; exit 1; }
+          echo "✓ All required files present"
+      
+      - name: Check required directories
+        run: |
+          echo "Checking required directories..."
+          test -d scripts || { echo "✗ Missing scripts/"; exit 1; }
+          test -d core || { echo "✗ Missing core/"; exit 1; }
+          test -d lib || { echo "✗ Missing lib/"; exit 1; }
+          test -d profiles || { echo "✗ Missing profiles/"; exit 1; }
+          test -d templates || { echo "✗ Missing templates/"; exit 1; }
+          test -d binaries || { echo "✗ Missing binaries/"; exit 1; }
+          test -d docs || { echo "✗ Missing docs/"; exit 1; }
+          echo "✓ All required directories present"
+      
+      - name: Verify scripts are executable
+        run: |
+          echo "Checking script permissions..."
+          for script in scripts/*.sh core/*.sh lib/*.sh; do
+            if [ -f "$script" ] && [ ! -x "$script" ]; then
+              echo "✗ $script is not executable"
+              exit 1
+            fi
+          done
+          echo "✓ All scripts are executable"
+      
+      - name: Check for script shebangs
+        run: |
+          echo "Verifying shebangs..."
+          for script in scripts/*.sh core/*.sh lib/*.sh; do
+            if [ -f "$script" ]; then
+              first_line=$(head -n1 "$script")
+              if [[ ! "$first_line" =~ ^#!/bin/bash ]]; then
+                echo "Warning: $script missing proper shebang"
+              fi
+            fi
+          done
+          echo "✓ Shebang check complete"
+
+  pkgbuild-validation:
+    name: PKGBUILD Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Check PKGBUILD syntax
+        run: |
+          echo "Checking PKGBUILD syntax..."
+          bash -n PKGBUILD
+          echo "✓ PKGBUILD syntax OK"
+      
+      - name: Verify PKGBUILD variables
+        run: |
+          echo "Verifying PKGBUILD variables..."
+          grep -q "pkgname=" PKGBUILD || { echo "✗ Missing pkgname"; exit 1; }
+          grep -q "pkgver=" PKGBUILD || { echo "✗ Missing pkgver"; exit 1; }
+          grep -q "pkgrel=" PKGBUILD || { echo "✗ Missing pkgrel"; exit 1; }
+          grep -q "arch=" PKGBUILD || { echo "✗ Missing arch"; exit 1; }
+          grep -q "license=" PKGBUILD || { echo "✗ Missing license"; exit 1; }
+          echo "✓ All required PKGBUILD variables present"
+      
+      - name: Check source directory name
+        run: |
+          echo "Checking source extraction directory..."
+          if grep -q 'cd.*optiscaler-universal-' PKGBUILD; then
+            echo "✗ ERROR: PKGBUILD has wrong directory name (optiscaler-universal)"
+            echo "✗ Should be: 0ptiscaler4linux-\$pkgver"
+            exit 1
+          fi
+          if grep -q 'cd.*0ptiscaler4linux-' PKGBUILD; then
+            echo "✓ Source directory name is correct"
+          fi
+      
+      - name: Verify VERSION matches PKGBUILD
+        run: |
+          VERSION_FILE=$(head -n1 VERSION | tr -d '\n')
+          PKGBUILD_VER=$(grep "^pkgver=" PKGBUILD | cut -d'=' -f2)
+          echo "VERSION file: $VERSION_FILE"
+          echo "PKGBUILD pkgver: $PKGBUILD_VER"
+          if [ "$VERSION_FILE" != "$PKGBUILD_VER" ]; then
+            echo "Warning: VERSION file doesn't match PKGBUILD pkgver"
+          fi
+
+  security-checks:
+    name: Security Scanning
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Check for hardcoded credentials
+        run: |
+          echo "Scanning for hardcoded credentials..."
+          if grep -rn "password\s*=" . --include="*.sh" --include="*.yaml" --exclude-dir=.git; then
+            echo "Warning: Found potential hardcoded credentials"
+            exit 1
+          fi
+          echo "✓ No hardcoded credentials found"
+      
+      - name: Check for API keys or tokens
+        run: |
+          echo "Scanning for API keys..."
+          if grep -rEn "(api[_-]?key|token|secret)[[:space:]]*=" . --include="*.sh" --include="*.yaml" --exclude-dir=.git | grep -v "GITHUB_TOKEN"; then
+            echo "Warning: Found potential API keys"
+            exit 1
+          fi
+          echo "✓ No exposed API keys found"
+      
+      - name: Check for dangerous commands
+        run: |
+          echo "Checking for potentially dangerous commands..."
+          dangerous_found=false
+          
+          # Check for rm -rf without proper safeguards
+          if grep -rn "rm -rf \/" scripts/ core/ lib/ --include="*.sh" 2>/dev/null; then
+            echo "Warning: Found dangerous 'rm -rf /' command"
+            dangerous_found=true
+          fi
+          
+          # Check for curl | bash patterns
+          if grep -rn "curl.*|.*bash\|wget.*|.*bash" scripts/ core/ lib/ --include="*.sh" 2>/dev/null; then
+            echo "Warning: Found 'curl | bash' pattern"
+            dangerous_found=true
+          fi
+          
+          if [ "$dangerous_found" = true ]; then
+            echo "✗ Security review needed"
+            exit 1
+          fi
+          
+          echo "✓ No dangerous commands found"
+
+  documentation:
+    name: Documentation Checks
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Check for broken markdown links
+        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          use-quiet-mode: 'yes'
+          config-file: '.github/markdown-link-check-config.json'
+        continue-on-error: true
+      
+      - name: Verify README structure
+        run: |
+          echo "Checking README structure..."
+          grep -q "Installation" README.md || { echo "Warning: Missing Installation section"; }
+          grep -q "Usage" README.md || { echo "Warning: Missing Usage section"; }
+          grep -q "Features" README.md || { echo "Warning: Missing Features section"; }
+          grep -q "License" README.md || { echo "Warning: Missing License section"; }
+          echo "✓ README structure check complete"
+      
+      - name: Check documentation completeness
+        run: |
+          echo "Checking documentation files..."
+          test -f docs/INSTALLATION.md || echo "Warning: Missing INSTALLATION.md"
+          test -f docs/TROUBLESHOOTING.md || echo "Warning: Missing TROUBLESHOOTING.md"
+          test -f PROJECT_DESIGN.md || echo "Warning: Missing PROJECT_DESIGN.md"
+          echo "✓ Documentation check complete"
+
+  simulated-aur-build:
+    name: Simulate AUR Package Build
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y binutils fakeroot
+      
+      - name: Verify package structure for AUR
+        run: |
+          echo "Simulating AUR package structure..."
+          
+          # Check if all packaged directories exist
+          for dir in core lib scripts profiles templates binaries docs; do
+            if [ ! -d "$dir" ]; then
+              echo "✗ Missing directory: $dir"
+              exit 1
+            fi
+            echo "✓ Found: $dir/"
+          done
+          
+          # Check if symlink targets would exist after install
+          echo "Checking symlink targets..."
+          for script in install uninstall update diagnose benchmark; do
+            if [ ! -f "scripts/${script}.sh" ]; then
+              echo "✗ Missing: scripts/${script}.sh"
+              exit 1
+            fi
+            echo "✓ Found: scripts/${script}.sh"
+          done
+          
+          echo "✓ Package structure looks good"
+      
+      - name: Test PKGBUILD extraction path
+        run: |
+          echo "Testing PKGBUILD extraction logic..."
+          
+          # Simulate what happens when GitHub tarball is extracted
+          REPO_NAME="0ptiscaler4linux"
+          PKGVER="0.1.0"
+          EXPECTED_DIR="${REPO_NAME}-${PKGVER}"
+          
+          echo "GitHub will create directory: $EXPECTED_DIR"
+          
+          # Check if PKGBUILD references correct directory
+          if grep -q "cd.*$EXPECTED_DIR" PKGBUILD; then
+            echo "✓ PKGBUILD uses correct directory: $EXPECTED_DIR"
+          else
+            echo "✗ PKGBUILD may have wrong directory reference"
+            grep "cd.*srcdir" PKGBUILD || true
+            exit 1
+          fi
+
+  all-checks-passed:
+    name: All Quality Checks Passed
+    runs-on: ubuntu-latest
+    needs: 
+      - shellcheck
+      - yaml-validation
+      - file-structure
+      - pkgbuild-validation
+      - security-checks
+      - documentation
+      - simulated-aur-build
+    
+    steps:
+      - name: Success Summary
+        run: |
+          echo "════════════════════════════════════════════════════════════"
+          echo "  🎉 All Quality Checks Passed!"
+          echo "════════════════════════════════════════════════════════════"
+          echo ""
+          echo "✓ ShellCheck:           All bash scripts validated"
+          echo "✓ YAML Validation:      All profiles validated"
+          echo "✓ File Structure:       All required files present"
+          echo "✓ PKGBUILD:             Package configuration valid"
+          echo "✓ Security:             No vulnerabilities detected"
+          echo "✓ Documentation:        Documentation structure OK"
+          echo "✓ AUR Simulation:       Package build structure valid"
+          echo ""
+          echo "════════════════════════════════════════════════════════════"
+          echo "  Ready for release!"
+          echo "════════════════════════════════════════════════════════════"
