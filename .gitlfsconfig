@@ -1,0 +1,6 @@
+[lfs]
+    # Configure Git LFS for OptiScaler Universal binaries
+    fetchexclude = *
+    
+[lfs "https://github.com/ind4skylivey/0ptiscaler4linux.git"]
+    access = basic

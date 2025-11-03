@@ -1,0 +1,10 @@
+---
+# yamllint configuration for OptiScaler profiles
+
+extends: default
+
+rules:
+  document-start: disable  # Don't require --- at file start
+  line-length: disable     # Allow long lines in comments
+  comments:
+    min-spaces-from-content: 1
