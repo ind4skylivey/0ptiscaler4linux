@@ -1,0 +1,60 @@
+# Hogwarts Legacy Game Profile
+metadata:
+  name: "Hogwarts Legacy"
+  engine: "Unreal Engine 4"
+  api: "DX12"
+  dlss_version: "3.0"
+  steamid: "990080"
+
+paths:
+  steam_linux: "~/.local/share/Steam/steamapps/common/Hogwarts Legacy"
+  proton_prefix: "~/.local/share/Steam/steamapps/compatdata/990080"
+  executable: "HogwartsLegacy.exe"
+
+compatibility:
+  optiscaler_status: "Excellent"
+  tested_proton: ["Proton-EM 10.0-30", "GE-Proton 10-21"]
+
+steam:
+  launch_options: "WINEDLLOVERRIDES=dxgi.dll=n,b PROTON_FSR4_UPGRADE=1 %command%"
+  recommended_proton: "Proton-EM 10.0-30"
+
+game_specific_tweaks:
+  sharpness_override: 0.35
+  motion_sharpness_enabled: true
+  motion_sharpness: 0.4
+
+performance_profiles:
+  maximum_quality:
+    settings:
+      ingame_preset: "Ultra"
+      ingame_upscaling: "DLSS Quality"
+      ingame_reflex: "On"
+      ray_tracing: "Ultra"
+      expected_fps: "60-75 @ 1440p"
+  
+  balanced:
+    settings:
+      ingame_preset: "High"
+      ingame_upscaling: "DLSS Balanced"
+      ray_tracing: "High"
+      expected_fps: "80-100 @ 1440p"
+
+recommended_settings:
+  upscaling: "DLSS Quality"
+  nvidia_reflex: "On"
+  ray_tracing: "High"
+  vsync: false
+
+performance_notes: |
+  Hogwarts Legacy benefits greatly from OptiScaler.
+  RT shadows and reflections worth the performance cost.
+  Flying on broom benefits from high FPS and low latency.
+
+gpu_specific_notes:
+  rdna3:
+    notes: "Can handle Ultra with RT at great framerates."
+    recommended_preset: "Ultra with RT High"
+  rdna2:
+    notes: "High with RT Medium gives best experience."
+    recommended_preset: "High with RT Medium"

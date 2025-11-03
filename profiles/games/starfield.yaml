@@ -1,0 +1,49 @@
+# Starfield Game Profile
+metadata:
+  name: "Starfield"
+  engine: "Creation Engine 2"
+  api: "DX12"
+  dlss_version: "3.5"
+  streamid: "1716740"
+
+paths:
+  steam_linux: "~/.local/share/Steam/steamapps/common/Starfield"
+  proton_prefix: "~/.local/share/Steam/steamapps/compatdata/1716740"
+  executable: "Starfield.exe"
+
+compatibility:
+  optiscaler_status: "Excellent"
+  tested_proton: ["Proton-EM 10.0-30", "GE-Proton 9-15"]
+  
+steam:
+  launch_options: "WINEDLLOVERRIDES=dxgi.dll=n,b PROTON_FSR4_UPGRADE=1 %command%"
+  recommended_proton: "Proton-EM 10.0-30"
+
+game_specific_tweaks:
+  sharpness_override: 0.35
+  motion_sharpness_enabled: false
+
+performance_profiles:
+  maximum_quality:
+    settings:
+      ingame_upscaling: "DLSS Quality"
+      ingame_reflex: "On + Boost"
+      expected_fps: "50-65 @ 1440p"
+  balanced:
+    settings:
+      ingame_upscaling: "DLSS Balanced"
+      expected_fps: "60-80 @ 1440p"
+
+recommended_settings:
+  upscaling: "DLSS Quality"
+  nvidia_reflex: "On + Boost"
+  vsync: false
+  
+performance_notes: |
+  Starfield benefits greatly from OptiScaler. Game is CPU-heavy in cities.
+  Use DLSS Balanced in New Atlantis for better performance.
+
+troubleshooting:
+  common_issues:
+    - issue: "Low FPS in cities"
+      solution: "CPU bottleneck - use DLSS Performance, reduce NPC density"

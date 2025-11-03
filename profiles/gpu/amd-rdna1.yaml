@@ -1,0 +1,77 @@
+# AMD RDNA1 GPU Profile (RX 5000 series)
+metadata:
+  name: "AMD RDNA1"
+  description: "Optimized for AMD Radeon RX 5000 series GPUs"
+  author: "OptiScaler Universal Team"
+  version: "1.0.0"
+  last_updated: "2025-10-25"
+  supported_gpus:
+    - "Radeon RX 5700 XT"
+    - "Radeon RX 5700"
+    - "Radeon RX 5600 XT"
+    - "Radeon RX 5600"
+    - "Radeon RX 5500 XT"
+
+capabilities:
+  anti_lag_2: true              # First gen with AL2!
+  fsr4_native: false
+  fsr4_compatible: true
+  fsr3_native: true
+  xess_support: true
+  dlss_inputs_recommended: true
+
+driver_requirements:
+  mesa_min_version: "25.2.0"
+  recommended_kernel: "6.8+"
+
+optiscaler:
+  upscalers:
+    dx12: "fsr31"
+    dx11: "fsr31_12"
+    vulkan: "fsr31"
+  
+  fsr:
+    fsr4_update: false          # Too much overhead on RDNA1
+    non_linear_srgb: true
+    velocity_factor: 0.9        # Slightly lower for stability
+    
+  inputs:
+    enable_dlss_inputs: true
+    enable_fsr2_inputs: true
+    enable_fsr3_inputs: true
+    
+  sharpness:
+    override: true
+    value: 0.45                 # Higher, RDNA1 benefits from it
+    cas_enabled: true
+    motion_sharpness_enabled: false  # Can cause issues
+    
+  spoofing:
+    streamline_spoofing: true
+    dxgi_spoofing: true
+    spoofed_vendor_id: "0x10de"
+    spoofed_device_id: "0x2684"
+    
+  nvapi:
+    override_dll: true
+
+fakenvapi:
+  enabled: true
+  force_reflex: 2
+  latencyflex_mode: 1           # Conservative mode
+
+performance:
+  expected_fps_gain: "45-60%"
+  expected_latency_reduction: "30-40%"
+  quality_rating: "8/10"
+  vram_overhead: "~250MB"
+  notes: |
+    RDNA1 has good FSR3.1 performance but avoid FSR4 (overhead).
+    First gen with Anti-Lag 2. RT performance limited.
+
+recommendations:
+  ingame_upscaling: "DLSS Balanced"
+  ingame_reflex: "On + Boost"
+  ingame_vsync: false
+  quality_preset: "High (avoid Ultra)"
+  ray_tracing: "Not recommended (performance impact)"

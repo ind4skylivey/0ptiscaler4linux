@@ -1,0 +1,58 @@
+# God of War Game Profile
+metadata:
+  name: "God of War"
+  engine: "Santa Monica Engine"
+  api: "DX11/DX12"
+  dlss_version: "2.3"
+  steamid: "1593500"
+
+paths:
+  steam_linux: "~/.local/share/Steam/steamapps/common/God of War"
+  proton_prefix: "~/.local/share/Steam/steamapps/compatdata/1593500"
+  executable: "GoW.exe"
+
+compatibility:
+  optiscaler_status: "Excellent"
+  tested_proton: ["Proton-EM 10.0-30", "GE-Proton 10-21"]
+
+steam:
+  launch_options: "WINEDLLOVERRIDES=dxgi.dll=n,b PROTON_FSR4_UPGRADE=1 %command%"
+  recommended_proton: "Proton-EM 10.0-30"
+
+game_specific_tweaks:
+  sharpness_override: 0.4
+  motion_sharpness_enabled: true
+  motion_sharpness: 0.5
+
+performance_profiles:
+  maximum_quality:
+    settings:
+      ingame_preset: "Ultra"
+      ingame_upscaling: "DLSS Quality"
+      ingame_reflex: "On"
+      expected_fps: "75-95 @ 1440p"
+  
+  balanced:
+    settings:
+      ingame_preset: "High"
+      ingame_upscaling: "DLSS Balanced"
+      expected_fps: "100-120 @ 1440p"
+
+recommended_settings:
+  upscaling: "DLSS Quality"
+  nvidia_reflex: "On"
+  api: "DX12"
+  vsync: false
+
+performance_notes: |
+  God of War is extremely well optimized. Great scaling with OptiScaler.
+  DX12 recommended for better performance on AMD GPUs.
+  Motion clarity during combat benefits from Anti-Lag 2.
+
+gpu_specific_notes:
+  rdna3:
+    notes: "Can easily max out at 1440p with excellent framerates."
+    recommended_preset: "Ultra"
+  rdna2:
+    notes: "High-Ultra settings very playable."
+    recommended_preset: "Original + Ultra with DLSS Quality"

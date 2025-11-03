@@ -1,0 +1,19 @@
+[General]
+EnableLogs = {{ENABLE_LOGS}}
+EnableTraceLogs = {{ENABLE_TRACE_LOGS}}
+
+[Reflex]
+ForceReflex = {{FORCE_REFLEX}}
+LatencyFlexMode = {{LATENCYFLEX_MODE}}
+ForceLatencyFlex = {{FORCE_LATENCYFLEX}}
+
+[Spoofing]
+# GPU spoofing (if needed)
+# SpoofedGPUName = NVIDIA GeForce RTX 4090
+# SpoofedVendorId = 0x10de
+# SpoofedDeviceId = 0x2684
+
+[Compatibility]
+# Game-specific workarounds
+DisableD3D12 = false
+DisableVulkan = false

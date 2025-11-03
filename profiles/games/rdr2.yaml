@@ -1,0 +1,52 @@
+# Red Dead Redemption 2 Game Profile
+metadata:
+  name: "Red Dead Redemption 2"
+  engine: "RAGE"
+  api: "Vulkan/DX12"
+  dlss_version: "2.3"
+  steamid: "1174180"
+
+paths:
+  steam_linux: "~/.local/share/Steam/steamapps/common/Red Dead Redemption 2"
+  proton_prefix: "~/.local/share/Steam/steamapps/compatdata/1174180"
+  executable: "RDR2.exe"
+
+compatibility:
+  optiscaler_status: "Excellent"
+  tested_proton: ["Proton-EM 10.0-30", "GE-Proton 10-21"]
+
+steam:
+  launch_options: "WINEDLLOVERRIDES=dxgi.dll=n,b PROTON_FSR4_UPGRADE=1 %command%"
+  recommended_proton: "Proton-EM 10.0-30"
+
+game_specific_tweaks:
+  sharpness_override: 0.3
+  motion_sharpness_enabled: false
+  
+performance_profiles:
+  maximum_quality:
+    settings:
+      ingame_preset: "Ultra"
+      ingame_upscaling: "DLSS Quality"
+      expected_fps: "55-70 @ 1440p"
+  balanced:
+    settings:
+      ingame_preset: "High"
+      ingame_upscaling: "DLSS Balanced"
+      expected_fps: "70-90 @ 1440p"
+
+recommended_settings:
+  upscaling: "DLSS Quality"
+  nvidia_reflex: "On"
+  api: "Vulkan"
+  
+performance_notes: |
+  RDR2 is very demanding but scales well with OptiScaler.
+  Vulkan API recommended for better performance on AMD.
+  TAA Medium + DLSS gives cleaner image than TAA High alone.
+
+gpu_specific_notes:
+  rdna3:
+    recommended_preset: "High-Ultra with DLSS Quality"
+  rdna2:
+    recommended_preset: "High with DLSS Balanced"

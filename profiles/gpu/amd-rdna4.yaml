@@ -1,0 +1,81 @@
+# AMD RDNA4 GPU Profile (RX 9000 series)
+metadata:
+  name: "AMD RDNA4"
+  description: "Optimized for AMD Radeon RX 9000 series GPUs with native FSR4"
+  author: "OptiScaler Universal Team"
+  version: "1.0.0"
+  last_updated: "2025-10-25"
+  supported_gpus:
+    - "Radeon RX 9070 XT"
+    - "Radeon RX 9070"
+    - "Radeon RX 9060 XT"
+    - "Radeon RX 9060"
+
+capabilities:
+  anti_lag_2: true
+  fsr4_native: true             # FSR4 optimized for RDNA4!
+  fsr4_compatible: true
+  fsr3_native: true
+  xess_support: true
+  dlss_inputs_recommended: true
+
+driver_requirements:
+  mesa_min_version: "25.2.0"
+  recommended_kernel: "6.10+"
+
+optiscaler:
+  upscalers:
+    dx12: "fsr31"
+    dx11: "fsr31_12"
+    vulkan: "fsr31"
+  
+  fsr:
+    fsr4_update: true           # Enable FSR4 - native support!
+    non_linear_srgb: true
+    non_linear_pq: false
+    velocity_factor: 1.0
+    reactive_scale: 1.0
+    shading_scale: 1.0
+    
+  inputs:
+    enable_dlss_inputs: true
+    enable_fsr2_inputs: true
+    enable_fsr3_inputs: true
+    enable_xess_inputs: true
+    
+  sharpness:
+    override: true
+    value: 0.35                 # Slightly less, FSR4 is sharper
+    cas_enabled: true
+    motion_sharpness_enabled: true
+    motion_sharpness: 0.4
+    
+  spoofing:
+    streamline_spoofing: true
+    dxgi_spoofing: true
+    spoofed_vendor_id: "0x10de"
+    spoofed_device_id: "0x2684"
+    
+  nvapi:
+    override_dll: true
+
+fakenvapi:
+  enabled: true
+  force_reflex: 2
+  latencyflex_mode: 2
+
+performance:
+  expected_fps_gain: "60-80%"
+  expected_latency_reduction: "40-50%"
+  quality_rating: "9.5/10"
+  vram_overhead: "~150MB"
+  notes: |
+    RDNA4 is the first architecture with native FSR4 optimization.
+    Minimal overhead and excellent image quality. Best FSR experience.
+
+recommendations:
+  ingame_upscaling: "DLSS Quality"
+  ingame_reflex: "On + Boost"
+  ingame_vsync: false
+  quality_preset: "Ultra with Ray Tracing"
+  ray_tracing: "Highly recommended (excellent RT performance)"
