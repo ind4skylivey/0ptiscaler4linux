@@ -1,15 +1,6 @@
 <div align="center">
 
-```
-   ____        _   _ ____            _             
-  / __ \      | | (_) ____|          | |           
- | |  | |_ __ | |_ _| |__   ___ __ _| | ___ _ __  
- | |  | | '_ \| __| |  __| / __/ _` | |/ _ \ '__| 
- | |__| | |_) | |_| | |____| (_| (_| | |  __/ |    
-  \____/| .__/ \__|_|______|\___\__,_|_|\___|_|     
-        | |    Universal for Linux                                       
-        |_|                                                                                    
-```
+<img src="banner.png" alt="OptiScaler 4 Linux Banner" width="800">
 
 # OptiScaler for Linux: Boost FPS in Games with FSR4, XeSS & DLSS on Steam, Proton & Steam Deck
 
