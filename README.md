@@ -11,12 +11,15 @@
         |_|                                                                                    
 ```
 
-### 💎 *Unlock Your GPU's Full Potential on Linux* 💎
+# OptiScaler for Linux: Boost FPS in Games with FSR4, XeSS & DLSS on Steam, Proton & Steam Deck
+
+### 💎 *Automated GPU Optimization for Linux Gaming* 💎
 
 <p align="center">
   <img src="https://img.shields.io/badge/⚡_FPS_BOOST-50--80%25-ff6b6b?style=for-the-badge&labelColor=1a1a1a" alt="FPS Boost"/>
   <img src="https://img.shields.io/badge/⚙️_LATENCY_DOWN-30--45%25-4ecdc4?style=for-the-badge&labelColor=1a1a1a" alt="Latency"/>
   <img src="https://img.shields.io/badge/🎯_QUALITY-9/10-95e1d3?style=for-the-badge&labelColor=1a1a1a" alt="Quality"/>
+  <img src="https://img.shields.io/badge/Steam_Deck-Optimized-00ccff?style=for-the-badge&logo=steamdeck&logoColor=white" alt="Steam Deck"/>
 </p>
 
 [![CI](https://img.shields.io/github/actions/workflow/status/ind4skylivey/0ptiscaler4linux/ci.yml?branch=main&style=flat-square&logo=github)](https://github.com/ind4skylivey/0ptiscaler4linux/actions)
@@ -37,6 +40,40 @@
 
 ---
 
+> **TL;DR:** OptiScaler for Linux automatically configures FSR4, XeSS, and DLSS upscaling for massive FPS gains in Linux games. One-command installation. Works with Steam, Proton, and Steam Deck. Supports AMD, Intel, and NVIDIA GPUs. 50-80% FPS boost in Cyberpunk 2077, Starfield, and more.
+
+---
+
+## 🎮 Boost FPS in Linux Games by 50-80% with Automated OptiScaler Setup
+
+**Are you experiencing low FPS, stuttering, or poor performance in your Linux games?**
+
+OptiScaler for Linux automatically configures [OptiScaler](https://github.com/optiscaler/OptiScaler) on your system to unlock massive performance gains using **FSR 3.1/4**, **XeSS**, and **DLSS** upscaling technologies.
+
+Whether you're gaming on **Steam with Proton**, running native Linux games, or playing on **Steam Deck**, this tool:
+- ✅ **Detects your GPU** (AMD, Intel, or NVIDIA) and its capabilities
+- ✅ **Scans your Steam library** and finds compatible games automatically
+- ✅ **Generates optimal configurations** for FSR4, XeSS, or DLSS based on your hardware
+- ✅ **Installs everything automatically** with full backup and rollback support
+
+**One command. Massive FPS boost. Perfect for Steam Deck users.**
+
+---
+
+## 👥 Who Should Use OptiScaler for Linux?
+
+This automated installer is designed for:
+
+- 🐧 **Linux gamers** who want better FPS without upgrading hardware
+- 🎮 **Steam users** playing Windows games via Proton on Linux
+- 🎯 **Steam Deck owners** looking to maximize portable gaming performance  
+- 🔧 **GPU owners**: Works with AMD (RDNA1/2/3/4), Intel Arc, and NVIDIA RTX/GTX cards
+- 🚀 **Performance seekers** wanting FSR4, XeSS, or DLSS upscaling on Linux
+
+**No manual configuration required. No technical expertise needed.** Just run the installer and enjoy better FPS.
+
+---
+
 <div align="center">
 
 ## 🎯 The Ultimate Linux Gaming Performance Booster
@@ -49,11 +86,11 @@
 
 ---
 
-## 🎬 How It Works
+## 🎬 How OptiScaler Boosts FPS in Linux Games with Steam & Proton
 
 <div align="center">
 
-### Three Simple Steps to Maximum Performance
+### Three Simple Steps to Maximum Performance in Linux Gaming
 
 <table>
 <tr>
@@ -105,7 +142,7 @@ One command ✓
 
 ---
 
-### 💡 What You Get Per GPU Vendor
+### 💡 What You Get Per GPU Vendor for Linux Gaming
 
 | GPU Vendor | OptiScaler | fakenvapi | Benefit |
 |:----------:|:----------:|:---------:|:--------|
@@ -117,7 +154,7 @@ One command ✓
 
 ---
 
-## ✨ Key Features
+## ✨ Features: Intelligent GPU Detection & Automated Configuration for Linux Gaming
 
 <table>
 <tr>
@@ -151,7 +188,7 @@ One command ✓
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Quick Start: Boost Your FPS on Linux in 30 Seconds
 
 ### Option 1: One-Line Install (Fastest)
 
@@ -161,7 +198,7 @@ cd 0ptiscaler4linux
 bash scripts/install.sh
 ```
 
-### Option 2: AUR Package (Arch/Manjaro)
+### Option 2: AUR Package (Arch/Manjaro Users)
 
 ```bash
 # Using yay
@@ -181,9 +218,11 @@ After installation, run:
 optiscaler-install  # System-wide command
 ```
 
+**Steam Deck users:** Follow our [Steam Deck Setup Guide](docs/steam-deck-setup-optiscaler-linux-gaming.md) for optimized installation.
+
 ---
 
-## 💥 Performance Examples
+## 💥 Linux Gaming Performance: Real FPS Gains
 
 <div align="center">
 
@@ -194,11 +233,15 @@ optiscaler-install  # System-wide command
 | Hogwarts Legacy | Arc A770 | 45 FPS | 72 FPS | **+60%** |
 | Red Dead 2 | RX 7600 | 58 FPS | 95 FPS | **+64%** |
 
+*All tests performed on Linux with Steam + Proton*
+
 </div>
+
+Want to optimize Cyberpunk 2077 on Linux? Check out our [Cyberpunk 2077 Linux FSR4 Guide](docs/cyberpunk-2077-linux-fsr4-optiscaler-guide.md).
 
 ---
 
-## 🎮 Supported Games
+## 🎮 Supported Games: Linux Gaming Performance Tested with Proton & Steam
 
 <div align="center">
 
@@ -243,9 +286,9 @@ optiscaler-install  # System-wide command
 </td>
 <td align="center" width="50%" colspan="2">
 <br>
-<b>+ Many More Compatible Games!</b>
+<b>+ Many More Compatible Linux Games!</b>
 <br><br>
-<a href="docs/GAME_SUPPORT.md">📋 View Full Game List →</a>
+<a href="docs/game-compatibility-list-optiscaler-linux.md">📋 View Full Game Compatibility List →</a>
 </td>
 </tr>
 </table>
@@ -254,11 +297,11 @@ optiscaler-install  # System-wide command
 
 ---
 
-## 🖥️ Supported GPUs
+## 🖥️ Supported GPUs for Linux Gaming
 
 <div align="center">
 
-### 🎯 Comprehensive GPU Support
+### 🎯 Comprehensive GPU Support for AMD, Intel & NVIDIA
 
 </div>
 
@@ -316,7 +359,7 @@ optiscaler-install  # System-wide command
 
 <div align="center">
 
-[![GPU Profiles Guide](https://img.shields.io/badge/📖_Detailed_GPU_Guide-docs/GPU__PROFILES.md-blue?style=for-the-badge)](docs/GPU_PROFILES.md)
+For detailed profiles and recommendations, see our **[GPU Profiles Guide for Linux Gaming](docs/gpu-profiles-explained-optiscaler-linux.md)**.
 
 </div>
 
@@ -324,19 +367,31 @@ optiscaler-install  # System-wide command
 
 ## 📚 Documentation
 
-- [Installation Guide](docs/INSTALLATION.md)
-- [GPU Profiles Explained](docs/GPU_PROFILES.md)
-- [Game Compatibility List](docs/GAME_SUPPORT.md)
-- [Troubleshooting](docs/TROUBLESHOOTING.md)
-- [Contributing](docs/CONTRIBUTING.md)
+**Getting Started:**
+- [How to Boost FPS in Linux Games with OptiScaler](docs/linux-fps-boost-with-optiscaler.md)
+- [Steam Deck Setup Guide: Maximize FPS with OptiScaler](docs/steam-deck-setup-optiscaler-linux-gaming.md)
+- [Proton Setup for Linux Gaming with OptiScaler](docs/proton-setup-for-linux-gaming-with-optiscaler.md)
+
+**Technical Guides:**
+- [GPU Profiles Explained for AMD, Intel & NVIDIA](docs/gpu-profiles-explained-optiscaler-linux.md)
+- [FSR4, XeSS & DLSS on Linux: Complete Guide](docs/fsr4-xess-dlss-on-linux-with-optiscaler.md)
+- [Troubleshooting: FPS Drops, Crashes & Performance Issues](docs/troubleshooting-optiscaler-linux-fps-drops-crashes.md)
+
+**Game-Specific:**
+- [Cyberpunk 2077 on Linux: FSR4 Setup Guide](docs/cyberpunk-2077-linux-fsr4-optiscaler-guide.md)
+- [Starfield Linux Gaming: Proton + OptiScaler Setup](docs/starfield-linux-proton-optiscaler-guide.md)
+- [Game Compatibility List](docs/game-compatibility-list-optiscaler-linux.md)
+
+**Project Info:**
 - [Project Design](PROJECT_DESIGN.md)
+- [Contributing Guide](docs/CONTRIBUTING.md)
 
 ---
 
-## 🛠️ Features
+## 🛠️ Advanced Features
 
 <details>
-<summary><b>🔍 GPU Detection</b></summary>
+<summary><b>🔍 GPU Detection & Driver Validation</b></summary>
 
 - Automatic vendor identification (AMD/Intel/NVIDIA)
 - Architecture detection (RDNA, Arc, Ampere, etc.)
@@ -347,7 +402,7 @@ optiscaler-install  # System-wide command
 </details>
 
 <details>
-<summary><b>🎮 Game Scanner</b></summary>
+<summary><b>🎮 Steam Library Scanner</b></summary>
 
 - Steam library auto-detection
 - Multiple library support
@@ -411,16 +466,16 @@ bash scripts/diagnose.sh --game "New World" --verbose
 
 ## 🤝 Contributing
 
-We welcome contributions from the community! Whether it's:
+We welcome contributions from the Linux gaming community! Whether it's:
 
 - 🐛 Bug reports
-- ✨ Feature requests
+- ✨ Feature requests for Linux gaming optimization
 - 📝 Documentation improvements
-- 🎮 New game profiles
-- 🖥️ GPU profile optimizations
-- 🧪 Testing and feedback
+- 🎮 New game profiles for Steam/Proton games
+- 🖥️ GPU profile optimizations for AMD/Intel/NVIDIA
+- 🧪 Testing and feedback on Steam Deck
 
-Please see [CONTRIBUTING.md](docs/CONTRIBUTING.md) for guidelines.
+Please see [Contributing Guide](docs/CONTRIBUTING.md) for guidelines.
 
 ---
 
@@ -443,12 +498,25 @@ Please see [CONTRIBUTING.md](docs/CONTRIBUTING.md) for guidelines.
 
 ---
 
-## 🌐 Community
+## 🌐 Linux Gaming Community
 
-- **GitHub Issues**: Bug reports and feature requests
+- **GitHub Issues**: [Bug reports and feature requests](https://github.com/ind4skylivey/0ptiscaler4linux/issues)
 - **Discord**: Coming soon
-- **Reddit**: r/linux_gaming discussions
+- **Reddit**: [r/linux_gaming](https://reddit.com/r/linux_gaming) discussions
 - **ProtonDB**: Game compatibility reports
+
+---
+
+## ⭐ Found This Useful?
+
+If OptiScaler for Linux helped boost your FPS, please:
+
+- **⭐ Star this repository** to help other Linux gamers and Steam Deck users find it
+- **🐛 Report issues** if you encounter problems: [Open an issue](https://github.com/ind4skylivey/0ptiscaler4linux/issues/new)
+- **💬 Share your FPS gains** on r/linux_gaming or ProtonDB
+- **🤝 Contribute** game profiles, GPU optimizations, or Steam Deck tweaks
+
+**Your feedback makes Linux gaming better for everyone.**
 
 ---
 
@@ -467,22 +535,24 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🙏 Acknowledgments
 
 - **OptiScaler Team** - For creating the amazing OptiScaler mod
-- **fakenvapi** - For enabling Anti-Lag 2 on AMD GPUs
+- **fakenvapi** - For enabling Anti-Lag 2 on AMD GPUs for Linux
 - **Linux Gaming Community** - For continuous support and testing
-- **AMD, Intel, NVIDIA** - For their upscaling technologies
+- **AMD, Intel, NVIDIA** - For their upscaling technologies (FSR4, XeSS, DLSS)
 - **Valve** - For Proton and Steam Deck, advancing Linux gaming
 
 ---
 
 ## ⚠️ Disclaimer
 
-This is an unofficial tool not affiliated with or endorsed by AMD, Intel, NVIDIA, or any game developers. Use at your own risk. Always backup your game files before modification.
+This is an unofficial tool not affiliated with or endorsed by AMD, Intel, NVIDIA, Valve, or any game developers. Use at your own risk. Always backup your game files before modification.
+
+This tool is designed specifically for Linux gaming with Steam, Proton, and Steam Deck.
 
 ---
 
 <div align="center">
 
-## 🚀 Ready to Boost Your FPS?
+## 🚀 Ready to Boost Your Linux Gaming FPS?
 
 ### Get Started in 30 Seconds
 
@@ -494,25 +564,25 @@ bash scripts/install.sh
 
 ### 🎯 Quick Links
 
-[![Get Started](https://img.shields.io/badge/Get_Started-Installation-blue?style=for-the-badge)](docs/INSTALLATION.md)
+[![Get Started](https://img.shields.io/badge/Get_Started-Installation-blue?style=for-the-badge)](docs/linux-fps-boost-with-optiscaler.md)
 [![Documentation](https://img.shields.io/badge/Read-Documentation-green?style=for-the-badge)](PROJECT_DESIGN.md)
 [![Report Bug](https://img.shields.io/badge/Report-Bug-red?style=for-the-badge)](https://github.com/ind4skylivey/0ptiscaler4linux/issues/new?template=bug_report.md)
 [![Contribute](https://img.shields.io/badge/Contribute-Welcome-yellow?style=for-the-badge)](docs/CONTRIBUTING.md)
 
-### 💬 Join the Community
+### 💬 Join the Linux Gaming Community
 
 [![GitHub Issues](https://img.shields.io/github/issues/ind4skylivey/0ptiscaler4linux?style=social)](https://github.com/ind4skylivey/0ptiscaler4linux/issues)
 [![GitHub Stars](https://img.shields.io/github/stars/ind4skylivey/0ptiscaler4linux?style=social)](https://github.com/ind4skylivey/0ptiscaler4linux/stargazers)
 [![GitHub Forks](https://img.shields.io/github/forks/ind4skylivey/0ptiscaler4linux?style=social)](https://github.com/ind4skylivey/0ptiscaler4linux/network/members)
 
-**r/linux_gaming** • **ProtonDB** • **Gaming on Linux**
+**r/linux_gaming** • **ProtonDB** • **Gaming on Linux** • **Steam Deck HQ**
 
 ---
 
-### 🎮 Unlock Your GPU's Full Potential
+### 🎮 Unlock Massive FPS Gains on Linux
 
 <p align="center">
-<strong>Automated • Intelligent • Safe</strong>
+<strong>Automated • Intelligent • Safe • Perfect for Steam Deck</strong>
 </p>
 
 <p align="center">
