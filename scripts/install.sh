@@ -265,6 +265,32 @@ install_optiscaler() {
             log_warn "install_to_game function not available"
         fi
     done
+
+    # ═══════════════════════════════════════════════════════════════════════════
+    #  COPY CRITICAL ASSETS FROM CACHE
+    # ═══════════════════════════════════════════════════════════════════════════
+
+    log_section
+    log_info "Checking for critical assets in cache..."
+
+    CACHE_DIR="$HOME/.optiscaler-universal/cache/optiscaler/"
+    ASSETS=("D3D12_Optiscaler" "DlssOverrides" "dxgi.dll" "nvngx.dll" "OptiScaler.ini")
+
+    for game_path in "${GAMES_FOUND[@]}"; do
+        for asset in "${ASSETS[@]}"; do
+            if [ ! -e "$game_path/$asset" ]; then
+                if [ -e "$CACHE_DIR/$asset" ]; then
+                    cp -r "$CACHE_DIR/$asset" "$game_path/"
+                    log_success "$asset copied from cache to $(basename "$game_path")"
+                else
+                    log_warn "$asset NOT found in cache. Download manually if needed."
+                fi
+            else
+                log_info "$asset already exists in $(basename "$game_path")"
+            fi
+        done
+    done
+
     
     log_success "Installation complete: $games_installed/$GAMES_FOUND_COUNT game(s) updated"
 }
