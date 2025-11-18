@@ -1,6 +1,5 @@
 <div align="center">
-
-<img src="banner.png" alt="OptiScaler 4 Linux Banner" width="800">
+<img width="1024" height="1024" alt="banner" src="https://github.com/user-attachments/assets/b039142c-6f2f-4c71-bb63-a2c115b59941" />
 
 # OptiScaler for Linux: Boost FPS in Games with FSR4, XeSS & DLSS on Steam, Proton & Steam Deck
 
