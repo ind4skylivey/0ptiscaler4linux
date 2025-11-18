@@ -1,0 +1,41 @@
+metadata:
+  name: "S.T.A.L.K.E.R. 2: Heart of Chornobyl"
+  engine: "Unreal Engine 5"
+  api: "DX12"
+  dlss_version: "3.5"
+  steamid: "2645590"
+paths:
+  steam_linux: "~/.local/share/Steam/steamapps/common/S.T.A.L.K.E.R. 2 Heart of Chornobyl"
+  proton_prefix: "~/.local/share/Steam/steamapps/compatdata/2645590"
+  executable: "Stalker2.exe"
+compatibility:
+  optiscaler_status: "Excellent"
+  tested_proton: ["Proton-EM 10.0-30", "GE-Proton 10-21"]
+  steam:
+    launch_options: "WINEDLLOVERRIDES=dxgi.dll=n,b PROTON_FSR4_UPGRADE=1 %command%"
+game_specific_tweaks:
+  sharpness_override: 0.3
+  motion_sharpness_enabled: false
+performance_profiles:
+  maximum_quality:
+    settings:
+      ingame_preset: "Ultra"
+      ingame_upscaling: "DLSS Quality"
+      ray_tracing: "Ultra"
+      expected_fps: "45-60 @ 1440p"
+  balanced:
+    settings:
+      ingame_preset: "High"
+      ingame_upscaling: "DLSS Balanced"
+      ray_tracing: "High"
+      expected_fps: "70-85 @ 1440p"
+recommended_settings:
+  upscaling: "DLSS Balanced"
+  ray_tracing: "High"
+  vsync: false
+performance_notes: |
+  STALKER 2 is extremely demanding. Anti-Lag 2 highly recommended for responsive gunplay.
+  FSR4 essential for playable framerates at high settings.
+gpu_specific_notes:
+  rdna2:
+    recommended_preset: "Medium with DLSS Balanced"

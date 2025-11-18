@@ -1,0 +1,33 @@
+metadata:
+  name: "Forspoken"
+  engine: "Luminous Engine"
+  api: "DX12"
+  dlss_version: "3.0"
+  steamid: "1654340"
+paths:
+  steam_linux: "~/.local/share/Steam/steamapps/common/Forspoken"
+  proton_prefix: "~/.local/share/Steam/steamapps/compatdata/1654340"
+  executable: "Forspoken.exe"
+compatibility:
+  optiscaler_status: "Excellent"
+  tested_proton: ["Proton-EM 10.0-30", "GE-Proton 10-21"]
+  steam:
+    launch_options: "WINEDLLOVERRIDES=dxgi.dll=n,b PROTON_FSR4_UPGRADE=1 %command%"
+game_specific_tweaks:
+  sharpness_override: 0.35
+  motion_sharpness_enabled: true
+performance_profiles:
+  balanced:
+    settings:
+      ingame_preset: "High"
+      ingame_upscaling: "DLSS Balanced"
+      expected_fps: "80-100 @ 1440p"
+recommended_settings:
+  upscaling: "DLSS Balanced"
+  vsync: false
+performance_notes: |
+  Forspoken benefits from FSR4 for smooth action gameplay.
+  Balanced mode provides best performance/quality ratio.
+gpu_specific_notes:
+  rdna2:
+    recommended_preset: "High with DLSS Balanced"
