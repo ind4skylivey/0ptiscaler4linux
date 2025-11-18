@@ -1,0 +1,45 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  create-release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
+      
+      - name: Get version
+        id: get_version
+        run: echo "VERSION=$(cat VERSION | head -1)" >> $GITHUB_OUTPUT
+      
+      - name: Create release package
+        run: |
+          mkdir -p release
+          cp -r core lib profiles scripts templates docs release/
+          cp README.md PROJECT_DESIGN.md LICENSE VERSION release/
+          cd release
+          tar -czf ../optiscaler-universal-${{ steps.get_version.outputs.VERSION }}.tar.gz .
+      
+      - name: Generate changelog
+        id: changelog
+        run: |
+          cat VERSION | tail -n +3 > CHANGELOG.txt
+      
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            optiscaler-universal-${{ steps.get_version.outputs.VERSION }}.tar.gz
+          body_path: CHANGELOG.txt
+          draft: false
+          prerelease: ${{ contains(steps.get_version.outputs.VERSION, 'alpha') || contains(steps.get_version.outputs.VERSION, 'beta') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,34 @@
+metadata:
+  name: "Palworld"
+  engine: "Unreal Engine 5"
+  api: "DX12"
+  dlss_version: "3.0"
+  steamid: "1623730"
+paths:
+  steam_linux: "~/.local/share/Steam/steamapps/common/Palworld"
+  proton_prefix: "~/.local/share/Steam/steamapps/compatdata/1623730"
+  executable: "Pal.exe"
+compatibility:
+  optiscaler_status: "Excellent"
+  tested_proton: ["Proton-EM 10.0-30", "GE-Proton 10-21"]
+  steam:
+    launch_options: "WINEDLLOVERRIDES=dxgi.dll=n,b PROTON_FSR4_UPGRADE=1 %command%"
+game_specific_tweaks:
+  sharpness_override: 0.3
+  motion_sharpness_enabled: false
+performance_profiles:
+  balanced:
+    settings:
+      ingame_preset: "High"
+      ingame_upscaling: "DLSS Balanced"
+      expected_fps: "80-100 @ 1440p"
+recommended_settings:
+  upscaling: "DLSS Balanced"
+  vsync: false
+performance_notes: |
+  Palworld is CPU and GPU demanding in multiplayer.
+  FSR4 significantly improves performance.
+  Recommended: Balanced for stable 60+ FPS in multiplayer.
+gpu_specific_notes:
+  rdna2:
+    recommended_preset: "High with DLSS Balanced"

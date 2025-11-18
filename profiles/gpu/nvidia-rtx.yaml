@@ -1,0 +1,82 @@
+# NVIDIA RTX GPU Profile
+metadata:
+  name: "NVIDIA RTX"
+  description: "Profile for NVIDIA RTX GPUs - Native DLSS recommended"
+  author: "OptiScaler Universal Team"
+  version: "1.0.0"
+  last_updated: "2025-10-25"
+  supported_gpus:
+    - "GeForce RTX 40 series (Ada)"
+    - "GeForce RTX 30 series (Ampere)"
+    - "GeForce RTX 20 series (Turing)"
+
+capabilities:
+  anti_lag_2: false
+  fsr4_native: false
+  fsr4_compatible: true
+  fsr3_native: true
+  xess_support: true
+  dlss_native: true             # Native DLSS!
+  reflex_native: true           # Native Reflex!
+
+driver_requirements:
+  nvidia_driver_min: "550.0"
+
+optiscaler:
+  upscalers:
+    dx12: "dlss"                # Use native DLSS
+    dx11: "dlss"
+    vulkan: "fsr31"             # Fallback to FSR on Vulkan
+  
+  fsr:
+    fsr4_update: false
+    
+  inputs:
+    enable_dlss_inputs: false   # Not needed with native DLSS
+    
+  sharpness:
+    override: false             # Let DLSS handle it
+    
+  spoofing:
+    streamline_spoofing: false  # Not needed
+    dxgi_spoofing: false
+    
+  nvapi:
+    override_dll: false         # Use native Reflex
+
+fakenvapi:
+  enabled: false
+
+performance:
+  expected_fps_gain: "Native DLSS"
+  expected_latency_reduction: "Native Reflex"
+  quality_rating: "10/10"
+  notes: |
+    NVIDIA RTX GPUs have native DLSS and Reflex support.
+    OptiScaler is optional and mainly useful for:
+    - Experimenting with FSR/XeSS
+    - Games without native DLSS
+    - Comparing upscalers
+    
+    For best results: Use native DLSS instead of OptiScaler.
+
+recommendations:
+  ingame_upscaling: "Native DLSS Quality"
+  ingame_reflex: "On + Boost"
+  ingame_vsync: false
+  quality_preset: "Ultra with Ray Tracing"
+  ray_tracing: "Highly recommended"
+  frame_generation: "Available on RTX 40 series"
+  
+notes: |
+  OptiScaler on NVIDIA is primarily for experimentation.
+  
+  Use OptiScaler if:
+  - You want to test FSR4 vs DLSS
+  - Game lacks native DLSS
+  - You're curious about XeSS
+  
+  Don't use OptiScaler if:
+  - Game has native DLSS 3+ (use that instead)
+  - You want Frame Generation (use native DLSS 3)
+  - You prioritize absolute best quality

@@ -1,0 +1,46 @@
+metadata:
+  name: "Baldur's Gate 3"
+  engine: "Vulkan Engine"
+  api: "Vulkan"
+  dlss_version: "3.0"
+  steamid: "1238140"
+paths:
+  steam_linux: "~/.local/share/Steam/steamapps/common/Baldur's Gate 3"
+  proton_prefix: "~/.local/share/Steam/steamapps/compatdata/1238140"
+  executable: "bg3.exe"
+compatibility:
+  optiscaler_status: "Excellent"
+  tested_proton: ["Proton-EM 10.0-30", "GE-Proton 10-21"]
+  steam:
+    launch_options: "WINEDLLOVERRIDES=dxgi.dll=n,b PROTON_FSR4_UPGRADE=1 %command%"
+    recommended_proton: "Proton-EM 10.0-30"
+game_specific_tweaks:
+  sharpness_override: 0.35
+  motion_sharpness_enabled: true
+  motion_sharpness: 0.4
+performance_profiles:
+  maximum_quality:
+    settings:
+      ingame_preset: "Ultra"
+      ingame_upscaling: "DLSS Quality"
+      ray_tracing: "Ultra"
+      expected_fps: "50-65 @ 1440p"
+  balanced:
+    settings:
+      ingame_preset: "High"
+      ingame_upscaling: "DLSS Balanced"
+      ray_tracing: "High"
+      expected_fps: "70-85 @ 1440p"
+recommended_settings:
+  upscaling: "DLSS Quality"
+  nvidia_reflex: "On"
+  ray_tracing: "High"
+  vsync: false
+performance_notes: |
+  Baldur's Gate 3 scales excellently with OptiScaler.
+  Ray tracing provides significant visual improvement.
+  FSR4 with DLSS inputs delivers excellent quality on AMD.
+gpu_specific_notes:
+  rdna2:
+    notes: "High with RT Medium gives best experience."
+    recommended_preset: "High with RT Medium"

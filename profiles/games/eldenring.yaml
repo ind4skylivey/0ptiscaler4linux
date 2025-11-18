@@ -1,0 +1,51 @@
+# Elden Ring Game Profile
+metadata:
+  name: "Elden Ring"
+  engine: "FromSoftware Engine"
+  api: "DX12"
+  dlss_version: "2.5"
+  steamid: "1245620"
+
+paths:
+  steam_linux: "~/.local/share/Steam/steamapps/common/ELDEN RING"
+  proton_prefix: "~/.local/share/Steam/steamapps/compatdata/1245620"
+  executable: "Game/eldenring.exe"
+
+compatibility:
+  optiscaler_status: "Good"
+  tested_proton: ["Proton-EM 10.0-30", "GE-Proton 10-21"]
+
+steam:
+  launch_options: "WINEDLLOVERRIDES=dxgi.dll=n,b PROTON_FSR4_UPGRADE=1 %command%"
+  recommended_proton: "Proton-EM 10.0-30"
+
+game_specific_tweaks:
+  sharpness_override: 0.4
+  motion_sharpness_enabled: false
+
+performance_profiles:
+  maximum_quality:
+    settings:
+      ingame_preset: "Maximum"
+      ingame_upscaling: "DLSS Quality"
+      expected_fps: "60 locked @ 1440p"
+  balanced:
+    settings:
+      ingame_preset: "High"
+      ingame_upscaling: "DLSS Balanced"
+      expected_fps: "60 locked @ 1440p"
+
+recommended_settings:
+  upscaling: "DLSS Quality"
+  frame_limit: "60 FPS"
+  vsync: true
+
+performance_notes: |
+  Elden Ring targets 60 FPS cap. OptiScaler helps maintain stable 60.
+  Game has FromSoft's typical optimization quirks.
+  VSync recommended to avoid frame pacing issues.
+
+troubleshooting:
+  common_issues:
+    - issue: "Stuttering"
+      solution: "Normal for FromSoft games. Enable VSync, cap at 60 FPS"

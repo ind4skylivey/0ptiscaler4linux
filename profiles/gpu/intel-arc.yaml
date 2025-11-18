@@ -1,0 +1,89 @@
+# Intel Arc GPU Profile
+metadata:
+  name: "Intel Arc"
+  description: "Optimized for Intel Arc A-series discrete GPUs with native XeSS"
+  author: "OptiScaler Universal Team"
+  version: "1.0.0"
+  last_updated: "2025-10-25"
+  supported_gpus:
+    - "Intel Arc A770"
+    - "Intel Arc A750"
+    - "Intel Arc A580"
+    - "Intel Arc A380"
+    - "Intel Arc A310"
+
+capabilities:
+  anti_lag_2: false
+  fsr4_native: false
+  fsr4_compatible: true
+  fsr3_native: true
+  xess_support: true
+  xess_native: true             # Native XeSS on Arc!
+  dlss_inputs_recommended: true
+
+driver_requirements:
+  mesa_min_version: "25.2.0"
+  recommended_kernel: "6.8+"
+
+optiscaler:
+  upscalers:
+    dx12: "xess"                # Use native XeSS!
+    dx11: "xess_12"
+    vulkan: "xess"
+  
+  fsr:
+    fsr4_update: false
+    non_linear_srgb: true
+    
+  inputs:
+    enable_dlss_inputs: true
+    enable_fsr2_inputs: true
+    enable_fsr3_inputs: true
+    enable_xess_inputs: true    # Native XeSS inputs
+    
+  xess:
+    build_pipelines: true
+    create_heaps: false
+    network_model: 0            # KPSS (best quality)
+    
+  sharpness:
+    override: true
+    value: 0.35                 # XeSS is naturally sharp
+    cas_enabled: false          # XeSS has built-in sharpening
+    motion_sharpness_enabled: false
+    
+  spoofing:
+    streamline_spoofing: true
+    dxgi_spoofing: true
+    spoofed_vendor_id: "0x10de"
+    spoofed_device_id: "0x2684"
+    
+  nvapi:
+    override_dll: false         # No Anti-Lag on Intel
+
+fakenvapi:
+  enabled: false
+
+performance:
+  expected_fps_gain: "40-60%"
+  expected_latency_reduction: "20-30%"
+  quality_rating: "9/10"
+  vram_overhead: "~300MB"
+  notes: |
+    Intel Arc has excellent XeSS native performance and quality.
+    XeSS on Arc often matches or exceeds DLSS quality.
+    RT performance is moderate, good for 1080p/1440p.
+
+recommendations:
+  ingame_upscaling: "XeSS Quality (or DLSS Quality)"
+  ingame_reflex: "Off (not supported)"
+  ingame_vsync: false
+  quality_preset: "High to Ultra"
+  ray_tracing: "Medium (1080p/1440p)"
+  
+troubleshooting:
+  common_issues:
+    - issue: "XeSS not appearing"
+      solution: "Ensure latest Mesa drivers and proper spoofing"
+    - issue: "Lower FPS than expected"
+      solution: "Disable RT or reduce quality preset"

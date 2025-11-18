@@ -1,0 +1,77 @@
+# Alan Wake 2 Game Profile
+metadata:
+  name: "Alan Wake 2"
+  engine: "Northlight Engine"
+  api: "DX12"
+  dlss_version: "3.5"
+  fsr_version: "3.1"
+  epicid: "alan-wake-2"
+
+paths:
+  epic_linux: "~/Games/Heroic/AlanWake2"
+  executable: "AlanWake2.exe"
+
+compatibility:
+  optiscaler_status: "Excellent"
+  tested_proton: ["Proton-EM 10.0-30", "GE-Proton 10-21"]
+
+steam:
+  launch_options: "WINEDLLOVERRIDES=dxgi.dll=n,b PROTON_FSR4_UPGRADE=1 %command%"
+  recommended_proton: "Proton-EM 10.0-30"
+
+game_specific_tweaks:
+  sharpness_override: 0.3
+  motion_sharpness_enabled: false
+  enable_depth_scale: true
+
+performance_profiles:
+  maximum_quality:
+    settings:
+      ingame_preset: "High"
+      ingame_upscaling: "DLSS Quality"
+      ingame_reflex: "On + Boost"
+      path_tracing: false
+      expected_fps: "50-65 @ 1440p"
+  
+  balanced:
+    settings:
+      ingame_preset: "Medium"
+      ingame_upscaling: "DLSS Balanced"
+      expected_fps: "65-80 @ 1440p"
+  
+  path_tracing:
+    settings:
+      ingame_preset: "Low"
+      ingame_upscaling: "DLSS Performance"
+      path_tracing: true
+      expected_fps: "35-50 @ 1440p (RDNA3+ only)"
+
+recommended_settings:
+  upscaling: "DLSS Quality"
+  nvidia_reflex: "On + Boost"
+  path_tracing: "Only on high-end GPUs"
+  vsync: false
+
+performance_notes: |
+  Alan Wake 2 is EXTREMELY demanding, especially with path tracing.
+  DLSS Performance or Ultra Performance recommended for PT mode.
+  Game has excellent DLSS 3.5 with Ray Reconstruction.
+  Medium preset still looks amazing with upscaling.
+
+gpu_specific_notes:
+  rdna4:
+    notes: "Can handle path tracing at 1440p with DLSS Performance."
+    recommended_preset: "High or Path Tracing Low"
+  rdna3:
+    notes: "High preset without PT, or Medium with PT."
+    recommended_preset: "High (no PT)"
+  rdna2:
+    notes: "Medium-High recommended, avoid path tracing."
+    recommended_preset: "Medium"
+
+troubleshooting:
+  common_issues:
+    - issue: "Extremely low FPS"
+      solution: "This game is brutally demanding. Use Medium preset and DLSS Balanced/Performance"
+    - issue: "Stuttering"
+      solution: "Shader compilation - normal on first run. Disable RT/PT if persistent"

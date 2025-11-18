@@ -1,0 +1,58 @@
+[General]
+LogLevel = {{LOG_LEVEL}}
+LogToFile = true
+DebugWait = false
+OverlayMenu = {{OVERLAY_MENU}}
+ShortcutKey = {{SHORTCUT_KEY}}
+Scale = {{SCALE}}
+
+[Upscalers]
+Dx12Upscaler = {{DX12_UPSCALER}}
+Dx11Upscaler = {{DX11_UPSCALER}}
+VulkanUpscaler = {{VULKAN_UPSCALER}}
+
+[FSR]
+Fsr4Update = {{FSR4_UPDATE}}
+NonLinearSRGB = {{NON_LINEAR_SRGB}}
+NonLinearPQ = {{NON_LINEAR_PQ}}
+VelocityFactor = {{VELOCITY_FACTOR}}
+ReactiveScale = {{REACTIVE_SCALE}}
+ShadingScale = {{SHADING_SCALE}}
+
+[Inputs]
+EnableDLSSInputs = {{ENABLE_DLSS_INPUTS}}
+EnableFSR2Inputs = {{ENABLE_FSR2_INPUTS}}
+EnableFSR3Inputs = {{ENABLE_FSR3_INPUTS}}
+EnableXeSSInputs = {{ENABLE_XESS_INPUTS}}
+
+[Sharpness]
+OverrideSharpness = {{OVERRIDE_SHARPNESS}}
+Sharpness = {{SHARPNESS_VALUE}}
+CASSharpening = {{CAS_ENABLED}}
+MotionSharpnessEnabled = {{MOTION_SHARPNESS_ENABLED}}
+MotionSharpness = {{MOTION_SHARPNESS}}
+MotionThreshold = {{MOTION_THRESHOLD}}
+MotionScaleLimit = {{MOTION_SCALE_LIMIT}}
+
+[Spoofing]
+DxgiSpoofing = {{DXGI_SPOOFING}}
+StreamlineSpoofing = {{STREAMLINE_SPOOFING}}
+SpoofedGPUName = {{SPOOFED_GPU_NAME}}
+SpoofedVendorId = {{SPOOFED_VENDOR_ID}}
+SpoofedDeviceId = {{SPOOFED_DEVICE_ID}}
+
+[NVAPI]
+OverrideNvapiDll = {{OVERRIDE_NVAPI_DLL}}
+
+[Compatibility]
+DisableReactiveMask = false
+ColorResourceBarrier = false
+DepthInverted = Auto
+AutoExposure = false
+HDR = false
+JitterCancellation = Auto
+DisplayResolution = false
+
+[Output]
+ColorSpaceConversion = false
+Hdr10PlusConversion = false
