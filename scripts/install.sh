@@ -348,7 +348,7 @@ install_optiscaler() {
     local games_installed=0
 
     for rec in "${DETECTED_GAMES[@]}"; do
-        local app_id game_path game_name profile_path
+        local app_id game_path game_name profile_path dll_target_dir
         IFS="$DELIM" read -r -a kvs <<< "$rec"
         for kv in "${kvs[@]}"; do
             local key="${kv%%=*}"
@@ -358,13 +358,14 @@ install_optiscaler() {
                 install_path) game_path="$val" ;;
                 game_name) game_name="$val" ;;
                 profile_matched) profile_path="$val" ;;
+                dll_target_dir) dll_target_dir="$val" ;;
             esac
         done
 
         log_info "Installing to: $game_name"
 
         if declare -f install_to_game >/dev/null; then
-            if install_to_game "$game_path" "$app_id" "$profile_path"; then
+            if install_to_game "$game_path" "$app_id" "$profile_path" "$dll_target_dir"; then
                 ((games_installed++))
             fi
         else

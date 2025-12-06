@@ -9,7 +9,10 @@ detection:
     - "WWM"
   executables:
     - "WhereWindsMeet.exe"
+    - "Engine/Binaries/Win64/WhereWindsMeet.exe"
   required_files: []
   dll_targets:
-    - "."
+    - "Engine/Binaries/Win64r"
+    - "Engine/Binaries/Win64"
     - "Binaries/Win64"
+    - "."

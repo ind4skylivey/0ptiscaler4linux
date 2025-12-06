@@ -337,13 +337,17 @@ install_to_game() {
     local game_dir="$1"
     local app_id="$2"
     local profile_path="${3:-}"
+    local target_dir="${4:-$game_dir}"
+    local dll_name="${OPTISCALER_DLL_NAME:-dxgi.dll}"
     
     log_info "Installing OptiScaler to game directory: $game_dir"
+    log_debug "Target DLL directory: $target_dir"
     
     if [ ! -d "$game_dir" ]; then
         log_error "Game directory does not exist: $game_dir"
         return 1
     fi
+    mkdir -p "$target_dir"
 
     # Component selection defaults
     local install_optiscaler=true
@@ -376,8 +380,8 @@ install_to_game() {
     )
     
     for file in "${files_to_backup[@]}"; do
-        if [ -f "$game_dir/$file" ]; then
-            cp "$game_dir/$file" "$backup_dir/"
+        if [ -f "$target_dir/$file" ]; then
+            cp "$target_dir/$file" "$backup_dir/"
             log_info "  ↳ Backed up: $file"
         fi
     done
@@ -391,8 +395,14 @@ install_to_game() {
     # OptiScaler.dll (MAIN FILE - REQUIRED)
     if [[ "$install_optiscaler" == "true" ]]; then
         if [ -f "$CACHE_DIR/optiscaler/OptiScaler.dll" ]; then
-            cp "$CACHE_DIR/optiscaler/OptiScaler.dll" "$game_dir/"
+            cp "$CACHE_DIR/optiscaler/OptiScaler.dll" "$target_dir/"
             log_success "  ↳ Installed: OptiScaler.dll (main plugin)"
+            # Also drop a launcher-friendly alias (dxgi.dll by default)
+            if cp "$CACHE_DIR/optiscaler/OptiScaler.dll" "$target_dir/$dll_name"; then
+                log_success "  ↳ Installed alias: $dll_name"
+            else
+                log_warn "  ⚠ Failed to install alias $dll_name"
+            fi
         else
             log_error "  ✗ CRITICAL: OptiScaler.dll missing"
             installation_success=false
@@ -404,14 +414,14 @@ install_to_game() {
     # libxess.dll (XeSS support)
     if [[ "$install_xess" == "true" ]]; then
         if [ -f "$CACHE_DIR/optiscaler/libxess.dll" ]; then
-            cp "$CACHE_DIR/optiscaler/libxess.dll" "$game_dir/"
+            cp "$CACHE_DIR/optiscaler/libxess.dll" "$target_dir/"
             log_success "  ↳ Installed: libxess.dll"
         else
             log_warn "  ⚠ Optional: libxess.dll missing"
         fi
         
         if [ -f "$CACHE_DIR/optiscaler/libxess_dx11.dll" ]; then
-            cp "$CACHE_DIR/optiscaler/libxess_dx11.dll" "$game_dir/"
+            cp "$CACHE_DIR/optiscaler/libxess_dx11.dll" "$target_dir/"
             log_success "  ↳ Installed: libxess_dx11.dll"
         fi
     else
@@ -429,14 +439,14 @@ install_to_game() {
         "amd_fidelityfx_vk.dll"
     )
     
-    for fsr_dll in "${fsr_files[@]}"; do
-        if [ -f "$CACHE_DIR/optiscaler/$fsr_dll" ]; then
-            cp "$CACHE_DIR/optiscaler/$fsr_dll" "$game_dir/"
-            log_success "  ↳ Installed: $fsr_dll"
-        else
-            log_warn "  ⚠ Optional: $fsr_dll missing"
-        fi
-    done
+        for fsr_dll in "${fsr_files[@]}"; do
+            if [ -f "$CACHE_DIR/optiscaler/$fsr_dll" ]; then
+                cp "$CACHE_DIR/optiscaler/$fsr_dll" "$target_dir/"
+                log_success "  ↳ Installed: $fsr_dll"
+            else
+                log_warn "  ⚠ Optional: $fsr_dll missing"
+            fi
+        done
     
     # ═══════════════════════════════════════════════════════════════════════
     # Install fakenvapi (GPU Spoofing for AMD/Intel)
@@ -444,7 +454,7 @@ install_to_game() {
     
     if [[ "$install_fakenvapi" == "true" ]]; then
         if [ -f "$CACHE_DIR/x64/nvapi64.dll" ]; then
-            cp "$CACHE_DIR/x64/nvapi64.dll" "$game_dir/"
+            cp "$CACHE_DIR/x64/nvapi64.dll" "$target_dir/"
             log_success "  ↳ Installed: fakenvapi (nvapi64.dll - GPU spoofing)"
         else
             log_warn "  ⚠ fakenvapi nvapi64.dll not found"
@@ -461,7 +471,7 @@ install_to_game() {
     
     if [[ "$install_optiscaler" == "true" ]]; then
         if [ -f "$config_dir/OptiScaler.ini" ]; then
-            cp "$config_dir/OptiScaler.ini" "$game_dir/"
+            cp "$config_dir/OptiScaler.ini" "$target_dir/"
             log_success "  ↳ Installed: OptiScaler.ini (configuration)"
         else
             log_warn "  ⚠ OptiScaler.ini not found"
@@ -470,7 +480,7 @@ install_to_game() {
     
     if [[ "$install_fakenvapi" == "true" ]]; then
         if [ -f "$config_dir/fakenvapi.ini" ]; then
-            cp "$config_dir/fakenvapi.ini" "$game_dir/"
+            cp "$config_dir/fakenvapi.ini" "$target_dir/"
             log_success "  ↳ Installed: fakenvapi.ini (Anti-Lag 2 config)"
         fi
     fi

@@ -200,7 +200,7 @@ Nvapi=true
 
 [Overlay]
 EnableOverlay=true
-ShortcutKey=0x2D
+ShortcutKey=0x24
 
 [Compatibility]
 DisableReactiveMask=false
@@ -326,4 +326,3 @@ EOF
 
 export -f generate_optiscaler_ini
 export -f generate_fakenvapi_ini
-
