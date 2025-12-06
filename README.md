@@ -212,6 +212,36 @@ optiscaler-install  # System-wide command
 
 ---
 
+## 🔍 Advanced Game Detection
+
+OptiScaler now includes an intelligent multi-disk Steam scanner:
+
+- ✅ Universal library discovery across all mounted disks (/mnt, /media, Steam Deck)
+- ✅ AppID-first matching (100% reliable when manifests exist)
+- ✅ 4-method fallback: manifest → folder fuzzy → executable probe → compatdata lookup
+- ✅ Proton prefix awareness and writable-path checks
+- ✅ Smart caching (5-minute TTL) with `--force-rescan` to bypass
+
+CLI flags you can use:
+
+```bash
+# Scan only (no install), cached
+bash scripts/install.sh --scan-only --verbose
+
+# Force fresh scan
+bash scripts/install.sh --scan-only --force-rescan
+
+# List supported games
+bash scripts/install.sh --list-games
+
+# Max detail for debugging
+LOG_LEVEL=DEBUG bash scripts/install.sh --scan-only --debug
+```
+
+See the detailed flow in `docs/multi-disk-detection.md`.
+
+---
+
 ## 💥 Linux Gaming Performance: Real FPS Gains
 
 <div align="center">

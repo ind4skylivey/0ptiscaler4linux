@@ -4,7 +4,7 @@
 #  OPTISCALER UNIVERSAL - MAIN INSTALLER (ROBUST VERSION)
 # =============================================================================
 
-set -euo pipefail
+set -eo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 MODULE_DIR="$SCRIPT_DIR/src/modules"
@@ -277,6 +277,8 @@ main() {
     # Update logging level after argument parsing
     if [[ -n "${LOG_LEVELS[$LOG_LEVEL]:-}" ]]; then
         CURRENT_LOG_LEVEL=${LOG_LEVELS[$LOG_LEVEL]}
+    else
+        CURRENT_LOG_LEVEL=${LOG_LEVELS[INFO]}
     fi
 
     print_banner

@@ -29,8 +29,8 @@ declare -A LOG_LEVELS=(
     [ERROR]=4
 )
 
-# Current log level
-CURRENT_LOG_LEVEL=${LOG_LEVELS[$LOG_LEVEL]}
+# Current log level (default INFO/2 if unknown)
+CURRENT_LOG_LEVEL=${LOG_LEVELS[$LOG_LEVEL]:-2}
 
 # ═══════════════════════════════════════════════════════════════════════════
 #  Core Logging Functions
@@ -44,8 +44,8 @@ _log() {
     local log_entry="[$timestamp] [$level] $message"
     
     # Check if we should log this level
-    local level_value=${LOG_LEVELS[$level]}
-    if [ "$level_value" -lt "$CURRENT_LOG_LEVEL" ]; then
+    local level_value=${LOG_LEVELS[$level]:-2}
+    if [ "$level_value" -lt "${CURRENT_LOG_LEVEL:-2}" ]; then
         return 0
     fi
     

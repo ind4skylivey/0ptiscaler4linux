@@ -42,6 +42,9 @@ _yaml_value() {
 }
 
 load_detection_profiles() {
+    # Ensure globals are associative even if sourced multiple times
+    declare -gA PROFILE_PATH PROFILE_APPID PROFILE_NAME PROFILE_FOLDER_PATTERNS PROFILE_EXECUTABLES PROFILE_REQUIRED_FILES PROFILE_DLL_TARGETS PROFILE_BY_APPID
+
     if [[ ! -d "$PROFILES_DIR" ]]; then
         log_error "Game profiles directory not found: $PROFILES_DIR"
         return 1
@@ -86,7 +89,12 @@ load_detection_profiles() {
             fi
         done < "$profile_file"
 
-        [[ -z "$game_id" || -z "$app_id" ]] && continue
+        if [[ -z "$game_id" || -z "$app_id" ]]; then
+            log_debug "Skipping profile $(basename "$profile_file") (game_id='$game_id', app_id='$app_id')"
+            continue
+        fi
+
+        log_debug "Profile loaded: $(basename "$profile_file") -> game_id='$game_id' app_id='$app_id'"
 
         PROFILE_PATH["$game_id"]="$profile_file"
         PROFILE_APPID["$game_id"]="$app_id"
