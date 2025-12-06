@@ -17,6 +17,8 @@ DEBUG_MODE=false
 SCAN_ONLY=false
 LIST_GAMES=false
 FORCE_RESCAN=false
+AUTO_PROFILE_UNKNOWN=${AUTO_PROFILE_UNKNOWN:-false}
+SKIP_PROFILE_UNKNOWN=${SKIP_PROFILE_UNKNOWN:-false}
 
 # =============================================================================
 #  MODULE LOADING
@@ -44,6 +46,7 @@ load_modules() {
     source "$SCRIPT_DIR/lib/logging.sh"
     source "$MODULE_DIR/steam_parser.sh"
     source "$MODULE_DIR/game_detector.sh"
+    DELIM=${DELIM:-$'\x1f'}
 }
 
 usage() {
@@ -54,6 +57,8 @@ Usage: $(basename "$0") [options]
   --list-games        List supported games (profiles) and exit
   --scan-only         Scan Steam libraries without installing
   --force-rescan      Ignore cache and rescan libraries
+  --auto-profile-unknown   Auto-generate generic profiles for games without profile
+  --skip-profile-unknown   Do not offer generic profiles for games without profile
   -h, --help          Show this help
 EOF
 }
@@ -66,6 +71,8 @@ parse_args() {
             --list-games) LIST_GAMES=true ;;
             --scan-only) SCAN_ONLY=true ;;
             --force-rescan) FORCE_RESCAN=true ;;
+            --auto-profile-unknown) AUTO_PROFILE_UNKNOWN=true ;;
+            --skip-profile-unknown) SKIP_PROFILE_UNKNOWN=true ;;
             -h|--help) usage; exit 0 ;;
             *) log_warn "Unknown option: $1"; usage; exit 1 ;;
         esac
@@ -203,6 +210,126 @@ scan_games() {
     log_success "Detection finished: $GAMES_FOUND_COUNT compatible game(s)"
 }
 
+maybe_generate_generic_profiles() {
+    local unsupported_count=${#DETECTED_UNSUPPORTED[@]}
+    (( unsupported_count == 0 )) && return
+
+    # Helper to prompt booleans with default
+    _prompt_bool() {
+        local question="$1" default="${2:-y}" answer
+        local prompt="[$([[ "$default" =~ ^[Yy]$ ]] && echo Y || echo y)/$([[ "$default" =~ ^[Yy]$ ]] && echo n || echo N)]"
+        echo -n "$question $prompt "
+        read -r answer
+        [[ -z "$answer" ]] && answer="$default"
+        [[ "$answer" =~ ^[Yy]$ ]] && return 0 || return 1
+    }
+
+    # Filter unsupported entries that have an AppID; skip runtimes without manifest
+    local -a creatable=()
+    local rec app_id
+    for rec in "${DETECTED_UNSUPPORTED[@]}"; do
+        app_id="$(echo "$rec" | tr "$DELIM" '\n' | awk -F= '$1=="app_id"{print $2}' | head -1)"
+        [[ -n "$app_id" ]] && creatable+=("$rec")
+    done
+
+    (( ${#creatable[@]} == 0 )) && { log_info "Unsupported items lack AppID; no generic profiles created."; return; }
+
+    local games_dir="$SCRIPT_DIR/config/games"
+    mkdir -p "$games_dir"
+
+    for rec in "${creatable[@]}"; do
+        local game_name app_id install_path method
+        IFS="$DELIM" read -r -a kvs <<< "$rec"
+        for kv in "${kvs[@]}"; do
+            local k="${kv%%=*}"
+            local v="${kv#*=}"
+            case "$k" in
+                game_name) game_name="$v" ;;
+                app_id) app_id="$v" ;;
+                install_path) install_path="$v" ;;
+                detection_method) method="$v" ;;
+            esac
+        done
+        [[ -z "$app_id" || -z "$install_path" ]] && continue
+
+        local do_create="n"
+        if $SKIP_PROFILE_UNKNOWN; then
+            do_create="n"
+        elif $AUTO_PROFILE_UNKNOWN; then
+            do_create="y"
+        else
+            echo ""
+            echo "Create generic profile for \"$game_name\" (AppID: $app_id)? [y/N]"
+            read -r do_create
+        fi
+        [[ ! "$do_create" =~ ^[Yy] ]] && { log_info "Skipped $game_name ($app_id)"; continue; }
+
+        local base="$(basename "$install_path")"
+        local game_id="$(echo "$base" | tr '[:upper:]' '[:lower:]' | tr -cs 'a-z0-9' '-' | sed 's/^-*//;s/-*$//')"
+        [[ -z "$game_id" ]] && game_id="game-$app_id"
+
+        local profile_file="$games_dir/$game_id.yaml"
+        if [[ -f "$profile_file" ]]; then
+            log_info "Profile already exists for $game_name ($app_id), skipping."
+            continue
+        fi
+
+        # Component selection defaults
+        local install_optiscaler=true
+        local install_xess=true
+        local install_fakenvapi=false
+        [[ "$GPU_VENDOR" =~ (AMD|Intel) ]] && install_fakenvapi=true
+        local preset="balanced"
+        local dlss_to_fsr=true
+
+        if ! $AUTO_PROFILE_UNKNOWN && ! $SKIP_PROFILE_UNKNOWN; then
+            _prompt_bool "Install OptiScaler DLL replacement?" "y" && install_optiscaler=true || install_optiscaler=false
+            _prompt_bool "Install XeSS runtime (libxess.dll)?" "y" && install_xess=true || install_xess=false
+            local fakedef="n"; [[ "$GPU_VENDOR" =~ (AMD|Intel) ]] && fakedef="y"
+            _prompt_bool "Install fakenvapi (NVAPI shim)?" "$fakedef" && install_fakenvapi=true || install_fakenvapi=false
+            echo -n "Choose OptiScaler preset [quality/balanced/performance/ultra-performance] (default: balanced): "
+            read -r preset
+            [[ -z "$preset" ]] && preset="balanced"
+            _prompt_bool "Enable DLSS->FSR translation (dlss_to_fsr)?" "y" && dlss_to_fsr=true || dlss_to_fsr=false
+        fi
+
+        cat > "$profile_file" <<EOF
+# Auto-generated generic profile. Please refine executables/dll_targets.
+game_id: $game_id
+name: "$game_name"
+app_id: $app_id
+
+detection:
+  folder_patterns:
+    - "$base"
+    - "$game_name"
+  executables: []
+  required_files: []
+  dll_targets:
+    - "bin"
+    - "Binaries/Win64"
+    - "."
+
+components:
+  install_optiscaler: $install_optiscaler
+  install_xess: $install_xess
+  install_fakenvapi: $install_fakenvapi
+
+optiscaler:
+  preset: "$preset"
+  dlss_to_fsr: $dlss_to_fsr
+EOF
+        log_success "Generated generic profile: $profile_file (from $method)"
+    done
+
+    # Re-run detection to include new profiles
+    FORCE_RESCAN=true
+    detect_all_games
+    GAMES_FOUND_COUNT=${#DETECTED_GAMES[@]}
+    print_detected_games_table
+    log_success "Detection re-run after generating generic profiles: $GAMES_FOUND_COUNT compatible game(s)"
+}
+
 # ═══════════════════════════════════════════════════════════════════════════
 #  PHASE 6: INSTALL
 # ═══════════════════════════════════════════════════════════════════════════
@@ -210,13 +337,19 @@ scan_games() {
 install_optiscaler() {
     log_section "Installing OptiScaler to Found Games"
     
-    [[ $GAMES_FOUND_COUNT -eq 0 ]] && { log_warn "No games found"; return 0; }
+    # Avoid aborting on non-critical copy errors during per-game install
+    set +e
+    if [[ $GAMES_FOUND_COUNT -eq 0 ]]; then
+        log_warn "No games found"
+        set -e
+        return 0
+    fi
     
     local games_installed=0
 
     for rec in "${DETECTED_GAMES[@]}"; do
-        local app_id game_path game_name
-        IFS=';' read -r -a kvs <<< "$rec"
+        local app_id game_path game_name profile_path
+        IFS="$DELIM" read -r -a kvs <<< "$rec"
         for kv in "${kvs[@]}"; do
             local key="${kv%%=*}"
             local val="${kv#*=}"
@@ -224,13 +357,14 @@ install_optiscaler() {
                 app_id) app_id="$val" ;;
                 install_path) game_path="$val" ;;
                 game_name) game_name="$val" ;;
+                profile_matched) profile_path="$val" ;;
             esac
         done
 
-        log_subsection "Installing to: $game_name"
+        log_info "Installing to: $game_name"
 
         if declare -f install_to_game >/dev/null; then
-            if install_to_game "$game_path" "$app_id"; then
+            if install_to_game "$game_path" "$app_id" "$profile_path"; then
                 ((games_installed++))
             fi
         else
@@ -240,6 +374,7 @@ install_optiscaler() {
 
     
     log_success "Installation complete: $games_installed/$GAMES_FOUND_COUNT game(s) updated"
+    set -e
 }
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -294,6 +429,7 @@ main() {
     fi
     
     scan_games
+    maybe_generate_generic_profiles
     
     $LIST_GAMES && { list_supported_games; exit 0; }
     $SCAN_ONLY && { log_info "Scan-only mode requested; exiting."; exit 0; }

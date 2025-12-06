@@ -1,0 +1,24 @@
+# Auto-generated generic profile. Please refine executables/dll_targets.
+game_id: steamlinuxruntime-sniper
+name: "Steam Linux Runtime 3.0 (sniper)"
+app_id: 1628350
+
+detection:
+  folder_patterns:
+    - "SteamLinuxRuntime_sniper"
+    - "Steam Linux Runtime 3.0 (sniper)"
+  executables: []
+  required_files: []
+  dll_targets:
+    - "bin"
+    - "Binaries/Win64"
+    - "."
+
+components:
+  install_optiscaler: true
+  install_xess: true
+  install_fakenvapi: true
+
+optiscaler:
+  preset: "balanced"
+  dlss_to_fsr: true

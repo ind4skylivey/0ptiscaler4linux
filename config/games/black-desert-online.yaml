@@ -1,0 +1,24 @@
+# Auto-generated generic profile. Please refine executables/dll_targets.
+game_id: black-desert-online
+name: "Black Desert"
+app_id: 582660
+
+detection:
+  folder_patterns:
+    - "Black Desert Online"
+    - "Black Desert"
+  executables: []
+  required_files: []
+  dll_targets:
+    - "bin"
+    - "Binaries/Win64"
+    - "."
+
+components:
+  install_optiscaler: true
+  install_xess: true
+  install_fakenvapi: true
+
+optiscaler:
+  preset: "balanced"
+  dlss_to_fsr: true

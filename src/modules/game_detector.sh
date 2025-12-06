@@ -11,6 +11,7 @@ SCRIPT_ROOT="${SCRIPT_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
 PROFILES_DIR="${PROFILES_DIR:-$SCRIPT_ROOT/config/games}"
 CACHE_FILE="${CACHE_FILE:-/tmp/optiscaler_scan_cache.json}"
 CACHE_TTL_SECONDS=300
+DELIM=${DELIM:-$'\x1f'}  # record delimiter safe for paths containing ';'
 
 declare -A PROFILE_PATH               # game_id -> yaml path
 declare -A PROFILE_APPID              # game_id -> app id
@@ -22,8 +23,10 @@ declare -A PROFILE_DLL_TARGETS        # game_id -> semicolon list
 declare -A PROFILE_BY_APPID           # appid -> game_id
 
 declare -a STEAM_LIBRARIES=()         # list of steamapps roots
-declare -a DETECTED_GAMES=()          # each entry: key=value json-ish string
-declare -A DETECTED_BY_APPID=()       # appid -> index mapping
+declare -a DETECTED_GAMES=()          # supported (with profile) entries
+declare -A DETECTED_BY_APPID=()       # supported appid -> index mapping
+declare -a DETECTED_UNSUPPORTED=()    # without profile entries
+declare -A MANIFEST_BY_DIR=()         # installdir(lower) -> "appid|name|stateflags"
 
 VERBOSE_MODE="${VERBOSE_MODE:-false}"
 DEBUG_MODE="${DEBUG_MODE:-false}"
@@ -43,7 +46,7 @@ _yaml_value() {
 
 load_detection_profiles() {
     # Ensure globals are associative even if sourced multiple times
-    declare -gA PROFILE_PATH PROFILE_APPID PROFILE_NAME PROFILE_FOLDER_PATTERNS PROFILE_EXECUTABLES PROFILE_REQUIRED_FILES PROFILE_DLL_TARGETS PROFILE_BY_APPID
+    declare -gA PROFILE_PATH PROFILE_APPID PROFILE_NAME PROFILE_FOLDER_PATTERNS PROFILE_EXECUTABLES PROFILE_REQUIRED_FILES PROFILE_DLL_TARGETS PROFILE_BY_APPID MANIFEST_BY_DIR
 
     if [[ ! -d "$PROFILES_DIR" ]]; then
         log_error "Game profiles directory not found: $PROFILES_DIR"
@@ -159,7 +162,7 @@ discover_libraryfolders_files() {
         [[ -d "$root" ]] || continue
         while IFS= read -r -d '' lf; do
             files+=("$lf")
-        done < <(find "$root" -maxdepth 4 -type f -name "libraryfolders.vdf" -print0 2>/dev/null)
+        done < <(find "$root" -maxdepth 5 -type f -name "libraryfolders.vdf" -print0 2>/dev/null)
     done
 
     # Remove duplicates
@@ -197,7 +200,7 @@ discover_steam_libraries() {
         while IFS= read -r -d '' sa; do
             local base="${sa%/steamapps}"
             _add_library_if_exists "$base"
-        done < <(find "$root" -maxdepth 3 -type d -name "steamapps" -print0 2>/dev/null)
+        done < <(find "$root" -maxdepth 5 -type d -name "steamapps" -print0 2>/dev/null)
     done
 
     log_info "Found ${#STEAM_LIBRARIES[@]} Steam library(ies)"
@@ -260,12 +263,34 @@ validate_installation() {
     local profile_path="${PROFILE_PATH[$game_id]}"
     local game_name="${PROFILE_NAME[$game_id]:-$game_id}"
 
-    local record="game_id=$game_id;game_name=$game_name;app_id=$app_id;install_path=$install_path;dll_target_dir=$dll_dir;detection_method=$detection_method;is_proton=$is_proton;proton_prefix=$proton_prefix;writable=$writable;profile_matched=$profile_path"
+    local record="game_id=$game_id${DELIM}game_name=$game_name${DELIM}app_id=$app_id${DELIM}install_path=$install_path${DELIM}dll_target_dir=$dll_dir${DELIM}detection_method=$detection_method${DELIM}is_proton=$is_proton${DELIM}proton_prefix=$proton_prefix${DELIM}writable=$writable${DELIM}profile_matched=$profile_path"
 
     DETECTED_BY_APPID["$app_id"]="${#DETECTED_GAMES[@]}"
     DETECTED_GAMES+=("$record")
     log_success "Detected: $game_name (AppID: $app_id) via $detection_method"
     return 0
+}
+
+record_unsupported() {
+    local app_id="$1"
+    local name="$2"
+    local install_path="$3"
+    local detection_method="$4"
+
+    local writable="false"
+    _is_writable "$install_path" && writable="true"
+
+    local proton_prefix=""
+    local is_proton="false"
+    local steamapps_base="${install_path%/common/*}/compatdata"
+    if [[ -d "$steamapps_base/$app_id/pfx" ]]; then
+        proton_prefix="$steamapps_base/$app_id/pfx"
+        is_proton="true"
+    fi
+
+    local record="game_name=$name${DELIM}app_id=$app_id${DELIM}install_path=$install_path${DELIM}detection_method=$detection_method${DELIM}is_proton=$is_proton${DELIM}proton_prefix=$proton_prefix${DELIM}writable=$writable${DELIM}profile_matched="
+    DETECTED_UNSUPPORTED+=("$record")
+    log_info "Detected (no profile): $name (AppID: $app_id) via $detection_method"
 }
 
 # -----------------------------------------------------------------------------
@@ -312,10 +337,16 @@ scan_appmanifests() {
                 [[ -f "$manifest" ]] || continue
                 declare -A app=()
                 parse_appmanifest "$manifest" app || continue
-                [[ "${app[stateflags]}" != "4" ]] && continue
                 local app_id="${app[appid]}"
                 local name="${app[name]}"
                 local installdir="${app[installdir]}"
+                local state="${app[stateflags]}"
+                if [[ -n "$installdir" ]]; then
+                    local key="$(echo "${installdir,,}")"
+                    MANIFEST_BY_DIR["$key"]="$app_id|$name|$state"
+                fi
+
+                [[ "$state" != "4" ]] && continue
                 local install_path="$lib/common/$installdir"
 
                 echo "$app_id|$name|$install_path|appmanifest" >>"$tmp"
@@ -329,14 +360,40 @@ scan_appmanifests() {
     for tmp in "${temp_files[@]}"; do
         while IFS='|' read -r app_id name install_path method; do
             [[ -z "$app_id" ]] && continue
-            [[ -n "${DETECTED_BY_APPID[$app_id]:-}" ]] && continue
-            local gid=$(_match_profile_by_appid "$app_id")
-            [[ -z "$gid" ]] && continue
-            validate_installation "$gid" "$app_id" "$install_path" "$method" || true
+            if [[ -n "${PROFILE_BY_APPID[$app_id]}" ]]; then
+                [[ -n "${DETECTED_BY_APPID[$app_id]:-}" ]] && continue
+                local gid=$(_match_profile_by_appid "$app_id")
+                [[ -z "$gid" ]] && continue
+                validate_installation "$gid" "$app_id" "$install_path" "$method" || true
+            else
+                record_unsupported "$app_id" "$name" "$install_path" "$method"
+            fi
         done < "$tmp"
         rm -f "$tmp"
     done
     return 0
+}
+
+resolve_app_by_folder() {
+    local folder_base="$1"
+    local lib="$2"
+    [[ -z "$folder_base" || -z "$lib" ]] && return 1
+    local manifest
+    for manifest in "$lib"/appmanifest_*.acf; do
+        [[ -f "$manifest" ]] || continue
+        local installdir
+        installdir=$(grep -Po '^\s*"installdir"\s*"\K[^"]+' "$manifest" 2>/dev/null)
+        [[ -z "$installdir" ]] && continue
+        if [[ "${installdir,,}" == "${folder_base,,}" ]]; then
+            local appid name state
+            appid=$(grep -Po '^\s*"appid"\s*"\K[^"]+' "$manifest" 2>/dev/null)
+            name=$(grep -Po '^\s*"name"\s*"\K[^"]+' "$manifest" 2>/dev/null)
+            state=$(grep -Po '^\s*"StateFlags"\s*"\K[^"]+' "$manifest" 2>/dev/null)
+            echo "${appid}|${name}|${state}"
+            return 0
+        fi
+    done
+    return 1
 }
 
 scan_fuzzy_folders() {
@@ -347,7 +404,23 @@ scan_fuzzy_folders() {
         while read -r folder; do
             local base="$(basename "$folder")"
             gid=$(_match_profile_by_folder "$base")
-            [[ -z "$gid" ]] && continue
+            if [[ -z "$gid" ]]; then
+                # Try to resolve by installdir mapping from manifests
+                local key="$(echo "${base,,}")"
+                local manifest_entry="${MANIFEST_BY_DIR["$key"]}"
+                if [[ -z "$manifest_entry" ]]; then
+                    manifest_entry="$(resolve_app_by_folder "$base" "$lib" || true)"
+                fi
+                if [[ -n "$manifest_entry" ]]; then
+                    local app_id="${manifest_entry%%|*}"
+                    local rest="${manifest_entry#*|}"
+                    local name="${rest%%|*}"
+                    record_unsupported "$app_id" "$name" "$folder" "folder_fuzzy"
+                else
+                    record_unsupported "" "$base" "$folder" "folder_fuzzy"
+                fi
+                continue
+            fi
             app_id="${PROFILE_APPID[$gid]}"
             [[ -n "${DETECTED_BY_APPID[$app_id]:-}" ]] && continue
             validate_installation "$gid" "$app_id" "$folder" "folder_fuzzy" || true
@@ -437,12 +510,22 @@ _cache_valid() {
 _load_cache() {
     DETECTED_GAMES=()
     DETECTED_BY_APPID=()
+    DETECTED_UNSUPPORTED=()
+    local section="supported"
     while IFS= read -r line || [[ -n "$line" ]]; do
         [[ -z "$line" ]] && continue
-        DETECTED_GAMES+=("$line")
+        if [[ "$line" == "---UNSUPPORTED---" ]]; then
+            section="unsupported"
+            continue
+        fi
         local app_id
-        app_id="$(echo "$line" | tr ';' '\n' | awk -F= '$1=="app_id"{print $2}' | head -1)"
-        [[ -n "$app_id" ]] && DETECTED_BY_APPID["$app_id"]=$(( ${#DETECTED_GAMES[@]} -1 ))
+        app_id="$(echo "$line" | tr "$DELIM" '\n' | awk -F= '$1=="app_id"{print $2}' | head -1)"
+        if [[ "$section" == "unsupported" ]]; then
+            DETECTED_UNSUPPORTED+=("$line")
+        else
+            DETECTED_GAMES+=("$line")
+            [[ -n "$app_id" ]] && DETECTED_BY_APPID["$app_id"]=$(( ${#DETECTED_GAMES[@]} -1 ))
+        fi
     done < "$CACHE_FILE"
     log_info "Using cached detection results from $CACHE_FILE"
 }
@@ -450,6 +533,10 @@ _load_cache() {
 _write_cache() {
     : > "$CACHE_FILE"
     for rec in "${DETECTED_GAMES[@]}"; do
+        echo "$rec" >> "$CACHE_FILE"
+    done
+    echo "---UNSUPPORTED---" >> "$CACHE_FILE"
+    for rec in "${DETECTED_UNSUPPORTED[@]}"; do
         echo "$rec" >> "$CACHE_FILE"
     done
 }
@@ -482,29 +569,51 @@ detect_all_games() {
 print_detected_games_table() {
     if [[ ${#DETECTED_GAMES[@]} -eq 0 ]]; then
         echo "No supported games detected."
-        return
+    else
+        printf "%-28s %-10s %-8s %-5s %-7s %s\n" "Game" "AppID" "Proton" "Write" "Method" "Path"
+        printf "%-28s %-10s %-8s %-5s %-7s %s\n" "----------------------------" "------" "------" "-----" "------" "----"
+        local rec
+        for rec in "${DETECTED_GAMES[@]}"; do
+            local game_name app_id is_proton writable method path
+            IFS="$DELIM" read -r -a kvs <<< "$rec"
+            for kv in "${kvs[@]}"; do
+                local k="${kv%%=*}"
+                local v="${kv#*=}"
+                case "$k" in
+                    game_name) game_name="$v" ;;
+                    app_id) app_id="$v" ;;
+                    is_proton) is_proton="$v" ;;
+                    writable) writable="$v" ;;
+                    detection_method) method="$v" ;;
+                    install_path) path="$v" ;;
+                esac
+            done
+            printf "%-28s %-10s %-8s %-5s %-7s %s\n" "$game_name" "$app_id" "$is_proton" "$writable" "$method" "$path"
+        done
     fi
 
-    printf "%-28s %-10s %-8s %-5s %-7s %s\n" "Game" "AppID" "Proton" "Write" "Method" "Path"
-    printf "%-28s %-10s %-8s %-5s %-7s %s\n" "----------------------------" "------" "------" "-----" "------" "----"
-    local rec
-    for rec in "${DETECTED_GAMES[@]}"; do
-        local game_name app_id is_proton writable method path
-        IFS=';' read -r -a kvs <<< "$rec"
-        for kv in "${kvs[@]}"; do
-            local k="${kv%%=*}"
-            local v="${kv#*=}"
-            case "$k" in
-                game_name) game_name="$v" ;;
-                app_id) app_id="$v" ;;
-                is_proton) is_proton="$v" ;;
-                writable) writable="$v" ;;
-                detection_method) method="$v" ;;
-                install_path) path="$v" ;;
-            esac
+    if [[ ${#DETECTED_UNSUPPORTED[@]} -gt 0 ]]; then
+        echo ""
+        echo "Detected games without profile (not installed by OptiScaler):"
+        printf "%-28s %-10s %-7s %s\n" "Game" "AppID" "Method" "Path"
+        printf "%-28s %-10s %-7s %s\n" "----------------------------" "------" "-------" "----"
+        local rec2
+        for rec2 in "${DETECTED_UNSUPPORTED[@]}"; do
+            local game_name app_id method path
+            IFS="$DELIM" read -r -a kvs <<< "$rec2"
+            for kv in "${kvs[@]}"; do
+                local k="${kv%%=*}"
+                local v="${kv#*=}"
+                case "$k" in
+                    game_name) game_name="$v" ;;
+                    app_id) app_id="$v" ;;
+                    detection_method) method="$v" ;;
+                    install_path) path="$v" ;;
+                esac
+            done
+            printf "%-28s %-10s %-7s %s\n" "${game_name:-UNKNOWN}" "${app_id:-UNKNOWN}" "$method" "$path"
         done
-        printf "%-28s %-10s %-8s %-5s %-7s %s\n" "$game_name" "$app_id" "$is_proton" "$writable" "$method" "$path"
-    done
+    fi
 }
 
 export -f detect_all_games
