@@ -580,33 +580,34 @@ jobs:
 
 ## 📈 Future Roadmap
 
-### Phase 1: MVP (v0.1.0)
-- [ ] GPU detection (AMD, Intel, NVIDIA)
-- [ ] Basic game discovery (Steam)
-- [ ] 5 popular games supported
-- [ ] Manual installation
-- [ ] Basic documentation
+### Delivered: Core Release (v0.1.0-alpha, 2025-10-25)
+- ✅ Unified GPU detection across AMD, Intel, and NVIDIA (architecture-aware)
+- ✅ Steam library scanning with profile-aware configuration generation
+- ✅ 6 GPU profiles + 10 game profiles shipped with checksumed binaries
+- ✅ Installer, updater, uninstaller, and diagnostics with safe backups
+- ✅ CI, automated tests, and baseline documentation
 
-### Phase 2: Enhanced (v0.2.0)
-- [ ] Lutris integration
-- [ ] 20+ games supported
-- [ ] Automated Steam launch options
-- [ ] TUI interface
-- [ ] Benchmark tool
+### Next Up: Integration & UX (v0.2.0)
+- [ ] Lutris integration (library scan + launch options)
+- [ ] Heroic Games Launcher detection
+- [ ] Interactive TUI flow for install/update (dialog/whiptail)
+- [ ] Automated benchmarking (pre/post FPS capture)
+- [ ] Update notification hook when new profiles or binaries ship
+- [ ] Per-game user overrides layered on shipped profiles
+- [ ] Expand game catalog to 25 titles (add esports + F2P staples)
+- [ ] AUR package & release checklist (trigger when repo reaches 100+ stars)
 
-### Phase 3: Advanced (v0.3.0)
-- [ ] Heroic Games Launcher
-- [ ] Per-game profiles
-- [ ] Community profile sharing
-- [ ] Web dashboard (optional)
-- [ ] Update notification system
+### Community & Sharing (v0.3.0)
+- [ ] Community profile sharing hub (import/export signed YAML)
+- [ ] Profile validation pipeline (lint + checksum)
+- [ ] Optional web dashboard for profile browsing
+- [ ] Multi-language UX strings (start with English plus one additional locale)
 
-### Phase 4: Professional (v1.0.0)
-- [ ] 100+ games supported
-- [ ] Multi-language support
-- [ ] Flatpak/AppImage packaging
-- [ ] Professional documentation
-- [ ] Community forums
+### Distribution & Scale (v1.0.0)
+- [ ] Flatpak/AppImage builds with automatic updates
+- [ ] 100+ curated game profiles
+- [ ] Professional documentation set and support portal
+- [ ] Telemetry-free diagnostics bundle for bug reports
 
 ## 🌐 Community Engagement
 
@@ -639,4 +640,4 @@ MIT License - Open source, free to use, modify, and distribute.
 
 ---
 
-**Next Steps**: Create initial repository structure and begin Phase 1 implementation.
+**Next Steps**: Focus on v0.2.0 deliverables—Lutris/Heroic integration, interactive TUI, expanded game catalog, and the AUR packaging gate.
