@@ -1,0 +1,17 @@
+game_id: cyberpunk2077
+name: "Cyberpunk 2077"
+app_id: 1091500
+
+detection:
+  folder_patterns:
+    - "Cyberpunk 2077"
+    - "Cyberpunk2077"
+    - "CP2077"
+    - "Cyberpunk"
+  executables:
+    - "bin/x64/Cyberpunk2077.exe"
+  required_files: []
+  dll_targets:
+    - "bin/x64"
+    - "bin/x86"
+    - "."

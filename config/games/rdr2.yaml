@@ -1,0 +1,17 @@
+game_id: rdr2
+name: "Red Dead Redemption 2"
+app_id: 1174180
+
+detection:
+  folder_patterns:
+    - "Red Dead Redemption 2"
+    - "RedDeadRedemption2"
+    - "RDR2"
+  executables:
+    - "RDR2.exe"
+    - "bin/RDR2.exe"
+  required_files: []
+  dll_targets:
+    - "."
+    - "bin"
+    - "bin/x64"

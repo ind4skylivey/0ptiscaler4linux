@@ -1,0 +1,16 @@
+game_id: newworld
+name: "New World"
+app_id: 1063730
+
+detection:
+  folder_patterns:
+    - "New World"
+    - "NewWorld"
+    - "NW"
+  executables:
+    - "Bin64/NewWorld.exe"
+    - "NewWorldLauncher.exe"
+  required_files: []
+  dll_targets:
+    - "Bin64"
+    - "."

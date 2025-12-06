@@ -1,0 +1,15 @@
+game_id: eldenring
+name: "ELDEN RING"
+app_id: 1245620
+
+detection:
+  folder_patterns:
+    - "Elden Ring"
+    - "EldenRing"
+    - "ELDEN RING"
+  executables:
+    - "eldenring.exe"
+  required_files: []
+  dll_targets:
+    - "."
+    - "Game"

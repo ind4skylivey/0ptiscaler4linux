@@ -1,0 +1,17 @@
+game_id: godofwar
+name: "God of War"
+app_id: 1593500
+
+detection:
+  folder_patterns:
+    - "God of War"
+    - "GodOfWar"
+    - "GOW"
+  executables:
+    - "GoW.exe"
+    - "GodOfWar.exe"
+  required_files: []
+  dll_targets:
+    - "."
+    - "Binaries/Win64"
+    - "bin"

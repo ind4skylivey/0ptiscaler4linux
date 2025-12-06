@@ -1,0 +1,14 @@
+game_id: forspoken
+name: "Forspoken"
+app_id: 1654340
+
+detection:
+  folder_patterns:
+    - "Forspoken"
+  executables:
+    - "Forspoken.exe"
+    - "Forspoken/Binaries/Win64/Forspoken.exe"
+  required_files: []
+  dll_targets:
+    - "Forspoken/Binaries/Win64"
+    - "."

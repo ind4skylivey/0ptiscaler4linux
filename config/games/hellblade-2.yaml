@@ -1,0 +1,16 @@
+game_id: hellblade-2
+name: "Senua's Saga: Hellblade II"
+app_id: 747350
+
+detection:
+  folder_patterns:
+    - "Hellblade II"
+    - "Hellblade2"
+    - "Senuas Saga"
+  executables:
+    - "Hellblade2-Win64-Shipping.exe"
+    - "Senua2-Win64-Shipping.exe"
+  required_files: []
+  dll_targets:
+    - "Binaries/Win64"
+    - "."

@@ -1,0 +1,16 @@
+game_id: black-myth-wukong
+name: "Black Myth: Wukong"
+app_id: 2358720
+
+detection:
+  folder_patterns:
+    - "Black Myth Wukong"
+    - "BlackMythWukong"
+    - "Wukong"
+  executables:
+    - "Wukong.exe"
+    - "BlackMythWukong.exe"
+  required_files: []
+  dll_targets:
+    - "."
+    - "Binaries/Win64"

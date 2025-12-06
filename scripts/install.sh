@@ -1,66 +1,77 @@
 #!/bin/bash
 
-# ═══════════════════════════════════════════════════════════════════════════
+# =============================================================================
 #  OPTISCALER UNIVERSAL - MAIN INSTALLER (ROBUST VERSION)
-# ═══════════════════════════════════════════════════════════════════════════
+# =============================================================================
 
-set -e
+set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+MODULE_DIR="$SCRIPT_DIR/src/modules"
 VERSION="0.1.0-alpha"
 LICENSE="MIT - Open Source"
 
-# ═══════════════════════════════════════════════════════════════════════════
-#  INLINE LOGGER (Fallback)
-# ═══════════════════════════════════════════════════════════════════════════
+LOG_LEVEL="${LOG_LEVEL:-INFO}"
+VERBOSE_MODE=false
+DEBUG_MODE=false
+SCAN_ONLY=false
+LIST_GAMES=false
+FORCE_RESCAN=false
 
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-MAGENTA='\033[0;35m'
-CYAN='\033[0;36m'
-NC='\033[0m'
+# =============================================================================
+#  MODULE LOADING
+# =============================================================================
 
-log_info() { echo -e "${CYAN}[INFO]${NC} $*"; }
-log_success() { echo -e "${GREEN}✓ [SUCCESS]${NC} $*"; }
-log_warn() { echo -e "${YELLOW}⚠ [WARN]${NC} $*"; }
-log_error() { echo -e "${RED}✗ [ERROR]${NC} $*" >&2; }
-log_error_exit() { echo -e "${RED}✗ [ERROR]${NC} $*" >&2; exit 1; }
-log_section() { echo ""; echo -e "${MAGENTA}═══════════════════════════════════════════════════════════════════════════${NC}"; echo -e "${MAGENTA}  $*${NC}"; echo -e "${MAGENTA}═══════════════════════════════════════════════════════════════════════════${NC}"; echo ""; }
-log_subsection() { echo -e "${BLUE}>>> $*${NC}"; }
+print_banner() {
+    cat << "EOF"
 
-# ═══════════════════════════════════════════════════════════════════════════
-#  INLINE STEAM SCANNER (Fallback if steam_scan.sh missing)
-# ═══════════════════════════════════════════════════════════════════════════
+═══════════════════════════════════════════════════════════════════════════
 
-detect_steam_libraries() {
-    log_info "Scanning for Steam installations..."
-    
-    local -a all_libs
-    
-    # Check standard paths
-    for path in "$HOME/.steam/steam" "$HOME/.local/share/Steam"; do
-        if [[ -d "$path/steamapps/common" ]]; then
-            all_libs+=("$path/steamapps/common")
-            log_info "  ✓ Found: $path/steamapps/common"
-        fi
+                    OPTISCALER UNIVERSAL INSTALLER                        
+                                                                           
+           Unlock your GPU's full potential on Linux - automatically      
+                                                                           
+═══════════════════════════════════════════════════════════════════════════
+
+EOF
+    echo "Version: $VERSION"
+    echo "License: $LICENSE"
+    echo ""
+}
+
+load_modules() {
+    source "$SCRIPT_DIR/lib/colors.sh"
+    source "$SCRIPT_DIR/lib/logging.sh"
+    source "$MODULE_DIR/steam_parser.sh"
+    source "$MODULE_DIR/game_detector.sh"
+}
+
+usage() {
+    cat <<EOF
+Usage: $(basename "$0") [options]
+  --verbose           Verbose logging (DEBUG)
+  --debug             Max logging (TRACE) with disk/mount details
+  --list-games        List supported games (profiles) and exit
+  --scan-only         Scan Steam libraries without installing
+  --force-rescan      Ignore cache and rescan libraries
+  -h, --help          Show this help
+EOF
+}
+
+parse_args() {
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --verbose) LOG_LEVEL="DEBUG"; VERBOSE_MODE=true ;;
+            --debug) LOG_LEVEL="TRACE"; DEBUG_MODE=true ;;
+            --list-games) LIST_GAMES=true ;;
+            --scan-only) SCAN_ONLY=true ;;
+            --force-rescan) FORCE_RESCAN=true ;;
+            -h|--help) usage; exit 0 ;;
+            *) log_warn "Unknown option: $1"; usage; exit 1 ;;
+        esac
+        shift
     done
-    
-    # Check /mnt and /media
-    for base in /mnt /media "/run/media/$USER"; do
-        [[ ! -d "$base" ]] && continue
-        while IFS= read -r -d '' dir; do
-            local lib="${dir%/steamapps*}/steamapps/common"
-            if [[ -d "$lib" && ! " ${all_libs[@]} " =~ " ${lib} " ]]; then
-                all_libs+=("$lib")
-                log_info "  ✓ Found: $lib"
-            fi
-        done < <(find "$base" -maxdepth 3 -type d -name "steamapps" -print0 2>/dev/null)
-    done
-    
-    # Remove duplicates and output
-    printf "%s\n" "${all_libs[@]}" | sort -u
+    export LOG_LEVEL VERBOSE_MODE DEBUG_MODE FORCE_RESCAN
 }
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -84,25 +95,20 @@ License: MIT - Open Source
 EOF
 }
 
-load_modules() {
-    log_section "Loading Core Modules"
-    
+load_core_modules() {
+    log_section "Loading core modules"
     local modules=("downloader" "steam_scan")
-    
     for module in "${modules[@]}"; do
         local module_path="$SCRIPT_DIR/core/${module}.sh"
-        if [[ -f "$module_path" ]]; then
-            source "$module_path" 2>/dev/null || log_warn "Loaded $module with warnings"
-            log_success "Loaded: $module"
-        else
-            log_warn "Module not found: $module (will use fallback functions)"
-        fi
+        [[ -f "$module_path" ]] || { log_warn "Module not found: $module_path"; continue; }
+        source "$module_path" 2>/dev/null || log_warn "Loaded $module with warnings"
+        log_success "Loaded: $module"
     done
 }
 
-# ═══════════════════════════════════════════════════════════════════════════
+# =============================================================================
 #  PHASE 1: SYSTEM REQUIREMENTS
-# ═══════════════════════════════════════════════════════════════════════════
+# =============================================================================
 
 check_requirements() {
     log_section "Checking System Requirements"
@@ -173,71 +179,28 @@ download_deps() {
 # ═══════════════════════════════════════════════════════════════════════════
 
 scan_steam_libraries() {
-    log_section "Scanning for Steam Libraries (Universal Multi-Disk Detection)"
-    
-    # Use detect_steam_libraries if available
-    if declare -f detect_steam_libraries >/dev/null; then
-        steam_libraries=($(detect_steam_libraries))
-    else
-        log_warn "detect_steam_libraries not found, using inline version"
-        steam_libraries=($(detect_steam_libraries))
-    fi
-    
-    if [[ ${#steam_libraries[@]} -eq 0 ]]; then
+    log_section "Scanning Steam libraries (multi-disk)"
+    discover_steam_libraries
+    if [[ ${#STEAM_LIBRARIES[@]} -eq 0 ]]; then
         log_error "No Steam libraries found!"
         return 1
     fi
-    
-    log_success "Detected ${#steam_libraries[@]} Steam library location(s):"
-    for lib in "${steam_libraries[@]}"; do
+    log_success "Detected ${#STEAM_LIBRARIES[@]} Steam library location(s):"
+    for lib in "${STEAM_LIBRARIES[@]}"; do
         log_info "  ├─ $lib"
     done
 }
 
-# ═══════════════════════════════════════════════════════════════════════════
-#  PHASE 5: SCAN FOR GAMES
-# ═══════════════════════════════════════════════════════════════════════════
+# =============================================================================
+#  PHASE 5: GAME DETECTION
+# =============================================================================
 
 scan_games() {
-    log_section "Scanning for Supported Games Across All Libraries"
-    
-    local profiles_dir="$SCRIPT_DIR/profiles/games"
-    
-    if [[ ! -d "$profiles_dir" ]]; then
-        log_error "Games profiles directory not found: $profiles_dir"
-        return 1
-    fi
-    
-    local profile_count=$(ls -1 "$profiles_dir"/*.yaml 2>/dev/null | wc -l)
-    log_info "Found $profile_count game profiles"
-    
-    declare -gA found_games
-    local found=0
-    
-    for game_profile in "$profiles_dir"/*.yaml; do
-        [[ ! -f "$game_profile" ]] && continue
-        
-        local game_name=$(basename "$game_profile" .yaml)
-        local steam_dir=$(grep -m1 'steam_dir:' "$game_profile" 2>/dev/null | awk '{print $2}' | tr -d '"')
-        local app_id=$(grep -m1 'app_id:' "$game_profile" 2>/dev/null | awk '{print $2}' | tr -d '"')
-        
-        [[ -z "$steam_dir" || -z "$app_id" ]] && continue
-        
-        log_info "Looking for: $game_name (APP: $app_id)"
-        
-        for lib in "${steam_libraries[@]}"; do
-            local game_path="$lib/$steam_dir"
-            if [[ -d "$game_path" ]]; then
-                log_success "  ✓ Found at: $game_path"
-                found_games["$app_id"]="$game_path"
-                ((found++))
-                break
-            fi
-        done
-    done
-    
-    GAMES_FOUND_COUNT=$found
-    log_success "Game scan complete: $found game(s) found"
+    log_section "Detecting installed games (multi-method)"
+    detect_all_games
+    GAMES_FOUND_COUNT=${#DETECTED_GAMES[@]}
+    print_detected_games_table
+    log_success "Detection finished: $GAMES_FOUND_COUNT compatible game(s)"
 }
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -250,45 +213,29 @@ install_optiscaler() {
     [[ $GAMES_FOUND_COUNT -eq 0 ]] && { log_warn "No games found"; return 0; }
     
     local games_installed=0
-    
-    for app_id in "${!found_games[@]}"; do
-        local game_path="${found_games[$app_id]}"
-        local game_name=$(basename "$game_path")
-        
+
+    for rec in "${DETECTED_GAMES[@]}"; do
+        local app_id game_path game_name
+        IFS=';' read -r -a kvs <<< "$rec"
+        for kv in "${kvs[@]}"; do
+            local key="${kv%%=*}"
+            local val="${kv#*=}"
+            case "$key" in
+                app_id) app_id="$val" ;;
+                install_path) game_path="$val" ;;
+                game_name) game_name="$val" ;;
+            esac
+        done
+
         log_subsection "Installing to: $game_name"
-        
+
         if declare -f install_to_game >/dev/null; then
             if install_to_game "$game_path" "$app_id"; then
                 ((games_installed++))
             fi
         else
-            log_warn "install_to_game function not available"
+            log_warn "install_to_game function not available (skipping real install)"
         fi
-    done
-
-    # ═══════════════════════════════════════════════════════════════════════════
-    #  COPY CRITICAL ASSETS FROM CACHE
-    # ═══════════════════════════════════════════════════════════════════════════
-
-    log_section
-    log_info "Checking for critical assets in cache..."
-
-    CACHE_DIR="$HOME/.optiscaler-universal/cache/optiscaler/"
-    ASSETS=("D3D12_Optiscaler" "DlssOverrides" "dxgi.dll" "nvngx.dll" "OptiScaler.ini")
-
-    for game_path in "${GAMES_FOUND[@]}"; do
-        for asset in "${ASSETS[@]}"; do
-            if [ ! -e "$game_path/$asset" ]; then
-                if [ -e "$CACHE_DIR/$asset" ]; then
-                    cp -r "$CACHE_DIR/$asset" "$game_path/"
-                    log_success "$asset copied from cache to $(basename "$game_path")"
-                else
-                    log_warn "$asset NOT found in cache. Download manually if needed."
-                fi
-            else
-                log_info "$asset already exists in $(basename "$game_path")"
-            fi
-        done
     done
 
     
@@ -303,7 +250,7 @@ final_report() {
     log_section "Installation Summary"
     
     log_info "GPU Detected: $GPU_VENDOR"
-    log_info "Steam Libraries: ${#steam_libraries[@]} found"
+    log_info "Steam Libraries: ${#STEAM_LIBRARIES[@]} found"
     log_info "Games Updated: $GAMES_FOUND_COUNT"
     log_info ""
     log_info "Next Steps:"
@@ -320,16 +267,22 @@ error_handler() {
 
 trap 'error_handler $LINENO' ERR
 
-# ═══════════════════════════════════════════════════════════════════════════
+# =============================================================================
 #  MAIN
-# ═══════════════════════════════════════════════════════════════════════════
+# =============================================================================
 
 main() {
-    print_banner
-    echo "[INFO] Starting OptiScaler Universal installation..."
-    echo ""
-    
     load_modules
+    parse_args "$@"
+    # Update logging level after argument parsing
+    if [[ -n "${LOG_LEVELS[$LOG_LEVEL]:-}" ]]; then
+        CURRENT_LOG_LEVEL=${LOG_LEVELS[$LOG_LEVEL]}
+    fi
+
+    print_banner
+    log_info "Starting OptiScaler Universal installation..."
+    
+    load_core_modules
     check_requirements
     detect_gpu
     download_deps
@@ -339,9 +292,12 @@ main() {
     fi
     
     scan_games
+    
+    $LIST_GAMES && { list_supported_games; exit 0; }
+    $SCAN_ONLY && { log_info "Scan-only mode requested; exiting."; exit 0; }
+    
     install_optiscaler
     final_report
 }
 
 main "$@"
-

@@ -1,0 +1,14 @@
+game_id: hogwartslegacy
+name: "Hogwarts Legacy"
+app_id: 990080
+
+detection:
+  folder_patterns:
+    - "Hogwarts Legacy"
+    - "HogwartsLegacy"
+    - "HL"
+  executables:
+    - "Phoenix/Binaries/Win64/HogwartsLegacy.exe"
+  required_files: []
+  dll_targets:
+    - "Phoenix/Binaries/Win64"

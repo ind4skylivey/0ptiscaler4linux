@@ -1,0 +1,14 @@
+game_id: starfield
+name: "Starfield"
+app_id: 1716740
+
+detection:
+  folder_patterns:
+    - "Starfield"
+    - "Star Field"
+  executables:
+    - "Starfield.exe"
+  required_files: []
+  dll_targets:
+    - "."
+    - "Data"

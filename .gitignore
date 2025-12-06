@@ -1,55 +1,85 @@
-# OptiScaler Universal - Git Ignore
+# ============================================
+# Build & packaging artifacts
+# ============================================
+aur-repo/
+pkg/
+**/.pkg.tar.*
+**/*.pkg.tar.*
+*.tar.gz
+*.tar.xz
+*.tar.zst
+*.tar.bz2
+*.zip
 
-# Logs
-*.log
-*.log.*
-logs/
+# Release archives keep only if stored under releases/
+!releases/*.tar.gz
+!releases/*.tar.xz
+!releases/*.zip
 
-# Backups
-backups/
-*.backup
-*.bak
+# makepkg work dirs
+src/*
+!src/modules/
 
-# Temporary files
-*.tmp
-*.temp
+# ============================================
+# Caches & temp
+# ============================================
 .cache/
+*.cache
+tmp/
+temp/
+cache/
+downloads/
+/tmp/optiscaler_*
+*.optiscaler_cache
 
-# User-specific
-config.local
-user_preferences.yaml
+# ============================================
+# Logs
+# ============================================
+*.log
+log.txt
+debug.txt
+test_*.log
 
-# OS files
-.DS_Store
-Thumbs.db
-desktop.ini
+# ============================================
+# Downloaded vendor binaries (runtime)
+# ============================================
+optiscaler-*.zip
+fakenvapi-*.tar.gz
+vendor/
 
-# IDE
+# ============================================
+# IDE / Editor
+# ============================================
 .vscode/
 .idea/
 *.swp
 *.swo
+.swn
 *~
+.#*
 
-# Python
+# ============================================
+# System files
+# ============================================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ============================================
+# Python artifacts (future-proof)
+# ============================================
 __pycache__/
 *.py[cod]
 *$py.class
 .Python
 venv/
-env/
+.venv/
+ENV/
 
-# Testing
-.coverage
-htmlcov/
+# ============================================
+# Test outputs / coverage
+# ============================================
+test_output/
+test_results/
+coverage/
 .pytest_cache/
-
-# Build artifacts
-dist/
-build/
-*.egg-info/
-
-# Large binaries (should use Git LFS)
-# Already tracked, just documenting
-# *.dll
-# *.so

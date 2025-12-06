@@ -1,0 +1,17 @@
+game_id: ghostwire-tokyo
+name: "Ghostwire: Tokyo"
+app_id: 1643950
+
+detection:
+  folder_patterns:
+    - "Ghostwire Tokyo"
+    - "GhostwireTokyo"
+    - "Ghostwire"
+  executables:
+    - "GhostwireTokyo.exe"
+    - "bin/GhostwireTokyo.exe"
+  required_files: []
+  dll_targets:
+    - "."
+    - "bin"
+    - "Binaries/Win64"

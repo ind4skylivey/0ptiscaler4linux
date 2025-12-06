@@ -1,0 +1,16 @@
+game_id: stalker-2
+name: "S.T.A.L.K.E.R. 2: Heart of Chornobyl"
+app_id: 2645590
+
+detection:
+  folder_patterns:
+    - "STALKER 2"
+    - "S.T.A.L.K.E.R. 2"
+    - "STALKER2"
+  executables:
+    - "stalker2.exe"
+    - "bin/x64/stalker2.exe"
+  required_files: []
+  dll_targets:
+    - "."
+    - "bin/x64"

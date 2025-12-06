@@ -1,0 +1,18 @@
+game_id: spiderman
+name: "Marvel's Spider-Man Remastered"
+app_id: 1817070
+
+detection:
+  folder_patterns:
+    - "Marvels Spider-Man Remastered"
+    - "Spider-Man Remastered"
+    - "Spiderman"
+    - "MarvelsSpiderMan"
+  executables:
+    - "MarvelsSpiderMan.exe"
+    - "Spider-Man.exe"
+  required_files: []
+  dll_targets:
+    - "."
+    - "bin"
+    - "Binaries/Win64"

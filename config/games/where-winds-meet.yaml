@@ -1,0 +1,15 @@
+game_id: where-winds-meet
+name: "Where Winds Meet"
+app_id: 3564740
+
+detection:
+  folder_patterns:
+    - "Where Winds Meet"
+    - "WhereWindsMeet"
+    - "WWM"
+  executables:
+    - "WhereWindsMeet.exe"
+  required_files: []
+  dll_targets:
+    - "."
+    - "Binaries/Win64"

@@ -1,0 +1,14 @@
+game_id: witcher3
+name: "The Witcher 3: Wild Hunt"
+app_id: 292030
+
+detection:
+  folder_patterns:
+    - "The Witcher 3"
+    - "Witcher3"
+    - "Witcher 3"
+  executables:
+    - "bin/x64/witcher3.exe"
+  required_files: []
+  dll_targets:
+    - "bin/x64"

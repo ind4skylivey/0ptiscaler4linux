@@ -1,0 +1,16 @@
+game_id: indiana-jones
+name: "Indiana Jones and the Great Circle"
+app_id: 2342680
+
+detection:
+  folder_patterns:
+    - "Indiana Jones"
+    - "IndianaJones"
+    - "Great Circle"
+  executables:
+    - "IndianaJones.exe"
+    - "Indy.exe"
+  required_files: []
+  dll_targets:
+    - "."
+    - "Binaries/Win64"

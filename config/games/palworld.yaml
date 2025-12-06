@@ -1,0 +1,15 @@
+game_id: palworld
+name: "Palworld"
+app_id: 1623730
+
+detection:
+  folder_patterns:
+    - "Palworld"
+    - "Pal World"
+  executables:
+    - "Pal/Binaries/Win64/Palworld-Win64-Shipping.exe"
+    - "Palworld.exe"
+  required_files: []
+  dll_targets:
+    - "Pal/Binaries/Win64"
+    - "."

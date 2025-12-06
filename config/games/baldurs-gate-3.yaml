@@ -1,0 +1,16 @@
+game_id: baldurs-gate-3
+name: "Baldur's Gate 3"
+app_id: 1238140
+
+detection:
+  folder_patterns:
+    - "Baldurs Gate 3"
+    - "Baldur's Gate 3"
+    - "BG3"
+  executables:
+    - "bin/bg3_dx11.exe"
+    - "bin/bg3.exe"
+  required_files: []
+  dll_targets:
+    - "bin"
+    - "bin/bg3_dx11"

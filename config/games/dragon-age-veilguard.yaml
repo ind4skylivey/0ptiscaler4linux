@@ -1,0 +1,16 @@
+game_id: dragon-age-veilguard
+name: "Dragon Age: The Veilguard"
+app_id: 1646460
+
+detection:
+  folder_patterns:
+    - "Dragon Age The Veilguard"
+    - "DragonAgeVeilguard"
+    - "DA Veilguard"
+  executables:
+    - "Veilguard.exe"
+    - "DragonAgeVeilguard.exe"
+  required_files: []
+  dll_targets:
+    - "."
+    - "Binaries/Win64"
