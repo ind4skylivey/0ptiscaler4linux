@@ -10,10 +10,10 @@
 # ═══════════════════════════════════════════════════════════════════════════
 
 CACHE_DIR="$HOME/.optiscaler-universal/cache"
-OPTISCALER_LOCAL_DIR="${OPTISCALER_LOCAL_DIR:-/home/il1v3y/Downloads/Modeo2/Optiscaler_0.9.0-pre5 (20251031)}"
-FSR4_MOD_DIR="${FSR4_MOD_DIR:-/home/il1v3y/Downloads/Modeo2/DLL Mods/FSR4 DLL (con escalador modificado)}"
-INTEL_SDK_DIR="${INTEL_SDK_DIR:-/home/il1v3y/Downloads/Modeo2/DLL Mods/Intel SDK2.1}"
-DRIVER_DLL_DIR="${DRIVER_DLL_DIR:-/home/il1v3y/Downloads/Modeo2/DLL Mods/DLL de drivers 23.9.1}"
+OPTISCALER_LOCAL_DIR="${OPTISCALER_LOCAL_DIR:-$SCRIPT_DIR/../vendor/local/Optiscaler_0.9.0-pre5 (20251031)}"
+FSR4_MOD_DIR="${FSR4_MOD_DIR:-$SCRIPT_DIR/../vendor/local/DLL Mods/FSR4 DLL}"
+INTEL_SDK_DIR="${INTEL_SDK_DIR:-$SCRIPT_DIR/../vendor/local/DLL Mods/Intel SDK2.1}"
+DRIVER_DLL_DIR="${DRIVER_DLL_DIR:-$SCRIPT_DIR/../vendor/local/DLL Mods/DLL de drivers 23.9.1}"
 
 # Use local extracted OptiScaler if available
 use_local_optiscaler() {

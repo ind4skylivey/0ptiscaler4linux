@@ -45,7 +45,9 @@ test_*.log
 # ============================================
 optiscaler-*.zip
 fakenvapi-*.tar.gz
-vendor/
+# keep vendor/local checked in for bundled binaries
+vendor/*
+!vendor/local/**
 
 # ============================================
 # IDE / Editor
