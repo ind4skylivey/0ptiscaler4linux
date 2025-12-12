@@ -1,0 +1,70 @@
+# Dying Light 2 Stay Human Game Profile
+metadata:
+  name: "Dying Light 2 Stay Human"
+  engine: "C-Engine"
+  api: "DX12"
+  dlss_version: "2.3"
+  fsr_version: "2.0 (Native)"
+  steamid: "534380"
+
+paths:
+  steam_linux: "~/.local/share/Steam/steamapps/common/Dying Light 2"
+  proton_prefix: "~/.local/share/Steam/steamapps/compatdata/534380"
+  executable: "ph/work/bin/x64/DyingLightGame_x64_rwdi.exe"
+  config_dir: "ph/work/bin/x64"
+
+compatibility:
+  optiscaler_status: "Excellent"
+  optiscaler_version_min: "0.9.0-pre5"
+  known_issues: 
+    - "Intro videos freeze game with mod loaded (use -nologos)"
+    - "Overlay menu mouse input blocked in Exclusive Fullscreen (use Borderless)"
+    - "nvngx.ini conflicts with OptiScaler.ini (must be deleted)"
+  tested_proton: 
+    - "Proton-EM 10.0-30"
+
+steam:
+  launch_options: "MANGOHUD=0 WINEDLLOVERRIDES=\"winmm=n,b\" %command% -nologos"
+  recommended_proton: "Proton-EM 10.0-30"
+
+installation:
+  mod_filename: "winmm.dll"
+  copy_files:
+    - "nvngx.dll"
+    - "OptiScaler.ini"
+  delete_files:
+    - "nvngx.ini"
+
+game_specific_tweaks:
+  spoofed_vendor_id: 0x10de
+  spoofed_device_id: 0x2684
+  spoof_dxgi: true
+  frame_gen_enabled: true
+  overlay_menu: true
+  shortcut_key: 0x70  # F1
+  log_to_console: true
+  log_level: 2
+  
+  # FSR 4 Optimizations
+  dx12_upscaler: "fsr31"     # Changed from fsr21 to support FSR 4
+  upscaler_index: 0          # Force FSR 4.0.2
+  fsr4_update: true          # Enable FSR 4 update
+
+performance_profiles:
+  maximum_quality:
+    description: "Best visual quality with FG"
+    settings:
+      ingame_upscaling: "DLSS Quality"
+      ingame_framegen: "On"
+      expected_fps: "Significantly improved FPS"
+
+troubleshooting:
+  common_issues:
+    - issue: "Game hangs on splash screen"
+      solution: "Add -nologos to launch options"
+    - issue: "Mouse cursor stuck/Menu unclickable"
+      solution: "Switch game to Borderless Windowed mode"
+    - issue: "No Frame Generation option"
+      solution: "Ensure OptiScaler.ini has SpoofedVendorId=0x10de and SpoofedDeviceId=0x2684, and files are in ph/work/bin/x64"
+    - issue: "Double Menu / Input Blocked"
+      solution: "Ensure mod files are ONLY in ph/work/bin/x64, delete duplicates from engine/source/bin/x64"

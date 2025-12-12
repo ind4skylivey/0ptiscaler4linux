@@ -1,0 +1,22 @@
+game_id: dying-light-2
+name: "Dying Light 2 Stay Human"
+app_id: 534380
+
+detection:
+  folder_patterns:
+    - "Dying Light 2"
+    - "Dying Light 2 Stay Human"
+  executables:
+    - "ph/work/bin/x64/DyingLightGame_x64_rwdi.exe"
+  required_files: []
+  dll_targets:
+    - "ph/work/bin/x64"
+
+components:
+  install_optiscaler: true
+  install_xess: true
+  install_fakenvapi: true
+
+optiscaler:
+  preset: "balanced"
+  dlss_to_fsr: true
