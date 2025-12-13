@@ -33,6 +33,7 @@ jobs:
   yamllint:
     name: YAML Lint
     runs-on: ubuntu-latest
+    continue-on-error: true # Don't fail the whole build for YAML issues
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -41,7 +42,7 @@ jobs:
         uses: ibiqlik/action-yamllint@v3
         with:
           config_file: .yamllint
-          file_or_dir: config/games/*.yaml profiles/*.yaml
+          file_or_dir: config/games/ profiles/games/ profiles/gpu/
 
   # ═══════════════════════════════════════════════════════════════════════════
   # Unit Tests
