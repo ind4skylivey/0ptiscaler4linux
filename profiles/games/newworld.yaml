@@ -6,7 +6,7 @@ metadata:
   dlss_version: "2.5"
   fsr_version: "2.2"
   streamid: "1063730"
-  
+
 paths:
   steam_linux: "~/.local/share/Steam/steamapps/common/New World"
   proton_prefix: "~/.local/share/Steam/steamapps/compatdata/1063730"
@@ -22,7 +22,7 @@ compatibility:
     - "Proton-CachyOS 10.0+"
     - "GE-Proton 10-21"
   tested_mesa: "25.2.0+"
-  
+
 steam:
   launch_options: "WINEDLLOVERRIDES=dxgi.dll=n,b PROTON_FSR4_UPGRADE=1 %command%"
   recommended_proton: "Proton-EM 10.0-30"
@@ -41,7 +41,7 @@ performance_profiles:
       ingame_upscaling: "DLSS Quality"
       ingame_reflex: "On + Boost"
       expected_fps: "70-85 @ 1440p"
-  
+
   balanced:
     description: "Great balance, 55-75% FPS boost"
     settings:
@@ -49,7 +49,7 @@ performance_profiles:
       ingame_upscaling: "DLSS Balanced"
       ingame_reflex: "On + Boost"
       expected_fps: "80-100 @ 1440p"
-  
+
   maximum_performance:
     description: "Maximum FPS, 60-80% FPS boost"
     settings:
@@ -65,7 +65,7 @@ recommended_settings:
     nvidia_reflex: "On + Boost"
     vsync: false
     frame_limit: "Unlimited"
-  
+
   advanced:
     shadows: "High"
     textures: "High"
@@ -75,7 +75,7 @@ recommended_settings:
 performance_notes: |
   New World scales excellently with OptiScaler + FSR4.
   The game uses NVIDIA Streamline for DLSS implementation.
-  
+
   Key recommendations:
   - DLSS Quality provides best balance
   - Anti-Lag 2 significantly improves responsiveness in PvP
@@ -86,15 +86,15 @@ gpu_specific_notes:
   rdna4:
     notes: "Excellent with native FSR4. Can max out settings."
     recommended_preset: "Very High"
-  
+
   rdna3:
     notes: "Great performance. FSR3.1 with DLSS inputs works excellently."
     recommended_preset: "High to Very High"
-  
+
   rdna2:
     notes: "Good performance. Stick to High preset for 60+ FPS."
     recommended_preset: "High"
-  
+
   rdna1:
     notes: "Playable. Use Medium-High for stable 60 FPS."
     recommended_preset: "Medium to High"
@@ -123,12 +123,12 @@ user_guide: |
   4. Set Upscaling to DLSS Quality
   5. Enable NVIDIA Reflex: On + Boost
   6. Disable VSync
-  
+
   VERIFICATION:
   - Press HOME to see OptiScaler menu
   - Press ALT+SHIFT+L for Anti-Lag 2 overlay
   - Monitor FPS improvement (50-70% expected)
-  
+
   PVP OPTIMIZATION:
   - Use DLSS Balanced or Performance for max FPS
   - Enable Anti-Lag 2 for best responsiveness

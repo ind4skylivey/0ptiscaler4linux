@@ -29,29 +29,29 @@ optiscaler:
     dx12: "fsr31"
     dx11: "fsr31_12"
     vulkan: "fsr31"
-  
+
   fsr:
     fsr4_update: false          # Too much overhead on RDNA1
     non_linear_srgb: true
     velocity_factor: 0.9        # Slightly lower for stability
-    
+
   inputs:
     enable_dlss_inputs: true
     enable_fsr2_inputs: true
     enable_fsr3_inputs: true
-    
+
   sharpness:
     override: true
     value: 0.45                 # Higher, RDNA1 benefits from it
     cas_enabled: true
     motion_sharpness_enabled: false  # Can cause issues
-    
+
   spoofing:
     streamline_spoofing: true
     dxgi_spoofing: true
     spoofed_vendor_id: "0x10de"
     spoofed_device_id: "0x2684"
-    
+
   nvapi:
     override_dll: true
 

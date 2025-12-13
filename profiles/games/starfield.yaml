@@ -14,7 +14,7 @@ paths:
 compatibility:
   optiscaler_status: "Excellent"
   tested_proton: ["Proton-EM 10.0-30", "GE-Proton 9-15"]
-  
+
 steam:
   launch_options: "WINEDLLOVERRIDES=dxgi.dll=n,b PROTON_FSR4_UPGRADE=1 %command%"
   recommended_proton: "Proton-EM 10.0-30"
@@ -38,7 +38,7 @@ recommended_settings:
   upscaling: "DLSS Quality"
   nvidia_reflex: "On + Boost"
   vsync: false
-  
+
 performance_notes: |
   Starfield benefits greatly from OptiScaler. Game is CPU-heavy in cities.
   Use DLSS Balanced in New Atlantis for better performance.

@@ -32,7 +32,7 @@ performance_profiles:
       ingame_reflex: "On"
       ray_tracing: "Ultra"
       expected_fps: "60-75 @ 1440p"
-  
+
   balanced:
     settings:
       ingame_preset: "High"

@@ -28,7 +28,7 @@ optiscaler:
     dx12: "fsr31"
     dx11: "fsr31_12"
     vulkan: "fsr31"
-  
+
   fsr:
     fsr4_update: true           # Enable FSR4 - native support!
     non_linear_srgb: true
@@ -36,26 +36,26 @@ optiscaler:
     velocity_factor: 1.0
     reactive_scale: 1.0
     shading_scale: 1.0
-    
+
   inputs:
     enable_dlss_inputs: true
     enable_fsr2_inputs: true
     enable_fsr3_inputs: true
     enable_xess_inputs: true
-    
+
   sharpness:
     override: true
     value: 0.35                 # Slightly less, FSR4 is sharper
     cas_enabled: true
     motion_sharpness_enabled: true
     motion_sharpness: 0.4
-    
+
   spoofing:
     streamline_spoofing: true
     dxgi_spoofing: true
     spoofed_vendor_id: "0x10de"
     spoofed_device_id: "0x2684"
-    
+
   nvapi:
     override_dll: true
 

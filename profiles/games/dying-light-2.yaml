@@ -16,11 +16,11 @@ paths:
 compatibility:
   optiscaler_status: "Excellent"
   optiscaler_version_min: "0.9.0-pre6"
-  known_issues: 
+  known_issues:
     - "Intro videos freeze game with mod loaded (use -nologos)"
     - "Overlay menu mouse input blocked in Exclusive Fullscreen (use Borderless)"
     - "nvngx.ini conflicts with OptiScaler.ini (must be deleted)"
-  tested_proton: 
+  tested_proton:
     - "Proton-EM 10.0-30"
 
 components:
@@ -58,7 +58,7 @@ game_specific_tweaks:
   shortcut_key: 0x70  # F1
   log_to_console: true
   log_level: 2
-  
+
   # FSR 4 Optimizations
   dx12_upscaler: "fsr31"     # Changed from fsr21 to support FSR 4
   upscaler_index: 0          # Force FSR 4.0.2

@@ -31,7 +31,7 @@ performance_profiles:
       ingame_upscaling: "DLSS Quality"
       ingame_reflex: "On"
       expected_fps: "75-95 @ 1440p"
-  
+
   balanced:
     settings:
       ingame_preset: "High"

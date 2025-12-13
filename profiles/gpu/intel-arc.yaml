@@ -30,34 +30,34 @@ optiscaler:
     dx12: "xess"                # Use native XeSS!
     dx11: "xess_12"
     vulkan: "xess"
-  
+
   fsr:
     fsr4_update: false
     non_linear_srgb: true
-    
+
   inputs:
     enable_dlss_inputs: true
     enable_fsr2_inputs: true
     enable_fsr3_inputs: true
     enable_xess_inputs: true    # Native XeSS inputs
-    
+
   xess:
     build_pipelines: true
     create_heaps: false
     network_model: 0            # KPSS (best quality)
-    
+
   sharpness:
     override: true
     value: 0.35                 # XeSS is naturally sharp
     cas_enabled: false          # XeSS has built-in sharpening
     motion_sharpness_enabled: false
-    
+
   spoofing:
     streamline_spoofing: true
     dxgi_spoofing: true
     spoofed_vendor_id: "0x10de"
     spoofed_device_id: "0x2684"
-    
+
   nvapi:
     override_dll: false         # No Anti-Lag on Intel
 
@@ -80,7 +80,7 @@ recommendations:
   ingame_vsync: false
   quality_preset: "High to Ultra"
   ray_tracing: "Medium (1080p/1440p)"
-  
+
 troubleshooting:
   common_issues:
     - issue: "XeSS not appearing"

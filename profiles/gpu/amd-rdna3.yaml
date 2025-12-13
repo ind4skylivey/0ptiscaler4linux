@@ -31,7 +31,7 @@ optiscaler:
     dx12: "fsr31"               # FSR 3.1 for best performance
     dx11: "fsr31_12"            # FSR 3.1 via DX12 wrapper
     vulkan: "fsr31"
-  
+
   fsr:
     fsr4_update: false          # Disable FSR4 - overhead on RDNA3
     non_linear_srgb: true       # Better color accuracy
@@ -39,13 +39,13 @@ optiscaler:
     velocity_factor: 1.0
     reactive_scale: 1.0
     shading_scale: 1.0
-    
+
   inputs:
     enable_dlss_inputs: true    # Use DLSS data for better quality
     enable_fsr2_inputs: true
     enable_fsr3_inputs: true
     enable_xess_inputs: true
-    
+
   sharpness:
     override: true
     value: 0.4                  # Balanced sharpness
@@ -54,17 +54,17 @@ optiscaler:
     motion_sharpness: 0.5
     motion_threshold: 0.0
     motion_scale_limit: 10.0
-    
+
   spoofing:
     streamline_spoofing: true   # Spoof for Streamline/DLSS
     dxgi_spoofing: true
     spoofed_vendor_id: "0x10de" # Spoof as NVIDIA
     spoofed_device_id: "0x2684" # RTX 4090
     spoofed_gpu_name: "NVIDIA GeForce RTX 4090"
-    
+
   nvapi:
     override_dll: true          # Use fakenvapi
-    
+
   menu:
     shortcut_key: "0x24"        # HOME key
     overlay_menu: true
@@ -94,7 +94,7 @@ recommendations:
   ingame_vsync: false
   quality_preset: "Ultra"
   ray_tracing: "Recommended (excellent RT performance)"
-  
+
 troubleshooting:
   common_issues:
     - issue: "Flickering or artifacts"

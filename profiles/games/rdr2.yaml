@@ -22,7 +22,7 @@ steam:
 game_specific_tweaks:
   sharpness_override: 0.3
   motion_sharpness_enabled: false
-  
+
 performance_profiles:
   maximum_quality:
     settings:
@@ -39,7 +39,7 @@ recommended_settings:
   upscaling: "DLSS Quality"
   nvidia_reflex: "On"
   api: "Vulkan"
-  
+
 performance_notes: |
   RDR2 is very demanding but scales well with OptiScaler.
   Vulkan API recommended for better performance on AMD.

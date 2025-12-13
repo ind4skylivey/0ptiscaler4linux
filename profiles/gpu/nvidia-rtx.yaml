@@ -27,20 +27,20 @@ optiscaler:
     dx12: "dlss"                # Use native DLSS
     dx11: "dlss"
     vulkan: "fsr31"             # Fallback to FSR on Vulkan
-  
+
   fsr:
     fsr4_update: false
-    
+
   inputs:
     enable_dlss_inputs: false   # Not needed with native DLSS
-    
+
   sharpness:
     override: false             # Let DLSS handle it
-    
+
   spoofing:
     streamline_spoofing: false  # Not needed
     dxgi_spoofing: false
-    
+
   nvapi:
     override_dll: false         # Use native Reflex
 
@@ -57,7 +57,7 @@ performance:
     - Experimenting with FSR/XeSS
     - Games without native DLSS
     - Comparing upscalers
-    
+
     For best results: Use native DLSS instead of OptiScaler.
 
 recommendations:
@@ -67,15 +67,15 @@ recommendations:
   quality_preset: "Ultra with Ray Tracing"
   ray_tracing: "Highly recommended"
   frame_generation: "Available on RTX 40 series"
-  
+
 notes: |
   OptiScaler on NVIDIA is primarily for experimentation.
-  
+
   Use OptiScaler if:
   - You want to test FSR4 vs DLSS
   - Game lacks native DLSS
   - You're curious about XeSS
-  
+
   Don't use OptiScaler if:
   - Game has native DLSS 3+ (use that instead)
   - You want Frame Generation (use native DLSS 3)

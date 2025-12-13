@@ -32,13 +32,13 @@ performance_profiles:
       ingame_reflex: "On + Boost"
       path_tracing: false
       expected_fps: "50-65 @ 1440p"
-  
+
   balanced:
     settings:
       ingame_preset: "Medium"
       ingame_upscaling: "DLSS Balanced"
       expected_fps: "65-80 @ 1440p"
-  
+
   path_tracing:
     settings:
       ingame_preset: "Low"
