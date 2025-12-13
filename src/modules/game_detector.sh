@@ -1,17 +1,44 @@
 #!/bin/bash
 
-# =============================================================================
-#  OPTISCALER UNIVERSAL - STEAM GAME DETECTOR (MULTI-DISK)
-# =============================================================================
+# ═══════════════════════════════════════════════════════════════════════════
+#  OPTISCALER UNIVERSAL - STEAM GAME DETECTOR (MULTI-DISK, SECURITY HARDENED)
+# ═══════════════════════════════════════════════════════════════════════════
+#
 #  Implements cascading detection methods for Steam games across any mounted
 #  disk/partition, with caching and structured output for downstream modules.
-# =============================================================================
+#
+#  Security improvements:
+#    - Cache stored in user directory (not /tmp)
+#    - Proper permissions on cache directory
+#    - Safe temporary file handling
+#    - Input validation on paths
+#
+# ═══════════════════════════════════════════════════════════════════════════
+
+# -----------------------------------------------------------------------------
+# Configuration
+# -----------------------------------------------------------------------------
 
 SCRIPT_ROOT="${SCRIPT_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
 PROFILES_DIR="${PROFILES_DIR:-$SCRIPT_ROOT/config/games}"
-CACHE_FILE="${CACHE_FILE:-/tmp/optiscaler_scan_cache.json}"
-CACHE_TTL_SECONDS=300
+
+# SECURITY: Use user-owned directory for cache (not world-writable /tmp)
+OPTISCALER_DATA_DIR="${OPTISCALER_DATA_DIR:-$HOME/.optiscaler-universal}"
+CACHE_DIR="$OPTISCALER_DATA_DIR/cache"
+CACHE_FILE="${CACHE_FILE:-$CACHE_DIR/scan_cache.dat}"
+
+# Ensure cache directory exists with proper permissions
+if [[ ! -d "$CACHE_DIR" ]]; then
+    mkdir -p "$CACHE_DIR" 2>/dev/null || true
+    chmod 700 "$CACHE_DIR" 2>/dev/null || true
+fi
+
+readonly CACHE_TTL_SECONDS=300  # 5 minutes
 DELIM=${DELIM:-$'\x1f'}  # record delimiter safe for paths containing ';'
+
+# -----------------------------------------------------------------------------
+# Global data structures
+# -----------------------------------------------------------------------------
 
 declare -A PROFILE_PATH               # game_id -> yaml path
 declare -A PROFILE_APPID              # game_id -> app id
@@ -326,51 +353,90 @@ _match_profile_by_folder() {
 
 scan_appmanifests() {
     log_info "Method A: parsing appmanifest files"
-    local lib job temp_files=() pids=()
+
+    local lib
+    local -a temp_files=()
+    local -a pids=()
+    local subprocess_failures=0
 
     for lib in "${STEAM_LIBRARIES[@]}"; do
+        # SECURITY: Use secure temp file in user directory
         local tmp
-        tmp=$(mktemp)
+        tmp=$(mktemp -p "$CACHE_DIR" "manifest_scan_XXXXXXXX.tmp") || {
+            log_warn "Failed to create temp file for $lib"
+            continue
+        }
         temp_files+=("$tmp")
+
+        # Run in subshell for parallel processing
         (
             for manifest in "$lib"/appmanifest_*.acf; do
                 [[ -f "$manifest" ]] || continue
+
                 declare -A app=()
                 parse_appmanifest "$manifest" app || continue
+
                 local app_id="${app[appid]}"
                 local name="${app[name]}"
                 local installdir="${app[installdir]}"
                 local state="${app[stateflags]}"
-                if [[ -n "$installdir" ]]; then
-                    local key="$(echo "${installdir,,}")"
-                    MANIFEST_BY_DIR["$key"]="$app_id|$name|$state"
-                fi
 
+                # Skip non-installed games (state 4 = fully installed)
                 [[ "$state" != "4" ]] && continue
+
                 local install_path="$lib/common/$installdir"
 
-                echo "$app_id|$name|$install_path|appmanifest" >>"$tmp"
+                # Write to temp file for parent to collect
+                # Format: app_id|name|install_path|method|installdir_lower
+                echo "$app_id|$name|$install_path|appmanifest|${installdir,,}" >> "$tmp"
             done
         ) &
         pids+=($!)
     done
 
-    for pid in "${pids[@]}"; do wait "$pid"; done
+    # Wait for all subprocesses and track failures
+    for pid in "${pids[@]}"; do
+        if ! wait "$pid"; then
+            ((subprocess_failures++)) || true
+        fi
+    done
 
+    if [[ $subprocess_failures -gt 0 ]]; then
+        log_warn "$subprocess_failures manifest scan subprocess(es) had issues"
+    fi
+
+    # Process results from all temp files
     for tmp in "${temp_files[@]}"; do
-        while IFS='|' read -r app_id name install_path method; do
+        if [[ ! -f "$tmp" ]]; then
+            continue
+        fi
+
+        while IFS='|' read -r app_id name install_path method installdir_lower; do
             [[ -z "$app_id" ]] && continue
-            if [[ -n "${PROFILE_BY_APPID[$app_id]}" ]]; then
+
+            # Update MANIFEST_BY_DIR in parent process
+            if [[ -n "$installdir_lower" ]]; then
+                MANIFEST_BY_DIR["$installdir_lower"]="$app_id|$name|4"
+            fi
+
+            if [[ -n "${PROFILE_BY_APPID[$app_id]:-}" ]]; then
+                # Skip if already detected
                 [[ -n "${DETECTED_BY_APPID[$app_id]:-}" ]] && continue
-                local gid=$(_match_profile_by_appid "$app_id")
+
+                local gid
+                gid=$(_match_profile_by_appid "$app_id")
                 [[ -z "$gid" ]] && continue
+
                 validate_installation "$gid" "$app_id" "$install_path" "$method" || true
             else
                 record_unsupported "$app_id" "$name" "$install_path" "$method"
             fi
         done < "$tmp"
+
+        # Cleanup temp file
         rm -f "$tmp"
     done
+
     return 0
 }
 

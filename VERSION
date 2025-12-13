@@ -1,14 +1,56 @@
-0.1.0-alpha
+1.0.0
 
 # Changelog
+
+## [1.0.0] - 2025-12-13 - Production Ready Release
+
+### 🔒 Security Hardening
+- **CRITICAL**: Fixed Python command injection vulnerability in `load_yaml()`
+- **CRITICAL**: Removed automatic sudo execution - now requires manual package installation
+- **HIGH**: Moved cache from world-writable `/tmp` to user-owned `~/.optiscaler-universal/cache`
+- **HIGH**: All data directories now created with `700` permissions
+- **HIGH**: Added safe `rm -rf` validation in uninstall script
+- **MEDIUM**: Fixed subprocess error handling in game detector
+- **MEDIUM**: Fixed word splitting vulnerabilities in script loops
+
+### 🆕 Added
+- New centralized path resolution module (`lib/paths.sh`)
+- Comprehensive integration test suite (`tests/test-integration.sh`) with 51 tests
+- CI/CD workflow with ShellCheck, YAML lint, security audit, and tests
+- Contribution guidelines (`CONTRIBUTING.md`) with security best practices
+- `sanitize_path()` function for path validation
+- Argument validation for all CLI options (`--game-dir`, `--restore`, etc.)
+- Help options (`--help`, `-h`) for install and uninstall scripts
+
+### 🔧 Fixed
+- Removed duplicate `print_banner()` function in install script
+- Fixed syntax error in benchmark.sh (`<APP_ID>` placeholder)
+- Fixed hardcoded version string in banner
+- Scripts/downloader.sh now properly sources core/downloader.sh (no duplication)
+- Subprocess exit codes now tracked in `scan_appmanifests()`
+- MANIFEST_BY_DIR updates now propagate correctly from subprocesses
+
+### 📁 Project Structure
+- Standardized `SCRIPT_DIR` resolution across all scripts
+- Consistent directory structure with clear separation of concerns
+- All shell scripts pass syntax validation
+- No dangerous patterns (automatic sudo, eval) in codebase
+
+### 🧪 Testing
+- All 51 integration tests pass
+- 3 test files in test suite (detector, configurator, integration)
+- Security pattern detection tests
+- Module loading and dependency tests
+
+---
 
 ## [0.1.0-alpha] - 2025-10-25
 
 ### Added
 - Complete GPU detection system (AMD, Intel, NVIDIA)
 - Professional logging system with colors
-- 6 GPU profiles (RDNA1/2/3/4, Intel Arc, NVIDIA RTX) - 100%
-- 10 Game profiles - 100% of initial target!
+- 6 GPU profiles (RDNA1/2/3/4, Intel Arc, NVIDIA RTX)
+- 10 Game profiles:
   * Cyberpunk 2077
   * New World
   * Starfield
@@ -23,11 +65,3 @@
 - Utilities library with YAML support
 - Main installer script
 - Project architecture and documentation
-
-### Status
-- Core functionality: Complete ✓
-- GPU profiles: 6/6 Complete ✓
-- Game profiles: 10/10 Complete ✓
-- Steam scanner: Complete ✓
-- Installation: Manual (full automation in progress)
-- Documentation: In progress

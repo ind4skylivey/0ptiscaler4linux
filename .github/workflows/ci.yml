@@ -1,0 +1,137 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  # ═══════════════════════════════════════════════════════════════════════════
+  # ShellCheck - Static Analysis
+  # ═══════════════════════════════════════════════════════════════════════════
+  shellcheck:
+    name: ShellCheck Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master
+        with:
+          scandir: "./scripts ./core ./lib ./src ./tests"
+          severity: warning
+          format: gcc
+        env:
+          SHELLCHECK_OPTS: -e SC1091 -e SC2034
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # YAML Lint
+  # ═══════════════════════════════════════════════════════════════════════════
+  yamllint:
+    name: YAML Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run yamllint
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          config_file: .yamllint
+          file_or_dir: config/games/*.yaml profiles/*.yaml
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # Unit Tests
+  # ═══════════════════════════════════════════════════════════════════════════
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    needs: [shellcheck]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pciutils wget curl unzip
+
+      - name: Run test suite
+        run: |
+          chmod +x tests/run-all-tests.sh
+          bash tests/run-all-tests.sh
+        env:
+          CI: true
+          GITHUB_ACTIONS: true
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # Syntax Check (Bash -n)
+  # ═══════════════════════════════════════════════════════════════════════════
+  syntax-check:
+    name: Bash Syntax Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check bash syntax
+        run: |
+          echo "Checking bash syntax..."
+          find scripts core lib src tests -name "*.sh" -type f | while read -r file; do
+            echo "Checking: $file"
+            bash -n "$file" || exit 1
+          done
+          echo "All files passed syntax check!"
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # Security Audit
+  # ═══════════════════════════════════════════════════════════════════════════
+  security:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for dangerous patterns
+        run: |
+          echo "Checking for potentially dangerous patterns..."
+
+          # Check for eval usage
+          if grep -rn "eval " scripts/ core/ lib/ src/ --include="*.sh" | grep -v "^#"; then
+            echo "⚠️  WARNING: 'eval' usage detected (review manually)"
+          fi
+
+          # Check for automatic sudo
+          if grep -rn "sudo.*--noconfirm\|sudo.*-y " scripts/ core/ lib/ src/ --include="*.sh" | grep -v "^#"; then
+            echo "❌ ERROR: Automatic sudo detected"
+            exit 1
+          fi
+
+          # Check for /tmp without mktemp
+          if grep -rn '"/tmp/' scripts/ core/ lib/ src/ --include="*.sh" | grep -v "mktemp\|^#"; then
+            echo "⚠️  WARNING: Hardcoded /tmp paths detected"
+          fi
+
+          echo "✅ Security audit passed"
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # PKGBUILD Validation (for Arch Linux)
+  # ═══════════════════════════════════════════════════════════════════════════
+  pkgbuild:
+    name: PKGBUILD Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate PKGBUILD syntax
+        run: |
+          echo "Validating PKGBUILD..."
+          # Basic syntax check
+          bash -n PKGBUILD || exit 1
+          bash -n PKGBUILD-git || exit 1
+          echo "✅ PKGBUILD files are syntactically valid"
