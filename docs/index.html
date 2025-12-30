@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      OptiScaler for Linux | FPS Boost for Steam, Proton & Steam Deck
+    </title>
+    <meta
+      name="description"
+      content="Automated GPU optimization for Linux gaming. Boost FPS by 50-80% with FSR4, XeSS & DLSS. Works with Steam, Proton & Steam Deck."
+    />
+    <meta
+      property="og:title"
+      content="OptiScaler for Linux - Maximum FPS for Linux Gaming"
+    />
+    <meta
+      property="og:description"
+      content="Boost your Linux gaming FPS by 50-80% with automated OptiScaler configuration."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@400;500;700;900&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/effects.css" />
+    <link rel="stylesheet" href="styles/components.css" />
+  </head>
+  <body>
+    <!-- Matrix Rain Background -->
+    <canvas id="matrix-canvas"></canvas>
+
+    <!-- Particle System -->
+    <div id="particles"></div>
+
+    <!-- Scan Line Effect -->
+    <div class="scanlines"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="#" class="logo">
+          <span class="logo-icon">⚡</span>
+          <span class="logo-text glitch" data-text="OPTISCALER"
+            >OPTISCALER</span
+          >
+        </a>
+        <div class="nav-links">
+          <a href="#features" class="nav-link">Features</a>
+          <a href="#performance" class="nav-link">Performance</a>
+          <a href="#gpus" class="nav-link">GPUs</a>
+          <a href="#install" class="nav-link">Install</a>
+          <a
+            href="https://github.com/ind4skylivey/0ptiscaler4linux"
+            class="nav-link nav-cta"
+            target="_blank"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+              />
+            </svg>
+            GitHub
+          </a>
+        </div>
+        <button class="mobile-menu-btn" id="mobile-menu-btn">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero" id="hero">
+      <div class="hero-content">
+        <div class="badge animate-on-scroll">
+          <span class="badge-pulse"></span>
+          🐧 Linux Gaming Optimization Tool
+        </div>
+
+        <h1 class="hero-title animate-on-scroll">
+          <span class="title-line">Boost Your</span>
+          <span class="title-line gradient-text">Linux Gaming</span>
+          <span class="title-line">
+            <span class="typing-text" id="typing-text"></span>
+            <span class="cursor">|</span>
+          </span>
+        </h1>
+
+        <p class="hero-subtitle animate-on-scroll">
+          Automated GPU optimization for <strong>FSR4</strong> •
+          <strong>XeSS</strong> • <strong>DLSS</strong>
+          <br />
+          One command. <span class="highlight">50-80% FPS boost</span>. Perfect
+          for Steam Deck.
+        </p>
+
+        <!-- Stats Row -->
+        <div class="stats-row animate-on-scroll">
+          <div class="stat-card">
+            <div class="stat-icon">🚀</div>
+            <div class="stat-number" data-target="80">0</div>
+            <div class="stat-suffix">%</div>
+            <div class="stat-label">FPS Boost</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">⚡</div>
+            <div class="stat-number" data-target="45">0</div>
+            <div class="stat-suffix">%</div>
+            <div class="stat-label">Lower Latency</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🎮</div>
+            <div class="stat-number" data-target="50">0</div>
+            <div class="stat-suffix">+</div>
+            <div class="stat-label">Games Supported</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🖥️</div>
+            <div class="stat-number" data-target="3">0</div>
+            <div class="stat-suffix"></div>
+            <div class="stat-label">GPU Vendors</div>
+          </div>
+        </div>
+
+        <!-- CTA Buttons -->
+        <div class="cta-group animate-on-scroll">
+          <a href="#install" class="btn btn-primary ripple">
+            <span class="btn-glow"></span>
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            Install Now
+          </a>
+          <a
+            href="https://github.com/ind4skylivey/0ptiscaler4linux"
+            class="btn btn-secondary ripple"
+            target="_blank"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+              />
+            </svg>
+            View on GitHub
+          </a>
+        </div>
+
+        <!-- GPU Badges -->
+        <div class="gpu-badges animate-on-scroll">
+          <div class="gpu-badge amd"><span class="gpu-icon">🔴</span> AMD</div>
+          <div class="gpu-badge intel">
+            <span class="gpu-icon">🔵</span> Intel
+          </div>
+          <div class="gpu-badge nvidia">
+            <span class="gpu-icon">🟢</span> NVIDIA
+          </div>
+          <div class="gpu-badge steamdeck">
+            <span class="gpu-icon">🎮</span> Steam Deck
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Terminal -->
+      <div class="hero-visual animate-on-scroll">
+        <div class="terminal">
+          <div class="terminal-header">
+            <div class="terminal-buttons">
+              <span class="terminal-btn close"></span>
+              <span class="terminal-btn minimize"></span>
+              <span class="terminal-btn maximize"></span>
+            </div>
+            <div class="terminal-title">optiscaler@linux ~ $</div>
+          </div>
+          <div class="terminal-body">
+            <div class="terminal-output" id="terminal-output">
+              <!-- Dynamic terminal content -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scroll Indicator -->
+      <div class="scroll-indicator">
+        <span>Scroll</span>
+        <div class="scroll-arrow"></div>
+      </div>
+    </header>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+      <div class="container">
+        <div class="section-header animate-on-scroll">
+          <span class="section-tag">⚙️ FEATURES</span>
+          <h2 class="section-title">
+            <span class="glitch" data-text="Intelligent Gaming Automation"
+              >Intelligent Gaming Automation</span
+            >
+          </h2>
+          <p class="section-subtitle">
+            Three simple steps to maximum performance
+          </p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-card animate-on-scroll" data-delay="0">
+            <div class="feature-icon-wrapper">
+              <div class="feature-glow"></div>
+              <div class="feature-icon">🔍</div>
+            </div>
+            <h3 class="feature-title">Detect</h3>
+            <p class="feature-description">
+              Automatic GPU recognition for AMD, Intel & NVIDIA. Driver
+              validation and capability analysis.
+            </p>
+            <ul class="feature-list">
+              <li><span class="check">✓</span> RDNA 1/2/3/4 Detection</li>
+              <li><span class="check">✓</span> Intel Arc Support</li>
+              <li><span class="check">✓</span> RTX 20/30/40 Series</li>
+              <li><span class="check">✓</span> Driver Validation</li>
+            </ul>
+          </div>
+
+          <div
+            class="feature-card feature-card-highlight animate-on-scroll"
+            data-delay="100"
+          >
+            <div class="feature-badge">CORE</div>
+            <div class="feature-icon-wrapper">
+              <div class="feature-glow"></div>
+              <div class="feature-icon">⚙️</div>
+            </div>
+            <h3 class="feature-title">Configure</h3>
+            <p class="feature-description">
+              Smart optimization with profile-based settings. Automatic file
+              generation.
+            </p>
+            <ul class="feature-list">
+              <li><span class="check">✓</span> FSR3.1 / FSR4</li>
+              <li><span class="check">✓</span> XeSS / DLSS</li>
+              <li><span class="check">✓</span> Anti-Lag 2</li>
+              <li><span class="check">✓</span> Reflex Emulation</li>
+            </ul>
+          </div>
+
+          <div class="feature-card animate-on-scroll" data-delay="200">
+            <div class="feature-icon-wrapper">
+              <div class="feature-glow"></div>
+              <div class="feature-icon">🚀</div>
+            </div>
+            <h3 class="feature-title">Game</h3>
+            <p class="feature-description">
+              Instant results with automatic backups and easy rollback
+              capability.
+            </p>
+            <ul class="feature-list">
+              <li><span class="check">✓</span> +50-80% FPS</li>
+              <li><span class="check">✓</span> -30-45% Latency</li>
+              <li><span class="check">✓</span> 9/10 Quality</li>
+              <li><span class="check">✓</span> Auto Backups</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Performance Section -->
+    <section class="performance" id="performance">
+      <div class="container">
+        <div class="section-header animate-on-scroll">
+          <span class="section-tag">📊 BENCHMARKS</span>
+          <h2 class="section-title">Real FPS Gains</h2>
+          <p class="section-subtitle">
+            Performance tested on Linux with Steam + Proton
+          </p>
+        </div>
+
+        <div class="benchmark-grid">
+          <div class="benchmark-card animate-on-scroll">
+            <div class="game-header">
+              <span class="game-icon">🎮</span>
+              <h3 class="game-name">Cyberpunk 2077</h3>
+            </div>
+            <div class="gpu-label">RX 7900 XTX</div>
+            <div class="fps-comparison">
+              <div class="fps-before">
+                <span class="fps-label">Before</span>
+                <span class="fps-value">85</span>
+                <span class="fps-unit">FPS</span>
+              </div>
+              <div class="fps-arrow">→</div>
+              <div class="fps-after">
+                <span class="fps-label">After</span>
+                <span class="fps-value">142</span>
+                <span class="fps-unit">FPS</span>
+              </div>
+            </div>
+            <div class="gain-bar" data-gain="67">
+              <div class="gain-fill"></div>
+              <span class="gain-text">+67%</span>
+            </div>
+          </div>
+
+          <div class="benchmark-card animate-on-scroll">
+            <div class="game-header">
+              <span class="game-icon">🌌</span>
+              <h3 class="game-name">Starfield</h3>
+            </div>
+            <div class="gpu-label">RX 6800 XT</div>
+            <div class="fps-comparison">
+              <div class="fps-before">
+                <span class="fps-label">Before</span>
+                <span class="fps-value">52</span>
+                <span class="fps-unit">FPS</span>
+              </div>
+              <div class="fps-arrow">→</div>
+              <div class="fps-after">
+                <span class="fps-label">After</span>
+                <span class="fps-value">89</span>
+                <span class="fps-unit">FPS</span>
+              </div>
+            </div>
+            <div class="gain-bar" data-gain="71">
+              <div class="gain-fill"></div>
+              <span class="gain-text">+71%</span>
+            </div>
+          </div>
+
+          <div class="benchmark-card animate-on-scroll">
+            <div class="game-header">
+              <span class="game-icon">🧙</span>
+              <h3 class="game-name">Hogwarts Legacy</h3>
+            </div>
+            <div class="gpu-label">Arc A770</div>
+            <div class="fps-comparison">
+              <div class="fps-before">
+                <span class="fps-label">Before</span>
+                <span class="fps-value">45</span>
+                <span class="fps-unit">FPS</span>
+              </div>
+              <div class="fps-arrow">→</div>
+              <div class="fps-after">
+                <span class="fps-label">After</span>
+                <span class="fps-value">72</span>
+                <span class="fps-unit">FPS</span>
+              </div>
+            </div>
+            <div class="gain-bar" data-gain="60">
+              <div class="gain-fill"></div>
+              <span class="gain-text">+60%</span>
+            </div>
+          </div>
+
+          <div class="benchmark-card animate-on-scroll">
+            <div class="game-header">
+              <span class="game-icon">🤠</span>
+              <h3 class="game-name">Red Dead 2</h3>
+            </div>
+            <div class="gpu-label">RX 7600</div>
+            <div class="fps-comparison">
+              <div class="fps-before">
+                <span class="fps-label">Before</span>
+                <span class="fps-value">58</span>
+                <span class="fps-unit">FPS</span>
+              </div>
+              <div class="fps-arrow">→</div>
+              <div class="fps-after">
+                <span class="fps-label">After</span>
+                <span class="fps-value">95</span>
+                <span class="fps-unit">FPS</span>
+              </div>
+            </div>
+            <div class="gain-bar" data-gain="64">
+              <div class="gain-fill"></div>
+              <span class="gain-text">+64%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GPUs Section -->
+    <section class="gpus" id="gpus">
+      <div class="container">
+        <div class="section-header animate-on-scroll">
+          <span class="section-tag">🖥️ HARDWARE</span>
+          <h2 class="section-title">Supported GPUs</h2>
+          <p class="section-subtitle">
+            Comprehensive support for AMD, Intel & NVIDIA
+          </p>
+        </div>
+
+        <div class="gpu-grid">
+          <div class="gpu-card amd animate-on-scroll">
+            <div class="gpu-card-header">
+              <div class="gpu-vendor-icon">🔴</div>
+              <h3 class="gpu-vendor">AMD</h3>
+            </div>
+            <div class="gpu-series-list">
+              <div class="gpu-series">
+                <div class="series-name">RDNA4 (RX 9000)</div>
+                <div class="series-features">
+                  <span class="feature-tag">FSR4 native</span>
+                  <span class="fps-tag">+60-80%</span>
+                </div>
+              </div>
+              <div class="gpu-series">
+                <div class="series-name">RDNA3 (RX 7000)</div>
+                <div class="series-features">
+                  <span class="feature-tag">FSR3.1</span>
+                  <span class="fps-tag">+50-70%</span>
+                </div>
+              </div>
+              <div class="gpu-series">
+                <div class="series-name">RDNA2 (RX 6000)</div>
+                <div class="series-features">
+                  <span class="feature-tag">Anti-Lag 2</span>
+                  <span class="fps-tag">+55-75%</span>
+                </div>
+              </div>
+              <div class="gpu-series">
+                <div class="series-name">RDNA1 (RX 5000)</div>
+                <div class="series-features">
+                  <span class="fps-tag">+40-60%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="gpu-card intel animate-on-scroll">
+            <div class="gpu-card-header">
+              <div class="gpu-vendor-icon">🔵</div>
+              <h3 class="gpu-vendor">Intel</h3>
+            </div>
+            <div class="gpu-series-list">
+              <div class="gpu-series">
+                <div class="series-name">Arc A-series</div>
+                <div class="series-features">
+                  <span class="feature-tag">XeSS native</span>
+                  <span class="fps-tag">+40-60%</span>
+                </div>
+              </div>
+              <div class="gpu-series">
+                <div class="series-name">Integrated Graphics</div>
+                <div class="series-features">
+                  <span class="feature-tag">FSR3.1 fallback</span>
+                  <span class="fps-tag">+30-50%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="gpu-card nvidia animate-on-scroll">
+            <div class="gpu-card-header">
+              <div class="gpu-vendor-icon">🟢</div>
+              <h3 class="gpu-vendor">NVIDIA</h3>
+            </div>
+            <div class="gpu-series-list">
+              <div class="gpu-series">
+                <div class="series-name">RTX 40/30/20</div>
+                <div class="series-features">
+                  <span class="feature-tag">Native DLSS</span>
+                  <span class="feature-tag">Native Reflex</span>
+                </div>
+              </div>
+              <div class="gpu-series">
+                <div class="series-name">GTX 16/10</div>
+                <div class="series-features">
+                  <span class="feature-tag">FSR3.1</span>
+                  <span class="fps-tag">+35-55%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Installation Section -->
+    <section class="installation" id="install">
+      <div class="container">
+        <div class="section-header animate-on-scroll">
+          <span class="section-tag">🚀 QUICK START</span>
+          <h2 class="section-title">Install in 30 Seconds</h2>
+          <p class="section-subtitle">
+            Choose your preferred installation method
+          </p>
+        </div>
+
+        <div class="install-tabs">
+          <button class="install-tab active" data-tab="git">
+            <span class="tab-icon">📦</span>
+            Git Clone
+          </button>
+          <button class="install-tab" data-tab="aur">
+            <span class="tab-icon">🐧</span>
+            AUR (Arch)
+          </button>
+        </div>
+
+        <div class="install-content">
+          <div class="install-panel active" id="panel-git">
+            <div class="code-block">
+              <div class="code-header">
+                <span class="code-lang">bash</span>
+                <button
+                  class="copy-btn"
+                  data-copy="git clone https://github.com/ind4skylivey/0ptiscaler4linux.git && cd 0ptiscaler4linux && bash scripts/install.sh"
+                >
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <rect
+                      x="9"
+                      y="9"
+                      width="13"
+                      height="13"
+                      rx="2"
+                      ry="2"
+                    ></rect>
+                    <path
+                      d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                    ></path>
+                  </svg>
+                  Copy
+                </button>
+              </div>
+              <pre
+                class="code-content"
+              ><code><span class="comment"># Clone the repository</span>
+<span class="command">git clone</span> https://github.com/ind4skylivey/0ptiscaler4linux.git
+
+<span class="comment"># Navigate to directory</span>
+<span class="command">cd</span> 0ptiscaler4linux
+
+<span class="comment"># Run the installer</span>
+<span class="command">bash</span> scripts/install.sh</code></pre>
+            </div>
+          </div>
+
+          <div class="install-panel" id="panel-aur">
+            <div class="code-block">
+              <div class="code-header">
+                <span class="code-lang">bash</span>
+                <button
+                  class="copy-btn"
+                  data-copy="yay -S optiscaler-universal"
+                >
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <rect
+                      x="9"
+                      y="9"
+                      width="13"
+                      height="13"
+                      rx="2"
+                      ry="2"
+                    ></rect>
+                    <path
+                      d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                    ></path>
+                  </svg>
+                  Copy
+                </button>
+              </div>
+              <pre
+                class="code-content"
+              ><code><span class="comment"># Using yay</span>
+<span class="command">yay -S</span> optiscaler-universal
+
+<span class="comment"># Or using paru</span>
+<span class="command">paru -S</span> optiscaler-universal
+
+<span class="comment"># After installation, run:</span>
+<span class="command">optiscaler-install</span></code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Commands -->
+        <div class="quick-commands animate-on-scroll">
+          <h3 class="commands-title">🔧 CLI Options</h3>
+          <div class="commands-grid">
+            <div class="command-card">
+              <code>--scan-only</code>
+              <span>Scan games without installing</span>
+            </div>
+            <div class="command-card">
+              <code>--force-rescan</code>
+              <span>Bypass cache, fresh scan</span>
+            </div>
+            <div class="command-card">
+              <code>--list-games</code>
+              <span>List all supported games</span>
+            </div>
+            <div class="command-card">
+              <code>--verbose</code>
+              <span>Enable detailed logging</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Supported Games -->
+    <section class="games" id="games">
+      <div class="container">
+        <div class="section-header animate-on-scroll">
+          <span class="section-tag">🎮 COMPATIBILITY</span>
+          <h2 class="section-title">Supported Games</h2>
+          <p class="section-subtitle">Performance tested with Proton & Steam</p>
+        </div>
+
+        <div class="games-showcase">
+          <div class="game-tile animate-on-scroll">
+            <div class="game-glow"></div>
+            <span class="game-emoji">🌆</span>
+            <span class="game-title">Cyberpunk 2077</span>
+            <span class="game-feature">Full RT Support</span>
+          </div>
+          <div class="game-tile animate-on-scroll">
+            <div class="game-glow"></div>
+            <span class="game-emoji">🌌</span>
+            <span class="game-title">Starfield</span>
+            <span class="game-feature">Creation Engine 2</span>
+          </div>
+          <div class="game-tile animate-on-scroll">
+            <div class="game-glow"></div>
+            <span class="game-emoji">🕷️</span>
+            <span class="game-title">Spider-Man</span>
+            <span class="game-feature">Excellent RT</span>
+          </div>
+          <div class="game-tile animate-on-scroll">
+            <div class="game-glow"></div>
+            <span class="game-emoji">🧙</span>
+            <span class="game-title">Hogwarts Legacy</span>
+            <span class="game-feature">Full RT Support</span>
+          </div>
+          <div class="game-tile animate-on-scroll">
+            <div class="game-glow"></div>
+            <span class="game-emoji">🤠</span>
+            <span class="game-title">Red Dead 2</span>
+            <span class="game-feature">Vulkan Optimized</span>
+          </div>
+          <div class="game-tile animate-on-scroll">
+            <div class="game-glow"></div>
+            <span class="game-emoji">⚔️</span>
+            <span class="game-title">God of War</span>
+            <span class="game-feature">DX12 Optimized</span>
+          </div>
+          <div class="game-tile animate-on-scroll">
+            <div class="game-glow"></div>
+            <span class="game-emoji">🔦</span>
+            <span class="game-title">Alan Wake 2</span>
+            <span class="game-feature">Path Tracing</span>
+          </div>
+          <div class="game-tile more animate-on-scroll">
+            <span class="more-text">+50 More</span>
+            <span class="more-subtext">View full list →</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-brand">
+            <div class="footer-logo">
+              <span class="logo-icon">⚡</span>
+              <span class="logo-text">OPTISCALER</span>
+            </div>
+            <p class="footer-tagline">
+              Automated GPU Optimization for Linux Gaming
+            </p>
+            <div class="footer-badges">
+              <img
+                src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square"
+                alt="License"
+              />
+              <img
+                src="https://img.shields.io/badge/platform-Linux-FCC624.svg?style=flat-square&logo=linux&logoColor=black"
+                alt="Platform"
+              />
+            </div>
+          </div>
+
+          <div class="footer-links">
+            <div class="footer-column">
+              <h4>Documentation</h4>
+              <a href="INSTALLATION.md">Installation</a>
+              <a href="GPU_PROFILES.md">GPU Profiles</a>
+              <a href="GAME_SUPPORT.md">Game Support</a>
+              <a href="TROUBLESHOOTING.md">Troubleshooting</a>
+            </div>
+            <div class="footer-column">
+              <h4>Community</h4>
+              <a
+                href="https://github.com/ind4skylivey/0ptiscaler4linux"
+                target="_blank"
+                >GitHub</a
+              >
+              <a
+                href="https://github.com/ind4skylivey/0ptiscaler4linux/issues"
+                target="_blank"
+                >Issues</a
+              >
+              <a href="https://reddit.com/r/linux_gaming" target="_blank"
+                >Reddit</a
+              >
+              <a href="CONTRIBUTING.md">Contribute</a>
+            </div>
+            <div class="footer-column">
+              <h4>Credits</h4>
+              <a href="https://github.com/optiscaler/OptiScaler" target="_blank"
+                >OptiScaler</a
+              >
+              <a href="https://github.com/FakeMichau/fakenvapi" target="_blank"
+                >fakenvapi</a
+              >
+              <a href="#">Linux Community</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>
+            Built with ❤️ by
+            <a href="https://github.com/ind4skylivey" target="_blank"
+              >S1BGr0up</a
+            >
+            for the Linux gaming community
+          </p>
+          <p class="disclaimer">
+            Not affiliated with AMD, Intel, NVIDIA, or Valve.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="scripts/matrix.js"></script>
+    <script src="scripts/effects.js"></script>
+    <script src="scripts/main.js"></script>
+  </body>
+</html>
