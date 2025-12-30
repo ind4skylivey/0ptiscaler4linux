@@ -250,7 +250,9 @@ body {
 .gradient-text {
   background: var(--gradient-primary);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 .typing-text {
   color: var(--accent);

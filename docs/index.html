@@ -493,6 +493,128 @@
       </div>
     </section>
 
+    <!-- Comparison Section -->
+    <section class="comparison" id="comparison">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <span class="section-tag">👁️ VISUALS</span>
+                <h2 class="section-title">See the Difference</h2>
+                <p class="section-subtitle">Slide to compare Native 1080p vs OptiScaler 4K</p>
+            </div>
+
+            <div class="comparison-container animate-on-scroll">
+                <div class="comparison-wrapper">
+                    <!-- Image 1: Modified/Upscaled -->
+                    <div class="comp-img modified">
+                        <div class="img-label">OptiScaler (FSR4)</div>
+                        <!-- Placeholder for user to replace with real screenshot -->
+                        <div class="placeholder-img on">
+                            <span>4K UPSCALED</span>
+                            <div class="grid-overlay"></div>
+                        </div>
+                    </div>
+
+                    <!-- Image 2: Original/Native (Overlay) -->
+                    <div class="comp-img original" id="comp-overlay">
+                        <div class="img-label">Native 1080p</div>
+                        <!-- Placeholder for user to replace with real screenshot -->
+                        <div class="placeholder-img off">
+                            <span>NATIVE</span>
+                            <div class="pixel-overlay"></div>
+                        </div>
+                    </div>
+
+                    <!-- Slider Handle -->
+                    <div class="comp-slider" id="comp-slider">
+                        <div class="slider-line"></div>
+                        <div class="slider-handle">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 15L12 9L6 15"/>
+                                <path d="M18 9L12 15L6 9"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section class="architecture" id="how-it-works">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <span class="section-tag">⚡ UNDER THE HOOD</span>
+                <h2 class="section-title">How It Works</h2>
+                <p class="section-subtitle">Zero-latency translation layer architecture</p>
+            </div>
+
+            <div class="schematic-diagram animate-on-scroll">
+                <div class="schematic-grid"></div>
+
+                <div class="flow-container">
+                    <!-- Node 1: Game -->
+                    <div class="flow-node game">
+                        <div class="node-icon">🎮</div>
+                        <div class="node-title">GAME</div>
+                        <div class="node-tech">DX11 / DX12 / Vulkan</div>
+                    </div>
+
+                    <!-- Connector 1 -->
+                    <div class="flow-connector">
+                        <div class="flow-line"></div>
+                        <div class="flow-packet"></div>
+                    </div>
+
+                    <!-- Node 2: Proton -->
+                    <div class="flow-node proton">
+                        <div class="node-icon">🍷</div>
+                        <div class="node-title">PROTON</div>
+                        <div class="node-tech">Translation Layer</div>
+                    </div>
+
+                    <!-- Connector 2 -->
+                    <div class="flow-connector">
+                        <div class="flow-line"></div>
+                        <div class="flow-packet delay-1"></div>
+                    </div>
+
+                    <!-- Node 3: OptiScaler (Centerpiece) -->
+                    <div class="flow-node optiscaler pulse-border">
+                        <div class="node-icon">⚡</div>
+                        <div class="node-title">OPTISCALER</div>
+                        <div class="node-tech">Upscaling Engine</div>
+                        <div class="node-glow"></div>
+                    </div>
+
+                    <!-- Connector 3 -->
+                    <div class="flow-connector">
+                        <div class="flow-line"></div>
+                        <div class="flow-packet delay-2"></div>
+                    </div>
+
+                    <!-- Node 4: GPU -->
+                    <div class="flow-node gpu">
+                        <div class="node-icon">🖥️</div>
+                        <div class="node-title">GPU</div>
+                        <div class="node-tech">Render Output</div>
+                    </div>
+                </div>
+
+                <div class="schematic-legend">
+                    <div class="legend-item">
+                        <span class="dot input"></span> Input Frame
+                    </div>
+                    <div class="legend-item">
+                        <span class="dot process"></span> Upscaling
+                    </div>
+                    <div class="legend-item">
+                        <span class="dot output"></span> High-Res Output
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Installation Section -->
     <section class="installation" id="install">
       <div class="container">

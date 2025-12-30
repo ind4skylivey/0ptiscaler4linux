@@ -155,3 +155,113 @@ function initClipboard() {
         });
     });
 }
+
+// Comparison Slider Logic
+document.addEventListener('DOMContentLoaded', () => {
+    const slider = document.getElementById('comp-slider');
+    const overlay = document.getElementById('comp-overlay');
+    const container = document.querySelector('.comparison-wrapper');
+
+    if (slider && overlay && container) {
+        let isDragging = false;
+
+        // Mouse Events
+        slider.addEventListener('mousedown', () => isDragging = true);
+        document.addEventListener('mouseup', () => isDragging = false);
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            moveSlider(e.clientX);
+        });
+
+        // Touch Events
+        slider.addEventListener('touchstart', () => isDragging = true);
+        document.addEventListener('touchend', () => isDragging = false);
+        document.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            moveSlider(e.touches[0].clientX);
+        });
+
+        function moveSlider(clientX) {
+            const rect = container.getBoundingClientRect();
+            let x = clientX - rect.left;
+
+            // Clamp values
+            if (x < 0) x = 0;
+            if (x > rect.width) x = rect.width;
+
+            const percentage = (x / rect.width) * 100;
+
+            slider.style.left = `${percentage}%`;
+            overlay.style.width = `${percentage}%`;
+        }
+    }
+});
+
+// Konami Code Easter Egg - Overclock Mode
+const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+let konamiIndex = 0;
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === konamiCode[konamiIndex]) {
+        konamiIndex++;
+        if (konamiIndex === konamiCode.length) {
+            activateOverclockMode();
+            konamiIndex = 0;
+        }
+    } else {
+        konamiIndex = 0;
+    }
+});
+
+function activateOverclockMode() {
+    // Visual feedback
+    const body = document.body;
+    body.style.transition = 'filter 0.5s ease';
+    body.style.filter = 'hue-rotate(90deg) contrast(1.2)';
+
+    // Add overclock badge
+    const badge = document.createElement('div');
+    badge.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #ff0000;
+        color: white;
+        padding: 10px 20px;
+        font-family: 'Orbitron', sans-serif;
+        font-weight: bold;
+        z-index: 9999;
+        border: 2px solid white;
+        box-shadow: 0 0 20px #ff0000;
+        animation: pulse 0.5s infinite;
+        text-transform: uppercase;
+    `;
+    badge.textContent = '⚠️ OVERCLOCK MODE ACTIVATED ⚠️';
+    document.body.appendChild(badge);
+
+    // Speed up animations
+    document.documentElement.style.setProperty('--transition-normal', '50ms');
+
+    // Matrix rain speed up
+    if (window.matrixInterval) clearInterval(window.matrixInterval);
+
+    // Shake effect
+    body.style.animation = 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both';
+
+    setTimeout(() => {
+        body.style.animation = '';
+        alert('🚀 SYSTEM OPTIMIZED TO 1000% PERFORMANCE!');
+    }, 500);
+}
+
+// Add shake keyframe dynamically
+const styleSheet = document.createElement("style");
+styleSheet.innerText = `
+    @keyframes shake {
+        10%, 90% { transform: translate3d(-1px, 0, 0); }
+        20%, 80% { transform: translate3d(2px, 0, 0); }
+        30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+        40%, 60% { transform: translate3d(4px, 0, 0); }
+    }
+`;
+document.head.appendChild(styleSheet);
