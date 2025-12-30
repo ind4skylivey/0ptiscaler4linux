@@ -176,3 +176,12 @@ section { padding: var(--space-2xl) 0; position: relative; }
 @keyframes flow-line-v { 0% { height: 0; top: 0; opacity: 0; } 50% { height: 100%; opacity: 1; } 100% { height: 0; top: 100%; opacity: 0; } }
 @keyframes flow-packet-v { 0% { top: 0; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
 
+/* Konami Hint */
+.konami-hint { margin-bottom: var(--space-lg); display: flex; flex-direction: column; align-items: center; gap: var(--space-sm); opacity: 0.7; transition: opacity 0.3s ease; }
+.konami-hint:hover { opacity: 1; }
+.hint-label { font-family: var(--font-display); font-size: 0.75rem; color: var(--primary); letter-spacing: 2px; text-transform: uppercase; text-shadow: 0 0 10px rgba(0, 255, 136, 0.5); }
+.hint-keys { display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; }
+.key { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; padding: 0 6px; background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: 4px; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary); box-shadow: 0 2px 0 rgba(0,0,0,0.5); transition: transform 0.1s ease; }
+.key:hover { transform: translateY(2px); box-shadow: none; color: var(--primary); border-color: var(--primary); }
+
+
