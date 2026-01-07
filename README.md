@@ -389,7 +389,7 @@ For detailed profiles and recommendations, see our **[GPU Profiles Guide for Lin
 
 **Getting Started:**
 - [How to Boost FPS in Linux Games with OptiScaler](docs/linux-fps-boost-with-optiscaler.md)
-- [Steam Deck Setup Guide: Maximize FPS with OptiScaler](docs/steam-deck-setup-optiscaler-linux-gaming.md)
+- **🎮 [Steam Deck Setup Guide: Maximize FPS with OptiScaler](docs/steam-deck-setup-optiscaler-linux-gaming.md)** ← Complete guide for Steam Deck users!
 - [Proton Setup for Linux Gaming with OptiScaler](docs/proton-setup-for-linux-gaming-with-optiscaler.md)
 
 **Technical Guides:**
