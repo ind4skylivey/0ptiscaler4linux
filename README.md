@@ -6,15 +6,17 @@
 ### 💎 *Automated GPU Optimization for Linux Gaming* 💎
 
 <p align="center">
-  <img src="https://img.shields.io/badge/⚡_FPS_BOOST-50--80%25-ff6b6b?style=for-the-badge&labelColor=1a1a1a" alt="FPS Boost"/>
-  <img src="https://img.shields.io/badge/⚙️_LATENCY_DOWN-30--45%25-4ecdc4?style=for-the-badge&labelColor=1a1a1a" alt="Latency"/>
-  <img src="https://img.shields.io/badge/🎯_QUALITY-9/10-95e1d3?style=for-the-badge&labelColor=1a1a1a" alt="Quality"/>
+  <img src="https://img.shields.io/badge/⚡_FPS_BOOST-70--90%25_FSR4-ff6b6b?style=for-the-badge&labelColor=1a1a1a" alt="FPS Boost"/>
+  <img src="https://img.shields.io/badge/⚙️_LATENCY-40--50%25_REDUCTION-4ecdc4?style=for-the-badge&labelColor=1a1a1a" alt="Latency"/>
+  <img src="https://img.shields.io/badge/🎯_QUALITY-92--94%25-95e1d3?style=for-the-badge&labelColor=1a1a1a" alt="Quality"/>
   <img src="https://img.shields.io/badge/Steam_Deck-Optimized-00ccff?style=for-the-badge&logo=steamdeck&logoColor=white" alt="Steam Deck"/>
+  <img src="https://img.shields.io/badge/FSR4.2.0-Supported-ff9900?style=for-the-badge" alt="FSR4"/>
 </p>
 
 [![CI](https://img.shields.io/github/actions/workflow/status/ind4skylivey/0ptiscaler4linux/ci.yml?branch=main&style=flat-square&logo=github)](https://github.com/ind4skylivey/0ptiscaler4linux/actions)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
-[![Status](https://img.shields.io/badge/status-alpha-orange.svg?style=flat-square)](https://github.com/ind4skylivey/0ptiscaler4linux/releases)
+[![Status](https://img.shields.io/badge/status-Production%20Ready-00cc44.svg?style=flat-square)](https://github.com/ind4skylivey/0ptiscaler4linux/releases)
+[![Version](https://img.shields.io/badge/version-1.1.0-0099ff.svg?style=flat-square)](https://github.com/ind4skylivey/0ptiscaler4linux/releases/tag/v1.1.0)
 [![Platform](https://img.shields.io/badge/platform-Linux-FCC624.svg?style=flat-square&logo=linux&logoColor=black)](https://www.linux.org/)
 [![AUR](https://img.shields.io/badge/AUR-optiscaler--universal-1793d1.svg?style=flat-square&logo=arch-linux)](https://aur.archlinux.org/packages/optiscaler-universal)
 
