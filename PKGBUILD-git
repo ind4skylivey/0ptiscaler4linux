@@ -39,6 +39,9 @@ package() {
     cp -r scripts "$pkgdir/usr/share/optiscaler-universal/"
     cp -r templates "$pkgdir/usr/share/optiscaler-universal/"
 
+    # Set executable permissions on scripts
+    chmod +x "$pkgdir/usr/share/optiscaler-universal/scripts/"*.sh
+
     # Install binaries directory structure
     install -dm755 "$pkgdir/usr/share/optiscaler-universal/binaries"
     cp -r binaries/* "$pkgdir/usr/share/optiscaler-universal/binaries/"
