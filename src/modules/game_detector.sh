@@ -22,6 +22,9 @@
 SCRIPT_ROOT="${SCRIPT_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
 PROFILES_DIR="${PROFILES_DIR:-$SCRIPT_ROOT/config/games}"
 
+# Source required modules
+source "${SCRIPT_ROOT}/src/modules/steam_parser.sh"
+
 # SECURITY: Use user-owned directory for cache (not world-writable /tmp)
 OPTISCALER_DATA_DIR="${OPTISCALER_DATA_DIR:-$HOME/.optiscaler-universal}"
 CACHE_DIR="$OPTISCALER_DATA_DIR/cache"
@@ -214,9 +217,15 @@ discover_steam_libraries() {
 
     local lf
     while IFS= read -r lf; do
+        log_debug "Found libraryfolders.vdf: $lf"
         declare -a libs=()
-        parse_libraryfolders "$lf" libs || continue
+        if ! parse_libraryfolders "$lf" libs; then
+            log_warn "Failed to parse libraryfolders.vdf: $lf"
+            continue
+        fi
+        log_debug "Extracted ${#libs[@]} library path(s) from $lf"
         for lib_root in "${libs[@]}"; do
+            log_debug "Attempting to add library: $lib_root"
             _add_library_if_exists "$lib_root"
         done
     done < <(discover_libraryfolders_files)
