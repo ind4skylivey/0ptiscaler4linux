@@ -1,6 +1,37 @@
 # Contributing to OptiScaler Universal
 
-Thank you for your interest in contributing to OptiScaler Universal! This document provides guidelines and best practices for contributors.
+Hey
+Thank you SO much for your interest in contributing! 🙌
+
+I really appreciate the effort you put into this. However, I'm currently 
+not accepting external PRs while the project is in early development. 
+I need to maintain architectural consistency as the foundation is still 
+being built.
+
+**What I'd love instead:**
+
+Could you open an issue describing:
+1. The problem this solves
+2. Your proposed approach
+3. Any code/pseudocode you'd like to share
+
+I'll review it, adapt it to the codebase style, and credit you properly 
+in the commit. This way the codebase stays maintainable while I'm 
+balancing work/studies.
+
+I'm closing this PR for now, but **please don't let this discourage you!** 
+Your ideas are valuable, and once the project matures (v1.0+), I'll fully 
+open up to community PRs.
+
+Thanks again for understanding! 💜
+
+---
+
+**Alternative:** If this is a critical bug fix and you want it merged faster, 
+feel free to ping me in the related issue and I'll prioritize it.
+
+
+Thank you for your interest in contributing to OptiScaler4Linux! This document provides guidelines and best practices for contributors.
 
 ## Table of Contents
 
