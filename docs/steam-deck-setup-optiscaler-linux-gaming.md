@@ -1,5 +1,10 @@
 # Steam Deck Setup Guide: OptiScaler for Linux Gaming
 
+## 📋 Detailed Installation
+
+> [!NOTE]  
+> **About the `--steam-deck` flag:** Some older documentation references a `--steam-deck` installation flag. This is **not implemented yet** and not needed but was planned! The installer automatically detects Steam Deck hardware and applies optimized settings. Simply use the standard installation command for now.
+
 <div align="center">
 
 ### 🎮 Maximize Your Steam Deck Performance with OptiScaler
@@ -148,8 +153,9 @@ cd ~
 git clone https://github.com/ind4skylivey/0ptiscaler4linux.git
 cd 0ptiscaler4linux
 
-# Run the installer with Steam Deck defaults
-bash scripts/install.sh --steam-deck
+# Run the installer (auto-detects Steam Deck)
+bash scripts/install.sh
+
 ```
 
 **What the installer does:**
