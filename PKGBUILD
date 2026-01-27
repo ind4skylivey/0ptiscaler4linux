@@ -1,7 +1,7 @@
 # Maintainer: ind4skylivey <https://github.com/ind4skylivey>
 pkgname=optiscaler-universal
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Intelligent OptiScaler configuration tool for Linux gaming - automatically optimizes GPU settings"
 arch=('any')
 url="https://github.com/ind4skylivey/0ptiscaler4linux"
@@ -30,6 +30,9 @@ package() {
     cp -r profiles "$pkgdir/usr/share/$pkgname/"
     cp -r scripts "$pkgdir/usr/share/$pkgname/"
     cp -r templates "$pkgdir/usr/share/$pkgname/"
+
+    # Set executable permissions on scripts
+    chmod +x "$pkgdir/usr/share/$pkgname/scripts/"*.sh
 
     # Install binaries directory structure
     install -dm755 "$pkgdir/usr/share/$pkgname/binaries"
