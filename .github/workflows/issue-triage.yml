@@ -1,0 +1,203 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# Issue Triage Automation
+# ═══════════════════════════════════════════════════════════════════════════════
+# Validates issues on creation/edit and enforces template requirements.
+# Issues that don't meet quality standards are labeled and commented on.
+# ═══════════════════════════════════════════════════════════════════════════════
+
+name: Issue Triage
+
+on:
+  issues:
+    types: [opened, edited]
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  # ═══════════════════════════════════════════════════════════════════════════
+  # Validate Issue Quality
+  # ═══════════════════════════════════════════════════════════════════════════
+  triage:
+    name: Validate Issue
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate issue completeness
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const body = issue.body || '';
+            const title = issue.title || '';
+            const labels = issue.labels.map(l => l.name);
+            
+            // Skip if already processed or is a bot
+            if (issue.user.type === 'Bot') {
+              console.log('Skipping bot issue');
+              return;
+            }
+            
+            console.log(`Validating issue #${issue.number}: ${title}`);
+            
+            // ─── Validation Rules ─────────────────────────────────────────────
+            const validations = [];
+            let isComplete = true;
+            
+            // Rule 1: Body must not be empty or too short
+            if (body.length < 50) {
+              validations.push('Issue body is too short. Please provide detailed information.');
+              isComplete = false;
+            }
+            
+            // Rule 2: Must use a template (check for template markers)
+            const hasTemplateMarkers = body.includes('## Pre-Submission Checklist') || 
+                                       body.includes('## Bug Description') ||
+                                       body.includes('## Feature Description') ||
+                                       body.includes('## Game Information');
+            
+            if (!hasTemplateMarkers) {
+              validations.push('Issue does not appear to use a template. Please select an appropriate template when creating an issue.');
+              isComplete = false;
+            }
+            
+            // Rule 3: For bug reports, check system info
+            if (title.includes('[BUG]') || labels.includes('bug')) {
+              const hasGPU = /\*\*GPU\*\*.*[A-Za-z0-9]/.test(body) && !body.includes('**GPU** | <!-- ');
+              const hasDriver = /\*\*GPU Driver\*\*.*[A-Za-z0-9]/.test(body) && !body.includes('**GPU Driver** | <!-- ');
+              const hasDistro = /\*\*Distribution\*\*.*[A-Za-z0-9]/.test(body) && !body.includes('**Distribution** | <!-- ');
+              const hasKernel = /\*\*Kernel\*\*.*[A-Za-z0-9]/.test(body) && !body.includes('**Kernel** | <!-- ');
+              
+              if (!hasGPU || !hasDriver || !hasDistro || !hasKernel) {
+                validations.push('Bug report is missing required system information (GPU, Driver, Distribution, or Kernel).');
+                isComplete = false;
+              }
+              
+              // Rule 4: Check for diagnose output
+              const hasDiagnoseOutput = body.includes('PASTE FULL DIAGNOSE.SH OUTPUT HERE') === false &&
+                                        (body.includes('diagnose.sh') || body.includes('PCI') || body.includes('GPU:'));
+              
+              if (!hasDiagnoseOutput) {
+                validations.push('Bug report is missing diagnostic output. Please run `bash scripts/diagnose.sh --verbose` and paste the results.');
+                isComplete = false;
+              }
+            }
+            
+            // Rule 5: For feature requests, check problem statement
+            if (title.includes('[FEATURE]') || labels.includes('enhancement')) {
+              const hasProblemStatement = body.includes('## Problem Statement') && 
+                                          body.split('## Problem Statement')[1]?.split('##')[0]?.trim().length > 20;
+              
+              if (!hasProblemStatement) {
+                validations.push('Feature request is missing a detailed problem statement. Please explain what problem this feature solves.');
+                isComplete = false;
+              }
+            }
+            
+            // Rule 6: For game profiles, check test data
+            if (title.includes('[GAME]') || labels.includes('game-profile')) {
+              const hasTestData = body.includes('## Test Environment') &&
+                                  /\*\*GPU\*\*.*[A-Za-z0-9]/.test(body) &&
+                                  body.includes('## Testing Results');
+              
+              if (!hasTestData) {
+                validations.push('Game profile is missing test environment data. Please provide actual testing results from real hardware.');
+                isComplete = false;
+              }
+            }
+            
+            // Rule 7: Check for placeholder text
+            const hasPlaceholders = body.includes('PASTE') || 
+                                    body.includes('<!-- e.g.,') ||
+                                    /<!-- .* -->/.test(body);
+            
+            if (hasPlaceholders && body.length < 500) {
+              validations.push('Issue contains placeholder text. Please replace all placeholders with actual information.');
+              isComplete = false;
+            }
+            
+            // ─── Apply Labels and Comments ────────────────────────────────────
+            if (!isComplete) {
+              console.log(`Issue #${issue.number} is incomplete. Adding labels and comment.`);
+              
+              // Add labels
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: ['incomplete', 'needs-info']
+              });
+              
+              // Remove triage-ready if it exists
+              try {
+                await github.rest.issues.removeLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  name: 'triage-ready'
+                });
+              } catch (e) {
+                // Label doesn't exist, that's fine
+              }
+              
+              // Build comment
+              const validationList = validations.map(v => `- ${v}`).join('\n');
+              const comment = `## Issue Incomplete
+
+This issue is missing required information and cannot be processed as-is.
+
+### Missing or Incomplete:
+${validationList}
+
+### What to do:
+1. **Edit this issue** (click the "..." menu → Edit) and fill in all required fields
+2. Use the appropriate template (Bug Report, Feature Request, or Game Profile)
+3. Provide all requested system information and logs
+4. For bug reports, run \`bash scripts/diagnose.sh --verbose\` and paste the output
+
+**This issue will be automatically closed in 7 days if the required information is not provided.**
+
+---
+
+<sub>Automated triage — If you believe this is an error, mention @ind4skylivey</sub>`;
+              
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: comment
+              });
+              
+            } else {
+              console.log(`Issue #${issue.number} is complete. Marking as triage-ready.`);
+              
+              // Add triage-ready label
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: ['triage-ready']
+              });
+              
+              // Remove incomplete labels if they exist
+              try {
+                await github.rest.issues.removeLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  name: 'incomplete'
+                });
+              } catch (e) {}
+              
+              try {
+                await github.rest.issues.removeLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  name: 'needs-info'
+                });
+              } catch (e) {}
+            }

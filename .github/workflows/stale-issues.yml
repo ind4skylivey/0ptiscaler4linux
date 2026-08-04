@@ -1,0 +1,123 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# Stale Issues Automation
+# ═══════════════════════════════════════════════════════════════════════════════
+# Automatically closes issues that are incomplete or have gone stale.
+#
+# - Incomplete issues (needs-info): closed after 7 days without update
+# - General stale issues: marked after 90 days, closed after 104 days
+# - Stale PRs: marked after 45 days, closed after 52 days
+# ═══════════════════════════════════════════════════════════════════════════════
+
+name: Stale Issues
+
+on:
+  schedule:
+    # Run daily at 06:00 UTC
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  pull-requests: write
+  contents: read
+
+jobs:
+  # ═══════════════════════════════════════════════════════════════════════════
+  # Close Incomplete Issues (7 days)
+  # ═══════════════════════════════════════════════════════════════════════════
+  close-incomplete:
+    name: Close Incomplete Issues
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v9
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+          # Only target issues with needs-info label
+          only-labels: 'needs-info'
+
+          # Close after 7 days of inactivity
+          days-before-stale: -1
+          days-before-close: 7
+
+          stale-issue-label: 'stale-incomplete'
+
+          close-issue-message: |
+            ## Issue Closed — Incomplete Information
+
+            This issue has been automatically closed because the required information was not provided within 7 days.
+
+            ### To reopen this issue:
+            1. Gather all required information (system specs, logs, diagnostic output)
+            2. Open a **new issue** using the appropriate template
+            3. Fill in ALL required fields completely
+
+            ### Why was this closed?
+            Without complete system information and diagnostic logs, we cannot reproduce or investigate the issue. This policy ensures maintainers can focus on actionable reports.
+
+            ---
+            <sub>Automated cleanup</sub>
+
+          # Don't touch PRs in this job
+          days-before-pr-stale: -1
+          days-before-pr-close: -1
+
+          # Exempt labels
+          exempt-issue-labels: 'pinned,security,help wanted'
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # Mark General Stale Issues (90 days)
+  # ═══════════════════════════════════════════════════════════════════════════
+  stale-general:
+    name: Mark Stale Issues
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v9
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+          # Target all issues EXCEPT those with needs-info (handled above)
+          exempt-issue-labels: 'needs-info,pinned,security,help wanted,good first issue'
+
+          # Mark stale after 90 days, close 14 days later
+          days-before-stale: 90
+          days-before-close: 14
+
+          stale-issue-label: 'stale'
+          stale-issue-message: |
+            ## Stale Issue Notice
+
+            This issue has had no activity for **90 days** and has been marked as stale.
+
+            It will be automatically closed in **14 days** if there is no further activity.
+
+            ### To keep this issue open:
+            - Leave a comment with an update or new information
+            - Remove the `stale` label if this is still relevant
+
+            ---
+            <sub>Automated stale detection</sub>
+
+          close-issue-message: |
+            ## Issue Closed — Stale
+
+            This issue has been automatically closed due to inactivity (104 days total).
+
+            If this is still relevant, please open a **new issue** with updated information and current system details.
+
+            ---
+            <sub>Automated cleanup</sub>
+
+          # PRs: stale after 45 days, close after 7 more
+          days-before-pr-stale: 45
+          days-before-pr-close: 7
+          stale-pr-label: 'stale'
+          stale-pr-message: |
+            This PR has been marked as stale (45 days without activity).
+            It will be closed in 7 days if not updated.
+          close-pr-message: |
+            This PR has been closed due to inactivity.
+            Feel free to reopen or create a new PR if you'd like to continue this work.
+
+          # Exempt
+          exempt-pr-labels: 'pinned,security,work-in-progress'

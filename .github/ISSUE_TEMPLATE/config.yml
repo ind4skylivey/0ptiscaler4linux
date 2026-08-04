@@ -1,0 +1,16 @@
+# GitHub Issue Template Configuration
+# This file controls the issue creation experience for the repository.
+#
+# IMPORTANT: blank_issues_enabled: false forces ALL users to select a template.
+# This is the single most effective protection against troll/spam issues.
+
+blank_issues_enabled: false
+
+contact_links:
+  - name: Questions & Discussions
+    url: https://github.com/ind4skylivey/0ptiscaler4linux/discussions
+    about: Ask questions, share configurations, or discuss ideas here — NOT in Issues.
+
+  - name: Documentation & Wiki
+    url: https://github.com/ind4skylivey/0ptiscaler4linux/wiki
+    about: Check the documentation before opening an issue. Your question may already be answered.
