@@ -26,7 +26,7 @@ set -eo pipefail
 #  CONSTANTS & CONFIGURATION
 # ═══════════════════════════════════════════════════════════════════════════
 
-readonly VERSION="1.0.0"
+readonly VERSION="2.0.0"
 readonly LICENSE="MIT - Open Source"
 readonly SCRIPT_NAME="OptiScaler Universal Installer"
 

@@ -1,6 +1,29 @@
-1.0.0
+2.0.0
 
 # Changelog
+
+## [2.0.0] - 2026-01-07 - FSR 4.2.0 Support
+
+### Added
+- Support for FSR 4.2.0 upscaler
+- Experimental frame generation option (FSR 4.2.0)
+- Adaptive quality mode with target/min frame rate
+- Custom preset support per game
+- Improved Steam Deck-specific tuning
+- Updated 9 game profiles
+- Improved motion handling
+
+### Changed
+- Refreshed documentation and setup notes
+- Minimum Proton version for FSR 4.2.0: 10.x+
+- Minimum Mesa version for FSR 4.2.0: 24+
+- GPU overhead reduced to 3-7% (from 5-10% in FSR 3.1)
+
+### Migration
+- Set `Upscaler=FSR420` and `FSRMode=Balanced` in OptiScaler.ini
+- Roll back with `Upscaler=FSR31` if needed
+
+---
 
 ## [1.0.0] - 2025-12-13 - Production Ready Release
 
