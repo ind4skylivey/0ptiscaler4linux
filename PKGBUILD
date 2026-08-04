@@ -1,6 +1,10 @@
+# DEPRECATED: This file is kept for reference only.
+# The canonical AUR PKGBUILD is in aur-optiscaler-universal/PKGBUILD (v2.0.0+).
+# Use scripts/sync-to-aur.sh to publish updates to AUR.
+#
 # Maintainer: ind4skylivey <https://github.com/ind4skylivey>
 pkgname=optiscaler-universal
-pkgver=0.1.0
+pkgver=2.0.0
 pkgrel=2
 pkgdesc="Intelligent OptiScaler configuration tool for Linux gaming - automatically optimizes GPU settings"
 arch=('any')
