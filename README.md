@@ -143,7 +143,7 @@ See [Contributing Guide](CONTRIBUTING.md) for guidelines.
 
 ## License
 
-MIT License — see [LICENSE](LICENSE)
+GPL-3.0-or-later — see [LICENSE](LICENSE)
 
 ### Third-Party
 
